@@ -1,0 +1,90 @@
+# work out current shell
+current_shell() {
+  echo $(ps -hp $$|grep -o '[^/ ]*$')
+}
+
+#reload the correct ~/.*rc for our shell
+# termux reload if exists needs to go here...
+reload() {
+  cs=$(current_shell)
+  rc=$HOME/.$cs'rc'
+  echo "source $rc"
+  source $rc
+  # if in termux, reload that too for good measure
+  if termux-reload-settings -v &> /dev/null; then
+    termux-reload-settings
+  fi
+}
+
+
+swsh() {
+  #  if new shell exists, swap to it
+  #  should really used a better command...
+  if [ -f "/bin/$1" ]; then
+    cs=$(current_shell)
+    if [ "$cs" != "$1" ]; then
+      echo "changing shell: "$cs" -> " $1
+      exec $1
+      reload
+  else
+    echo "Nothing to do.  Perhaps you need to _reload_?"  
+  fi
+  else
+    echo "ummm, can't find that shell..."
+  fi
+}
+#########################
+# Decompression Chamber #
+#########################
+
+expand() {
+    if [[ -f $1 ]]; then
+        case $1 in
+          *.tar.bz2) tar xvjf $1;;
+          *.tar.gz) tar xvzf $1;;
+          *.tar.xz) tar xvJf $1;;
+          *.tar.lzma) tar --lzma xvf $1;;
+          *.bz2) bunzip $1;;
+          *.rar) unrar x $1;;
+          *.gz) gunzip $1;;
+          *.tar) tar xvf $1;;
+          *.tbz2) tar xvjf $1;;
+          *.tgz) tar xvzf $1;;
+          *.zip) unzip $1;;
+          *.Z) uncompress $1;;
+          *.7z) 7z x $1;;
+          *.dmg) hdiutul mount $1;; # mount OS X disk images
+          *) echo "'$1' cannot be extracted via >ex<";;
+    esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+home(){ 
+  if [ -z "$TMUX" ]; then
+    if ! tmux has-session -t HOME 2> /dev/null; then
+      # build home window
+      tmux new-session -d -s HOME -n home -x `tput cols` -y `tput lines`
+      tmux set-window-option -t HOME:home automatic-rename off
+      
+      tmux split-window -t HOME:home -h -p 50 -c ~/
+      tmux split-window -t HOME:home -v -p 20 -c ~/
+      
+      tmux send-keys -t HOME:home 'mutt' Enter
+      tmux send-keys -t HOME:home.1 'newsboat' Enter
+      tmux send-keys -t HOME:home.2 'top' Enter
+    else
+      tmux -u attach -t HOME
+    fi
+  else
+    tmux switch-client -t HOME
+  fi
+};
+
+
+# lazy conf
+function run { chmod +x "$@" && ./$1; }
+function mkcd { mkdir -p "$1" && cd "$1"; }
+function cdl { cd "$1" && ls; }
+

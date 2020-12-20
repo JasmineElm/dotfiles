@@ -1,0 +1,56 @@
+# dotfiles backup and restore
+alias bkdots='$HOME/Scripts/backupdots.sh'
+
+alias wttr='curl wttr.in/Preston?QFAnq0'
+alias rss='newsboat'
+
+
+alias auua='sudo apt update && yes |sudo  apt upgrade && yes |sudo apt --purge autoremove && sudo apt clean'
+
+# ls
+#
+alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
+alias ll='ls -lhtr'
+
+## see also expand() function in ~/.shell_functions
+alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
+alias unrarall='for i in *.rar; do expand $i -d ${i%.*}; rm -i $i; done'
+
+alias hist='history | grep '
+
+# diff
+#
+alias vdiff='git diff'
+alias diff='diff --color=auto'
+
+## YOUTUBE-DL Specific
+#
+# Audiobook
+alias ytab='youtube-dl -ic -o "%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 128K --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
+#
+# Movie, embed metadata & subs, use external downloaded
+alias ytdl='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
+#
+# same as above but use youtube-dlc instead
+alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
+#
+# External downloader can be less performant: this ignores it
+alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i '
+
+# opening and closing stuff...
+alias open='xdg-open'
+alias :q='exit'
+
+alias dud='du -ch -d 1 | sort -hr'
+alias ifconfig='ip -br -c a'
+
+# tmux - see also home() function in ~/.shell_functions
+alias tks='tmux kill-server'
+
+## TERMUX
+#
+if [ -d /data/data/com.termux/files/usr/bin ]; then 
+  alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
+  alias andi='termux-telephony-call +447547619056'
+fi
+
