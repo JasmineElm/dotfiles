@@ -13,6 +13,7 @@ alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
 alias ll='ls -lhtr'
 
 ## see also expand() function in ~/.shell_functions
+#
 alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
 alias unrarall='for i in *.rar; do expand $i -d ${i%.*}; rm -i $i; done'
 
@@ -22,6 +23,12 @@ alias hist='history | grep '
 #
 alias vdiff='git diff'
 alias diff='diff --color=auto'
+
+# Colours please...
+#
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 ## YOUTUBE-DL Specific
 #
@@ -51,6 +58,5 @@ alias tks='tmux kill-server'
 #
 if [ -d /data/data/com.termux/files/usr/bin ]; then 
   alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
-  alias andi='termux-telephony-call +447547619056'
 fi
 

@@ -116,6 +116,7 @@ unset __conda_setup
 # local shell functions and aliases
 [[ ! -f ~/.shell_functions ]] || source ~/.shell_functions
 [[ ! -f ~/.aliases ]] || source ~/.aliases
+[[ ! -f ~/.secret_aliases ]] || source ~/.secret_aliases
 
 # ooh get you with your minimal prompt...
 export PS1="\e[01;34m\]\w \e[0m"
