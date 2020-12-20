@@ -2,7 +2,7 @@
 #
 #Backs up the most important dots if they've changed.
                                                                   
-USAGE= "Back up select dot files.  The 'g' flag pushes to git\nusage: $0 [g]" 
+USAGE="Back up select dot files. The 'g' flag pushes to git\nusage: $0 [g]" 
 BACKUP_DIR=$HOME'/Dropbox/dots/'
 GIT_DIR=$HOME'/Dropbox/git/dotfiles'
 SCRIPT=$0
