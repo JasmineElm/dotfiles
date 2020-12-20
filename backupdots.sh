@@ -21,10 +21,9 @@ backup() {
 
 git_commit() {
   if [[ `git status --porcelain` ]]; then
-      git pull origin master
       git add .
       git commit -m "Update: $(timestamp)"
-      git push origin master
+      git push
   fi
 }
 #---------------------------------------------------#
