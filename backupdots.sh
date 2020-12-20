@@ -20,11 +20,13 @@ backup() {
 }
 
 git_commit() {
-     git add .
-     git commit -m "Update: $(timestamp)"
-     git push origin master
+  if [[ `git status --porcelain` ]]; then
+      git pull origin master
+      git add .
+      git commit -m "Update: $(timestamp)"
+      git push origin master
+  fi
 }
-
 #---------------------------------------------------#
 if [ -z $1 ]; then
   COPY_DIR=$BACKUP_DIR
