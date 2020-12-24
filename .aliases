@@ -18,6 +18,8 @@ alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
 alias unrarall='for i in *.rar; do expand $i -d ${i%.*}; rm -i $i; done'
 
 alias hist='history | grep '
+alias dfh='df -h | grep /dev/sdb | sort'
+alias tailf='tail -f'
 
 # diff
 #
