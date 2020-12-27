@@ -28,3 +28,6 @@ EDITOR="vi"
 
 # add date to `history`
 export HISTTIMEFORMAT="%m/%d - %H:%M:%S: "
+
+
+GITHUB_USERNAME=JasmineElm

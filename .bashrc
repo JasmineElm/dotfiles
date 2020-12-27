@@ -113,6 +113,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+GITHUB_USERNAME=JasmineElm
+
 # local shell functions and aliases
 [[ ! -f ~/.shell_functions ]] || source ~/.shell_functions
 [[ ! -f ~/.aliases ]] || source ~/.aliases

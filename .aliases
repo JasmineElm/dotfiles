@@ -62,3 +62,7 @@ if [ -d /data/data/com.termux/files/usr/bin ]; then
   alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
 fi
 
+### PYTHON
+#
+alias python='python3'
+alias pip='python3 -m pip'

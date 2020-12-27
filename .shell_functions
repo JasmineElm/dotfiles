@@ -88,3 +88,27 @@ function run { chmod +x "$@" && ./$1; }
 function mkcd { mkdir -p "$1" && cd "$1"; }
 function cdl { cd "$1" && ls; }
 
+# New Journal entry
+jrnl() {
+  CLOUD=dropbox                                 # our cloud service
+  JOURNAL_DIR=Journal                           # the path (local and cloud)
+  JOURNAL_PATH=$HOME/Documents/$JOURNAL_DIR/    # local journal path
+  ENTRY_DIR=$(date +%Y/%B)                      # journal split into directory per MM/YY
+  mkdir -p $JOURNAL_PATH$ENTRY_DIR
+  # each year gets a dir, each month a subdir
+  cd $JOURNAL_PATH$ENTRY_DIR
+  vim $(date +%d-%m-%y).md
+  rclone copy $JOURNAL_PATH $CLOUD:$JOURNAL_DIR
+}
+
+# New Zettle card
+nz() {
+  ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/
+  DATE_STR=$(date +"%Y%m%d%H%M")
+  TITLE=$*
+  CLEAN_TITLE=$(echo $* | sed 's/ /_/g'| tr '[:upper:]' '[:lower:]')
+  ZETTLE=$ZETTLE_DIR$DATE_STR'-'$CLEAN_TITLE.md
+  echo '# '$TITLE > $ZETTLE
+  vi $ZETTLE
+}
+
