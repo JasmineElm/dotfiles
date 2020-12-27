@@ -51,8 +51,7 @@ then
       # backup > restore > git
       backup
       restore
-      rsync $RESTORE_DIR/* $GIT_DIR
-      cd $GIT_DIR
+      cp $RESTORE_DIR/* $GIT_DIR
       git_commit
       ;;
     "r") #restore
