@@ -7,7 +7,7 @@ script=$(realpath $0)
 
 local_dot_dir=$HOME'/'$dots_dir
 local_restore_dir=$HOME'/'$docs_dir'/'$dots_dir
-local_repo_dir=$HOME'/'$repo_dir
+local_repo_dir=$HOME'/'$repo_dir'/'$dots_dir
 
 usage="Back up select dot files. \n\t+ 'g' flag pushes to git\n\t+ 'r' flag restores to $local_restore_dir\n\t+ no argument, copies dots to $frst_cld\nusage: $0 [g|r]" 
 
