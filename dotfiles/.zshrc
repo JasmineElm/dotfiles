@@ -35,8 +35,9 @@ GITHUB_USERNAME=JasmineElm
 
 # Directories
 #
-GIT_DIR=$HOME/Dropbox/git
-STUDY_DIR=$HOME/Dropbox/msc_computing
+export STUDY_DIR=$HOME/Dropbox/msc_computing
+export DRPBX_DIR=$HOME'/Dropbox/'
+export SCRPT_DIR=$HOME'/Scripts/'
+export REPO_DIR=$DRPBX_DIR'/git/'
+export BLOG_DIR=$GIT_DIR'/JasmineElm.github.io/_posts/'
 
-# remove username from prompt
-export DEFAULT_USER="$(whoami)"

@@ -122,3 +122,11 @@ GITHUB_USERNAME=JasmineElm
 
 # ooh get you with your minimal prompt...
 export PS1="\e[01;34m\]\w \e[0m"
+
+## Directories
+
+DRPBX_DIR=$HOME'/Dropbox/'
+SCRPT_DIR=$HOME'/Scripts/'
+REPO_DIR=$DRPBX_DIR'/git/'
+BLOG_DIR=$GIT_DIR'/JasmineElm.github.io/_posts/'
+

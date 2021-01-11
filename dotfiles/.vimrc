@@ -121,6 +121,7 @@ Plug 'ctrlpvim/ctrlp.vim'     " For sensible link insertion
 Plug 'reedes/vim-lexical'     " Better spellcheck mappings
 Plug 'reedes/vim-litecorrect' " Better autocorrections
 Plug 'reedes/vim-wordy'       " Weasel words and passive voice
+Plug 'tpope/vim-fireplace'    " For Wakatime...
 call plug#end()
 
 " zettelkasten: see

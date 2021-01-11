@@ -18,7 +18,7 @@ alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
 alias unrarall='for i in *.rar; do expand $i -d ${i%.*}; rm -i $i; done'
 
 alias hist='history | grep '
-alias dfh='df -h | grep /dev/sdb | sort'
+alias dfh='df -h | grep /dev/sd | sort'
 alias tailf='tail -f'
 
 # diff
@@ -29,8 +29,6 @@ alias diff='diff --color=auto'
 # Colours please...
 #
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 ## YOUTUBE-DL Specific
 #

@@ -16,6 +16,9 @@ reload() {
   fi
 }
 
+# changedir and list
+cdl() { cd "$@" && ls -a;} 
+bak() { cp -p "$@" "$@.$(date +%Y%m%d)";}
 
 swsh() {
   #  if new shell exists, swap to it
@@ -112,6 +115,34 @@ nz() {
   vi $ZETTLE
 }
 
-# changedir and list
-cdl() { cd "$@" && ls -a;} 
-bak() { cp -p "$@" "$@.$(date +%Y%m%d)";}
+
+# New Blog post
+#
+
+jekserve() {
+  xdg-open http://127.0.0.1:4000/ &
+  cd $BLOG_DIR../
+  bundle exec jekyll serve
+}
+
+
+create_post() {
+  cd $BLOG_DIR
+  title="$*";  dte=`date +%Y-%m-%d`;  tme=`date +"%T"`
+  safe_title=$(echo $title |sed 's/ /_/g'|  tr '[:upper:]' '[:lower:]')
+  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " $dte $tme "\ncategories: writing\nsynopsis: "change me"\n---">> $dte-$safe_title.md
+  vi $dte-$safe_title.md
+}
+
+nbp() {
+  post_title=$*
+  echo $post_title
+  tmux new-session -d 
+  tmux split-window -v 
+  tmux resize-pane -D 10
+#sends keys to first and second terminals
+  tmux send -t 0:0.1 "jekserve" C-m
+  tmux send -t 0:0.0 "create_post $post_title" C-m
+  tmux select-pane -U  
+  tmux -2 attach-session -d 
+}
