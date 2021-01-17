@@ -128,16 +128,6 @@ call plug#end()
 " https://www.edwinwenink.xyz/posts/48-vim_fast_creating_and_linking_notes/
 "
 
-if empty(glob('Zettelkasten'))
-  if has('unix')                
-    let g:zettelkasten = "$HOME/Dropbox/Zettelkasten/"
-  else
-    let g:zettelkasten = "$HOME\\Dropbox\\Zettelkasten\\"
-  endif
-else
-    let g:zettelkasten = "Zettelkasten/"
-endif
-
 command! -nargs=1 NewZettel :execute ":e" zettelkasten . strftime("%Y%m%d%H%M") . "-<args>.md"
 nnoremap <leader>nz :NewZettel 
 
