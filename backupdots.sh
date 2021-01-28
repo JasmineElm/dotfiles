@@ -16,7 +16,7 @@ local_repo_dir=$HOME'/'$repo_dir
 usage="Back up select dot files. \n\t+ 'g' flag pushes to git\n\t+ 'r' flag restores to $local_restore_dir\n\t+ no argument, copies dots to $frst_cld\nusage: $0 [g|r]" 
 
 dotfiles=(".aliases" ".bashrc" ".inputrc" ".mutt/muttrc" \
-          ".nanorc" ".netrc" ".newsboat/urls" ".newsboat/plugin/send-to-pocket.sh" ".profile" "$script" \
+          ".nanorc" ".netrc" ".newsboat/urls" ".newsboat/plugin/send-to-pocket.sh" ".gitconfig" ".profile" "$script" \
           ".secret_aliases" ".shell_functions" ".tmux.conf" \
           ".vimrc" ".vim/local_functions.vim" ".vim/templates" ".wakatime.cfg" ".zshrc")
 #---------------------------------------------------#
