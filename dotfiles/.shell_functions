@@ -16,7 +16,9 @@ reload() {
   fi
 }
 
-# changedir and list
+# lazy conf
+function run { chmod +x "$@" && ./$1; }
+function mkcd { mkdir -p "$1" && cd "$1"; }
 cdl() { cd "$@" && ls -a;} 
 bak() { cp -p "$@" "$@.$(date +%Y%m%d)";}
 
@@ -86,10 +88,6 @@ home(){
 };
 
 
-# lazy conf
-function run { chmod +x "$@" && ./$1; }
-function mkcd { mkdir -p "$1" && cd "$1"; }
-#function cdl { cd "$1" && ls; }
 
 # New Journal entry
 jrnl() {
@@ -145,3 +143,4 @@ nbp() {
   tmux select-pane -U  
   tmux -2 attach-session -d 
 }
+

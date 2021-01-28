@@ -18,7 +18,7 @@ usage="Back up select dot files. \n\t+ 'g' flag pushes to git\n\t+ 'r' flag rest
 dotfiles=(".aliases" ".bashrc" ".inputrc" ".mutt/muttrc" \
           ".nanorc" ".netrc" ".newsboat/urls" ".newsboat/plugin/send-to-pocket.sh" ".profile" "$script" \
           ".secret_aliases" ".shell_functions" ".tmux.conf" \
-          ".vimrc" ".vim/local_functions.vim" ".wakatime.cfg" ".zshrc")
+          ".vimrc" ".vim/local_functions.vim" ".vim/templates" ".wakatime.cfg" ".zshrc")
 #---------------------------------------------------#
 
 timestamp() { 
@@ -30,6 +30,7 @@ backup() {
   log=$HOME$logs_dir/_$0_${FUNCNAME[0]}.log
   cd $HOME
   for dot in ${dotfiles[@]}; do
+    echo rclone copy $dot $frst_cld:$dots_dir 
     rclone copy $dot $frst_cld:$dots_dir 
   done
 }
