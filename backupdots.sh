@@ -40,7 +40,7 @@ git_commit() {
   if [[ `git status --porcelain` ]]; then
       git add .
       git commit -m "Update: $(timestamp)"
-      git push
+      #git push
   fi
 }
 
