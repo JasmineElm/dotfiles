@@ -53,14 +53,17 @@ restore() {
 
 prettify() {
   #prettify the repo rather than chuck everything in a flat dir...
-  cd $local_repo_dir'/'$dots_dir
-  pwd
-  mv $dots_dir'/backupdots.sh' .
-  mkdir -p $dots_dir'/.vim'
-  mkdir -p $dots_dir'/.newsboat/plugin'
-  mv $dots_dir'/local_functions.vim' $dots_dir'/.vim/local_functions.vim'
-  mv $dots_dir'/urls' $dots_dir'/.newsboat/'
-  mv $dots_dir'/send-to-pocket.sh' $dots_dir'/.newsboat/plugin/'
+  cd $local_repo_dir'/'$dots_dir'/'$dots_dir
+  mv backupdots.sh .
+  
+  mkdir -p .vim/templates/
+  mv local_functions.vim .vim/
+  mv *.skeleton .vim/templates/
+  
+  mkdir -p .newsboat/plugin
+  mv urls .newsboat/
+  mv send-to-pocket.sh .newsboat/plugin/
+
   for i in 'muttrc' '.netrc' '.secret_aliases' '*waka*' '*.swp'; do
     find -iname $i -delete
   done
@@ -79,7 +82,6 @@ elif [ -n $1 ]; then
       restore
       rsync -r $local_restore_dir $local_repo_dir'/'$dots_dir
       prettify
-      git_commit
       ;;
     "r") #restore
       restore      
