@@ -61,9 +61,9 @@ if [ -d /data/data/com.termux/files/usr/bin ]; then
 fi
 
 ### PYTHON
-#
-alias python='python3'
-alias pip='python3 -m pip'
+# Something has gone badly wrong if I'm trying to use Python 2...
+alias python='$(which python3)'
+alias pip='$(which python3) -m pip'
 
 ### OSX
 #
