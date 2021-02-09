@@ -113,7 +113,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-GITHUB_USERNAME=JasmineElm
 
 # local shell functions and aliases
 [[ ! -f ~/.shell_functions ]] || source ~/.shell_functions
@@ -125,8 +124,6 @@ export PS1="\e[01;34m\]\w \e[0m"
 
 ## Directories
 
-DRPBX_DIR=$HOME'/Dropbox/'
-SCRPT_DIR=$HOME'/Scripts/'
-REPO_DIR=$DRPBX_DIR'/git/'
-BLOG_DIR=$GIT_DIR'/JasmineElm.github.io/_posts/'
+bind '"\e[A": history-search-backward'
+bind '"\eOA": history-search-backward'
 

@@ -1,25 +1,38 @@
 # work out current shell
 current_shell() {
-  echo $(ps -hp $$|grep -o '[^/ ]*$')
+    ps -hp $$ | grep -o '[^/ ]*$'
 }
 
 #reload the correct ~/.*rc for our shell
 # termux reload if exists needs to go here...
 reload() {
-  cs=$(current_shell)
-  rc=$HOME/.$cs'rc'
-  echo "source $rc"
-  source $rc
-  # if in termux, reload that too for good measure
-  if termux-reload-settings -v &> /dev/null; then
-    termux-reload-settings
-  fi
+    cs=$(current_shell)
+    rc=$HOME/.$cs'rc'
+    echo "source $rc"
+    source "$rc"
+    # if in termux, reload that too for good measure
+    if termux-reload-settings -v &>/dev/null; then
+        termux-reload-settings
+    fi
 }
 
 # lazy conf
-function run { chmod +x "$@" && ./$1; }
-function mkcd { mkdir -p "$1" && cd "$1"; }
-cdl() { cd "$@" && ls -a;} 
+run() { 
+    if ! [[ -x "$1" ]]; then
+    chmod +x "$1"
+    fi
+    ./"$*"
+}
+mkcd() {
+    mkdir -p "$1"
+    cd "$1" || return 1
+}
+
+cdl() {
+    cd "$@" || return 1
+    ls -a
+}
+
 bak() { cp -p "$@" "$@.$(date +%Y%m%d)";}
 
 swsh() {
@@ -43,27 +56,35 @@ swsh() {
 #########################
 
 expand() {
-    if [[ -f $1 ]]; then
-        case $1 in
-          *.tar.bz2) tar xvjf $1;;
-          *.tar.gz) tar xvzf $1;;
-          *.tar.xz) tar xvJf $1;;
-          *.tar.lzma) tar --lzma xvf $1;;
-          *.bz2) bunzip $1;;
-          *.rar) unrar x $1;;
-          *.gz) gunzip $1;;
-          *.tar) tar xvf $1;;
-          *.tbz2) tar xvjf $1;;
-          *.tgz) tar xvzf $1;;
-          *.zip) unzip $1;;
-          *.Z) uncompress $1;;
-          *.7z) 7z x $1;;
-          *.dmg) hdiutul mount $1;; # mount OS X disk images
-          *) echo "'$1' cannot be extracted via >ex<";;
-    esac
+    if [[ -f "$1" ]]; then
+        case "$1" in
+        *.tar.bz2) tar xvjf "$1" ;;
+        *.tar.gz) tar xvzf "$1" ;;
+        *.tar.xz) tar xvJf "$1" ;;
+        *.tar.lzma) tar --lzma xvf "$1" ;;
+        *.bz2) bunzip "$1" ;;
+        *.rar) unrar x "$1" ;;
+        *.gz) gunzip "$1" ;;
+        *.tar) tar xvf "$1" ;;
+        *.tbz2) tar xvjf "$1" ;;
+        *.tgz) tar xvzf "$1" ;;
+        *.zip) unzip "$1" -d  "${1%.*}";;
+        *.Z) uncompress "$1" ;;
+        *.7z) 7z x "$1" ;;
+        *.dmg) hdiutul mount "$1" ;; # mount OS X disk images
+        *) echo "'$1' cannot be extracted via >ex<" ;;
+        esac
     else
         echo "'$1' is not a valid file"
     fi
+}
+
+## expand _AND DELETE_ everything in dir...
+expall() {
+    for i in $(ls | grep -E 'tar|\.bz2|\.tar.gz|\.tar|\.xz|\.tar|\.lzma|\.bz2|\.rar|\.gz|\.tar|\.tbz2|\.tgz|\.zip|\.Z|\.7z$');
+        do expand "$i"
+        rm -i "$i"
+    done
 }
 
 home(){ 

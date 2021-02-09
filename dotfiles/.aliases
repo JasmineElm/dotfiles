@@ -10,12 +10,8 @@ alias auua='sudo apt update && yes |sudo  apt upgrade && yes |sudo apt --purge a
 # ls
 #
 alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
-alias ll='ls -lhtr'
+alias ll='ls -1AqF'
 
-## see also expand() function in ~/.shell_functions
-#
-alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
-alias unrarall='for i in *.rar; do expand $i -d ${i%.*}; rm -i $i; done'
 
 alias hist='history | grep '
 alias dfh='df -h | grep /dev/sd | sort'
