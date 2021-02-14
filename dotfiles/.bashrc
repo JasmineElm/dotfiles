@@ -119,11 +119,29 @@ unset __conda_setup
 [[ ! -f ~/.aliases ]] || source ~/.aliases
 [[ ! -f ~/.secret_aliases ]] || source ~/.secret_aliases
 
-# ooh get you with your minimal prompt...
-export PS1="\e[01;34m\]\w \e[0m"
 
 ## Directories
 
 bind '"\e[A": history-search-backward'
 bind '"\eOA": history-search-backward'
 
+## this from https://coderwall.com/p/pn8f0g/show-your-git-status-and-branch-in-color-at-the-command-prompt
+
+COLOR_YELLOW="\033[0;33m"
+COLOR_GREEN="\033[0;32m"
+
+function git_color {
+  local git_status="$(git status 2> /dev/null)"
+  if [[ ${git_status} =~ "Changes to be committed" ]]; then
+    echo -e $COLOR_YELLOW
+  elif [[ ${git_status} =~ "working directory clean" ]]; then
+    echo -e $COLOR_GREEN
+  else
+    echo -e $COLOR_RED
+  fi
+}
+
+
+# ooh get you with your minimal prompt...
+PS1="\e[\$(git_color)\]\w \e[0m"
+export PS1
