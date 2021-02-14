@@ -12,6 +12,13 @@ alias auua='sudo apt update && yes |sudo  apt upgrade && yes |sudo apt --purge a
 alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
 alias ll='ls -1AqF'
 
+# Lazy movement
+#
+alias ..='cd ../ && pwd'
+alias ...='cd ../../ && pwd'
+alias ....='cd ../../../ && pwd'
+alias ....='cd ../../../../ && pwd'
+
 
 alias hist='history | grep '
 alias dfh='df -h | grep /dev/sd | sort'
