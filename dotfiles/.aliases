@@ -20,11 +20,11 @@ alias tailf='tail -f'
 # diff
 #
 alias vdiff='git diff'
-alias diff='diff --color=auto'
 
 # Colours please...
 #
 alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 
 ## YOUTUBE-DL Specific
 #
@@ -64,9 +64,3 @@ alias pip='$(which python3) -m pip'
 ### OSX
 #
 alias ._="find . -name '._*' -exec rm -v {} \; && find . -name '.DS_Store' -exec rm -v {} \;"
-alias unzipall='for i in *.zip; do unzip $i -d ${i%.*}; rm $i; done'
-
-
-### The Graveyard
-#
-alias playlist="find . -regex \".*\.\(mp3\|flac\|wav\|aiff\)\"  | shuf | cut -c 3- >> playlist.m3u"
