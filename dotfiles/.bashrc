@@ -128,14 +128,8 @@ bind '"\eOA": history-search-backward'
 ## this from https://coderwall.com/p/pn8f0g/show-your-git-status-and-branch-in-color-at-the-command-prompt
 
 
-COLOR_YELLOW="01;33m"
-COLOR_GREEN="01;32m"
-COLOR_RED="01;31m"
-COLOR_WHITE="01;39m"
-
-
-# ooh get you with your minimal prompt...
-# PS1="\e[\$(_git_prompt)\]\w \e[0m"
-PS1="\e[\$COLOR_WHITE\]\W\e[\$(git_color)\] > \e[0m"
-export PS1
+# just display $BASEDIR..
+PS1="\[\e[\$COLOR_WHITE\]\W "
+#coloured chevron if we're in a git repo...
+PS1+="\[\e[\$(git_color)\e[0m\]"
 
