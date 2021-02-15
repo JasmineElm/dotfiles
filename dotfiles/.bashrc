@@ -127,22 +127,15 @@ bind '"\eOA": history-search-backward'
 
 ## this from https://coderwall.com/p/pn8f0g/show-your-git-status-and-branch-in-color-at-the-command-prompt
 
+
 COLOR_YELLOW="01;33m"
 COLOR_GREEN="01;32m"
 COLOR_RED="01;31m"
 COLOR_WHITE="01;39m"
-function git_color {
-  local git_status="$(git status 2> /dev/null)"
-  if [[ ${git_status} =~ "Changes to be committed" ]] || [[ ${git_status} =~ "Changes not staged" ]]; then
-    echo -e $COLOR_YELLOW
-  elif [[ ${git_status} =~ "working tree clean" ]]; then
-    echo -e $COLOR_GREEN
-  else
-    echo -e $COLOR_WHITE
-  fi
-}
 
 
 # ooh get you with your minimal prompt...
-PS1="\e[\$(git_color)\]\w \e[0m"
+# PS1="\e[\$(_git_prompt)\]\w \e[0m"
+PS1="\e[\$COLOR_WHITE\]\W\e[\$(git_color)\] > \e[0m"
 export PS1
+

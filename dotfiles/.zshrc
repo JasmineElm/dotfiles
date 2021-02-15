@@ -1,6 +1,6 @@
 ### POWERLEVEL 10K STARTS:
 #
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -29,15 +29,4 @@ EDITOR="vi"
 # add date to `history`
 export HISTTIMEFORMAT="%m/%d - %H:%M:%S: "
 
-
-GITHUB_USERNAME=JasmineElm
-
-
-# Directories
-#
-export STUDY_DIR=$HOME/Dropbox/msc_computing
-export DRPBX_DIR=$HOME'/Dropbox/'
-export SCRPT_DIR=$HOME'/Scripts/'
-export REPO_DIR=$DRPBX_DIR'/git/'
-export BLOG_DIR=$REPO_DIR'/JasmineElm.github.io/_posts/'
 
