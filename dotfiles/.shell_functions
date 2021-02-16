@@ -165,7 +165,7 @@ nbp() {
   tmux -2 attach-session -d 
 }
 
-# Coloured prompt for git directories
+# Coloured traffic light prompt for git directories
 COLOR_YELLOW="01;33m"
 COLOR_GREEN="01;32m"
 COLOR_RED="01;31m"
@@ -175,11 +175,11 @@ function git_color {
   local git_status="$(git status 2> /dev/null)"
   if [[ ${git_status} =~ "Changes to be committed" ]] || [[
  ${git_status} =~ "Changes not staged" ]]; then
-    printf "$COLOR_YELLOW⬤  "
+    printf "$COLOR_YELLOW⬤ "
   elif [[ ${git_status} =~ "working tree clean" ]]; then
-    printf "$COLOR_GREEN⬤  "
+    printf "$COLOR_GREEN⬤ "
   elif [[ ${git_status} =~ "but untracked files present" ]]; then
-    printf "$COLOR_RED⬤  "
+    printf "$COLOR_RED⬤ "
   else
     printf "$COLOR_WHITE> "
   fi
