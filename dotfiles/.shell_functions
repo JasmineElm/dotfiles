@@ -181,6 +181,6 @@ function git_color {
   elif [[ ${git_status} =~ "but untracked files present" ]]; then
     printf "$COLOR_RED⬤ "
   else
-    printf "$COLOR_WHITE> "
+    printf "$COLOR_WHITE❯ "
   fi
 }
