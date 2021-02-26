@@ -14,14 +14,11 @@ _repo="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 cd "$_repo" || exit 1
 
-<<<<<<< HEAD
-=======
 _restore() {
     # USE WITH CAUTION..!
     cd "$_dot" || exit 1
     cp -ri ./* "$HOME"
 }
->>>>>>> 5b36a1eefafab01c37449ad5b64ee16fdf37e0ce
 
 _create() {
   mkdir -p $_dot
