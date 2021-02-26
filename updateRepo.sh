@@ -14,11 +14,6 @@ _repo="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 cd "$_repo"
 
-_restore() {
-    # USE WITH CAUTION..!
-    cd "$_dot"
-    cp -ri * $HOME
-}
 
 _create() {
   mkdir -p $_dot
@@ -42,6 +37,11 @@ _update() {
   git add .
 }
 
+_restore() {
+    # USE WITH CAUTION..!
+    cd "$_dot"
+    cp -ri .* $HOME
+}
 ######  MAIN         ###########################################  
 
 _main() {

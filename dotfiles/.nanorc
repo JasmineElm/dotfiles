@@ -7,9 +7,6 @@ set autoindent
 # Backup files to filename~
 set backup
 
-# Use cut to end of line with ^K by default
-set cut
-
 # Enable ~/.nano_history for saving and reading search/replace strings.
 # set historylog
 
