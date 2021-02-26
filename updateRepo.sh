@@ -12,8 +12,16 @@ _repo="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ######  FUNCTIONS    ###########################################
 
-cd "$_repo"
+cd "$_repo" || exit 1
 
+<<<<<<< HEAD
+=======
+_restore() {
+    # USE WITH CAUTION..!
+    cd "$_dot" || exit 1
+    cp -ri ./* "$HOME"
+}
+>>>>>>> 5b36a1eefafab01c37449ad5b64ee16fdf37e0ce
 
 _create() {
   mkdir -p $_dot
@@ -22,7 +30,10 @@ _create() {
 }
 
 _update() {
-  for dot in ".aliases" ".bashrc" ".gitconfig" ".inputrc" ".nanorc" ".profile" ".shell_functions" ".tmux.conf" ".vimrc" ".zshrc" ; do
+  for dot in  ".aliases" ".bashrc" ".gitconfig" \
+              ".inputrc" ".nanorc" ".profile" \
+              ".shell_functions" ".tmux.conf" \
+              ".vimrc" ".zshrc" ; do
     cp "$HOME"/"$dot" $_dot     
     done     
 
@@ -35,6 +46,7 @@ _update() {
   cp "$HOME"/.newsboat/urls $_nwm
 
   git add .
+  git status
 }
 
 _restore() {
