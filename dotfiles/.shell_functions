@@ -1,7 +1,6 @@
-#!/bin/bash
 # work out current shell
 current_shell() {
-    ps -hp $$ | grep -o '[^/ ]*$'
+    ps $$ | grep -o '[^/ ]*$'
 }
 
 #reload the correct ~/.*rc for our shell
@@ -45,8 +44,8 @@ swsh() {
   if [ -f "/bin/$1" ]; then
     cs=$(current_shell)
     if [ "$cs" != "$1" ]; then
-      echo "changing shell: "$cs" -> " $1
-      exec $1
+      echo "changing shell: $cs -> $1"
+      exec "$1"
       reload
   else
     echo "Nothing to do.  Perhaps you need to _reload_?"  
@@ -95,7 +94,7 @@ home(){
   if [ -z "$TMUX" ]; then
     if ! tmux has-session -t HOME 2> /dev/null; then
       # build home window
-      tmux new-session -d -s HOME -n home -x $(tput cols) -y $(tput lines)
+      tmux new-session -d -s HOME -n home -x "$(tput cols)" -y "$(tput lines)"
       tmux set-window-option -t HOME:home automatic-rename off
       
       tmux split-window -t HOME:home -h -p 50 -c ~/
@@ -120,11 +119,11 @@ jrnl() {
   JOURNAL_DIR=Journal                           # the path (local and cloud)
   JOURNAL_PATH=$HOME/Documents/$JOURNAL_DIR/    # local journal path
   ENTRY_DIR=$(date +%Y/%B)                      # journal split into directory per MM/YY
-  mkdir -p $JOURNAL_PATH$ENTRY_DIR
+  mkdir -p "$JOURNAL_PATH$ENTRY_DIR"
   # each year gets a dir, each month a subdir
-  cd $JOURNAL_PATH$ENTRY_DIR || exit 1
+  cd "$JOURNAL_PATH$ENTRY_DIR "|| exit 1
   vi "$(date +%d-%m-%y).md"
-  rclone copy $JOURNAL_PATH $CLOUD:$JOURNAL_DIR
+  rclone copy "$JOURNAL_PATH" "$CLOUD:$JOURNAL_DIR"
 }
 
 # New Zettle card
@@ -132,10 +131,10 @@ nz() {
   ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/
   DATE_STR=$(date +"%Y%m%d%H%M")
   TITLE=$*
-  CLEAN_TITLE=$(echo $* | sed 's/ /_/g'| tr '[:upper:]' '[:lower:]')
+  CLEAN_TITLE=$(echo "$*" | sed 's/ /_/g'| tr '[:upper:]' '[:lower:]')
   ZETTLE=$ZETTLE_DIR$DATE_STR'-'$CLEAN_TITLE.md
-  echo '# '$TITLE > $ZETTLE
-  vi $ZETTLE
+  echo "# $TITLE" > "$ZETTLE"
+  vi "$ZETTLE"
 }
 
 
@@ -143,22 +142,22 @@ nz() {
 #
 jekserve() {
   xdg-open http://127.0.0.1:4000/ &
-  cd $BLOG_DIR../ || exit 1
+  cd "$BLOG_DIR"../ || exit 1
   bundle exec jekyll serve
 }
 
 
 create_post() {
-  cd $BLOG_DIR  || exit 1
+  cd "$BLOG_DIR"  || exit 1
   title="$*";  dte="$(date +%Y-%m-%d)";  tme="$(date +%T)"
-  safe_title=$(echo $title |sed 's/ /_/g'|  tr '[:upper:]' '[:lower:]')
-  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " $dte $tme "\ncategories: writing\nsynopsis: "change me"\n---">> $dte-$safe_title.md
-  vi $dte-$safe_title.md
+  safe_title=$(echo "$title" |sed 's/ /_/g'|  tr '[:upper:]' '[:lower:]')
+  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---">> "$dte-$safe_title.md"
+  vi "$dte-$safe_title.md"
 }
 
 nbp() {
   post_title=$*
-  echo $post_title
+  echo "$post_title"
   tmux new-session -d 
   tmux split-window -v 
   tmux resize-pane -D 10
@@ -174,17 +173,18 @@ COLOR_YELLOW="01;33m"
 COLOR_GREEN="01;32m"
 COLOR_RED="01;31m"
 COLOR_WHITE="01;39m"
-
+#!/bin/bash
 function git_color {
-  local git_status="$(git status 2> /dev/null)"
+  local git_status
+  git_status="$(git status 2> /dev/null)"
   if [[ ${git_status} =~ "Changes to be committed" ]] || [[
  ${git_status} =~ "Changes not staged" ]]; then
-    printf "$COLOR_YELLOW⬤ "
+    printf "%s$COLOR_YELLOW⬤ "
   elif [[ ${git_status} =~ "working tree clean" ]]; then
-    printf "$COLOR_GREEN⬤ "
+    printf "%s$COLOR_GREEN⬤ "
   elif [[ ${git_status} =~ "but untracked files present" ]]; then
-    printf "$COLOR_RED⬤ "
+    printf "%s$COLOR_RED⬤ "
   else
-    printf "$COLOR_WHITE❯ "
+    printf "%s$COLOR_WHITE❯ "
   fi
 }
