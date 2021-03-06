@@ -1,6 +1,6 @@
 # work out current shell
 current_shell() {
-    ps $$ | grep -o '[^/ ]*$'
+    ps -hp $$ | grep -o '[^/ ]*$'
 }
 
 #reload the correct ~/.*rc for our shell
@@ -121,7 +121,7 @@ jrnl() {
   ENTRY_DIR=$(date +%Y/%B)                      # journal split into directory per MM/YY
   mkdir -p "$JOURNAL_PATH$ENTRY_DIR"
   # each year gets a dir, each month a subdir
-  cd "$JOURNAL_PATH$ENTRY_DIR "|| exit 1
+  cd "$JOURNAL_PATH$ENTRY_DIR"
   vi "$(date +%d-%m-%y).md"
   rclone copy "$JOURNAL_PATH" "$CLOUD:$JOURNAL_DIR"
 }
