@@ -91,7 +91,28 @@ let g:limelight_conceal_ctermfg     = 'gray'
 let g:limelight_conceal_guifg       = 'DarkGray'
 let g:limelight_default_coefficient = 0.8
 map <leader>w :Limelight<CR>
-	
+
+" WORDY settings
+"
+let g:wordy#ring = [
+  \ 'weak',
+  \ ['being', 'passive-voice', ],
+  \ 'business-jargon',
+  \ 'weasel',
+  \ 'puffery',
+  \ ['problematic', 'redundant', ],
+  \ ['colloquial', 'idiomatic', 'similies', ],
+  \ 'art-jargon',
+  \ ['contractions', 'opinion', 'vague-time', 'said-synonyms', ],
+  \ 'adjectives',
+  \ 'adverbs',
+  \ ]
+
+noremap <silent> <F6> :<C-u>NextWordy<cr>
+xnoremap <silent> <F6> :<C-u>NextWordy<cr>
+inoremap <silent> <F6> <C-o>:NextWordy<cr>
+
+
 " turn-on distraction free writing mode for markdown files
 au BufNewFile,BufRead *.{md,mdown,mkd,mkdn,markdown,mdwn} call DistractionFreeWriting()
 
