@@ -111,6 +111,7 @@ let g:zettelkasten = "~/Dropbox/Zettelkasten/"
 command! -nargs=1 NewZettel :execute ":e" zettelkasten . strftime("%Y%m%d%H%M") . "-<args>.md" | execute put <args>
 nnoremap <leader>nz :NewZettel 
 
+"autocmd VimEnter */Zettelkasten/**   0r ~/.vim/templates/zettelkasten.skeleton
 
 
 " CtrlP function for inserting a markdown link with Ctrl-X

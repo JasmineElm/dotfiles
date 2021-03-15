@@ -126,6 +126,7 @@ jrnl() {
   rclone copy "$JOURNAL_PATH" "$CLOUD:$JOURNAL_DIR"
 }
 
+
 # New Zettle card
 nz() {
   ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/
@@ -133,10 +134,42 @@ nz() {
   TITLE=$*
   CLEAN_TITLE=$(echo "$*" | sed 's/ /_/g'| tr '[:upper:]' '[:lower:]')
   ZETTLE=$ZETTLE_DIR$DATE_STR'-'$CLEAN_TITLE.md
-  echo "# $TITLE" > "$ZETTLE"
+  echo "---"              > "$ZETTLE"
+  echo "title: $TITLE"   >> "$ZETTLE"
+  echo "date: $(date)"   >> "$ZETTLE"
+  echo "aliases: "       >> "$ZETTLE"
+  echo "tags: "          >> "$ZETTLE"
+  echo "date updated: "  >> "$ZETTLE"
+  echo "---"             >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "# $TITLE"        >> "$ZETTLE"
   vi "$ZETTLE"
 }
 
+# New Daily Zettle card
+dz() {
+  ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/daily/
+  DATE=$(date +"%Y-%m-%d")
+  ZETTLE=$ZETTLE_DIR$DATE_STR.md
+  echo "---"              > "$ZETTLE"
+  echo "date: $(date)"   >> "$ZETTLE"
+  echo "aliases: "       >> "$ZETTLE"
+  echo "tags: #daily"    >> "$ZETTLE"
+  echo "---"             >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "# $DATE"         >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "![[../🎯 Active Goals]]"  >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "![[../Morning_Pages/$DATE]]"  >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "## TODO:"        >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  echo "- [] A sample:"  >> "$ZETTLE"
+  echo "- [] A sample:"  >> "$ZETTLE"
+  echo ""                >> "$ZETTLE"
+  vi "$ZETTLE"
+}
 
 # New Blog post
 #
