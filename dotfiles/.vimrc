@@ -123,8 +123,6 @@ noremap <silent> <F6> :<C-u>NextWordy<cr>
 xnoremap <silent> <F6> :<C-u>NextWordy<cr>
 inoremap <silent> <F6> <C-o>:NextWordy<cr>
 
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                 VIM-PLUG
 if has('unix')
@@ -146,6 +144,8 @@ Plug 'reedes/vim-litecorrect'           " Better autocorrections
 Plug 'reedes/vim-wordy'                 " Weasel words and passive voice
 Plug 'tpope/vim-fireplace'              " For Wakatime...
 Plug 'vim-pandoc/vim-markdownfootnotes' " proper footnotes using \f \r
+Plug 'morhetz/gruvbox'                  " a pretty theme... 
+Plug 'wakatime/vim-wakatime'            " quantify...
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -154,3 +154,6 @@ call plug#end()
 
 command! -nargs=1 NewZettel :execute ":e" zettelkasten . strftime("%Y%m%d%H%M") . "-<args>.md"
 nnoremap <leader>nz :NewZettel
+
+" colourscheme mow it's loaded...
+colo gruvbox

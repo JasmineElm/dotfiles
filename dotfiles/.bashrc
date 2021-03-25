@@ -66,4 +66,4 @@ bind '"\eOA": history-search-backward'
 # just display $BASEDIR..
 PS1="\[\e[\$COLOR_WHITE\]\W "
 #coloured chevron if we're in a git repo...
-PS1+="\[\e[\$(git_color)\e[0m\]"
+ PS1+="\e\[\e[\$(git_color)\e[0m\]"

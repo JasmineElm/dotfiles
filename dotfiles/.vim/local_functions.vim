@@ -17,13 +17,13 @@ augroup journal
     autocmd!
 
 " populate journal template
-autocmd VimEnter */Journal/**   0r ~/.vim/templates/journal.skeleton
+" autocmd VimEnter */Journal/**   0r ~/.vim/templates/journal.skeleton
 
 " set header for the particular journal
-autocmd VimEnter */Journal/**   :call JournalMode()
+" autocmd VimEnter */Journal/**   :call JournalMode()
 
 " https://stackoverflow.com/questions/12094708/include-a-directory-recursively-for-vim-autocompletion
-autocmd VimEnter */Journal/**   set complete=k~/Documents/Journal/**/*
+" autocmd VimEnter */Journal/**   set complete=k~/Documents/Journal/**/*
  
 
 "==========================================================

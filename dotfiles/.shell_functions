@@ -115,15 +115,16 @@ home(){
 
 # New Journal entry
 jrnl() {
-  CLOUD=dropbox                                 # our cloud service
-  JOURNAL_DIR=Journal                           # the path (local and cloud)
-  JOURNAL_PATH=$HOME/Documents/$JOURNAL_DIR/    # local journal path
-  ENTRY_DIR=$(date +%Y/%B)                      # journal split into directory per MM/YY
-  mkdir -p "$JOURNAL_PATH$ENTRY_DIR"
-  # each year gets a dir, each month a subdir
-  cd "$JOURNAL_PATH$ENTRY_DIR"
-  vi "$(date +%d-%m-%y).md"
-  rclone copy "$JOURNAL_PATH" "$CLOUD:$JOURNAL_DIR"
+  JOURNAL_DIR=$HOME/Dropbox/Zettelkasten/Journal/ 
+  ENTRY_DIR=$JOURNAL_DIR/$(date +%Y/%B) 
+  mkdir -p "$ENTRY_DIR"
+  TITLE="$(date +%d-%m-%y)"
+  ENTRY="$ENTRY_DIR/$TITLE.md"
+  echo    "## $TITLE"                   > $ENTRY
+  echo -e "\n### What Happened\n"       >>$ENTRY 
+  echo -e "\n### What Went Well\n"      >>$ENTRY 
+  echo -e "\n### What Didn't Go Well\n" >>$ENTRY 
+  vi $ENTRY
 }
 
 
@@ -148,9 +149,12 @@ nz() {
 
 # New Daily Zettle card
 dz() {
-  ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/daily/
-  DATE=$(date +"%Y-%m-%d")
-  ZETTLE=$ZETTLE_DIR$DATE_STR.md
+  ZETTEL_PATH="$HOME/Dropbox/Zettelkasten/"
+  JOURNAL_DIR="Journal/$(date +%Y/%B)/"
+  ZETTEL_DIR=$ZETTEL_PATH$JOURNAL_DIR
+  mkdir -p "$ZETTEL_DIR"
+  DATE="$(date +%d-%m-%y)"
+  ZETTLE=$ZETTEL_DIR/$DATE.daily.md
   echo "---"              > "$ZETTLE"
   echo "date: $(date)"   >> "$ZETTLE"
   echo "aliases: "       >> "$ZETTLE"
@@ -159,9 +163,9 @@ dz() {
   echo ""                >> "$ZETTLE"
   echo "# $DATE"         >> "$ZETTLE"
   echo ""                >> "$ZETTLE"
-  echo "![[../🎯 Active Goals]]"  >> "$ZETTLE"
+  echo "![[🎯 Active Goals]]"  >> "$ZETTLE"
   echo ""                >> "$ZETTLE"
-  echo "![[../Morning_Pages/$DATE]]"  >> "$ZETTLE"
+  echo "![[$JOURNAL_DIR$DATE.mp]]" >> "$ZETTLE"
   echo ""                >> "$ZETTLE"
   echo "## TODO:"        >> "$ZETTLE"
   echo ""                >> "$ZETTLE"
