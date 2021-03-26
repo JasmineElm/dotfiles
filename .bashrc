@@ -4,6 +4,8 @@ case $- in
       *) return;;
 esac
 
+PATH=$PATH:~/.local/bin
+
 # HISTORY
 HISTSIZE=1000
 HISTFILESIZE=2000
