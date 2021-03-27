@@ -180,7 +180,7 @@ dz() {
 jekserve() {
   xdg-open http://127.0.0.1:4000/ &
   cd "$BLOG_DIR"../ || exit 1
-  bundle exec jekyll serve
+  bundle exec jekyll serve --livereload
 }
 
 

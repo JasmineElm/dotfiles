@@ -4,7 +4,6 @@ case $- in
       *) return;;
 esac
 
-PATH=$PATH:~/.local/bin
 
 # HISTORY
 HISTSIZE=1000
@@ -69,3 +68,7 @@ bind '"\eOA": history-search-backward'
 PS1="\[\e[\$COLOR_WHITE\]\W\e"
 #coloured chevron if we're in a git repo...
  PS1+="\e\[\e[\$(git_color)\e[0m\]"
+
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
