@@ -1,4 +1,34 @@
-include /usr/share/doc/newsboat/contrib/colorschemes/inkpot
+color background        white   black
+color listnormal        white   black  dim
+color listfocus         black   green  bold
+color listnormal_unread white   black  
+color listfocus_unread  black   green  bold
+color article		        white   black
+color info		          black	  blue   bold
+
+article-sort-order date
+reload-time 60
 auto-reload yes
 reload-threads 100
+delete-read-articles-on-quit yes # get rid of stuff I've read
+cleanup-on-quit yes
+cookie-cache ~/.newsboat/cookies
+download-full-page no
+download-retries 2
+error-log ~/.newsboat/errors
+goto-first-unread yes
+goto-next-feed yes
+keep-articles-days 14
+max-items 30
+save-path ~/.newsboat/saved_articles
+show-read-feeds no
 
+### BOOKMARKING
+bookmark-autopilot yes
+bookmark-cmd "~/.newsboat/plugin/send-to-pocket.sh > ~/.newsboat/plugin/send_to_pocket_log 2>&1"
+bookmark-interactive no
+
+### PODCASTS
+download-path "~/Music/Podcasts"
+max-downloads 3
+player "cmus"
