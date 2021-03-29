@@ -47,6 +47,14 @@ alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +
 # External downloader can be less performant: this ignores it
 alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i '
 
+
+# sys Info
+alias who='w -f'
+alias free='free -g'
+alias nwk='lsof -P -i -n' # what processes are using network
+
+
+
 # opening and closing stuff...
 alias open='xdg-open'
 alias :q='exit'
