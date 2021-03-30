@@ -96,10 +96,8 @@ home(){
       # build home window
       tmux new-session -d -s HOME -n home -x "$(tput cols)" -y "$(tput lines)"
       tmux set-window-option -t HOME:home automatic-rename off
-      
       tmux split-window -t HOME:home -h -p 50 -c ~/
       tmux split-window -t HOME:home -v -p 20 -c ~/
-      
       tmux send-keys -t HOME:home 'mutt' Enter
       tmux send-keys -t HOME:home.1 'newsboat' Enter
       tmux send-keys -t HOME:home.2 'top' Enter
@@ -111,70 +109,6 @@ home(){
   fi
 };
 
-
-
-# New Journal entry
-jrnl() {
-  JOURNAL_DIR=$HOME/Dropbox/Zettelkasten/Journal/ 
-  ENTRY_DIR=$JOURNAL_DIR/$(date +%Y/%B) 
-  mkdir -p "$ENTRY_DIR"
-  TITLE="$(date +%d-%m-%y)"
-  ENTRY="$ENTRY_DIR/$TITLE.md"
-  echo    "## $TITLE"                   > $ENTRY
-  echo -e "\n### What Happened\n"       >>$ENTRY 
-  echo -e "\n### What Went Well\n"      >>$ENTRY 
-  echo -e "\n### What Didn't Go Well\n" >>$ENTRY 
-  vi $ENTRY
-}
-
-
-# New Zettle card
-nz() {
-  ZETTLE_DIR=$HOME/Dropbox/Zettelkasten/
-  DATE_STR=$(date +"%Y%m%d%H%M")
-  TITLE=$*
-  CLEAN_TITLE=$(echo "$*" | sed 's/ /_/g'| tr '[:upper:]' '[:lower:]')
-  ZETTLE=$ZETTLE_DIR$DATE_STR'-'$CLEAN_TITLE.md
-  echo "---"              > "$ZETTLE"
-  echo "title: $TITLE"   >> "$ZETTLE"
-  echo "date: $(date)"   >> "$ZETTLE"
-  echo "aliases: "       >> "$ZETTLE"
-  echo "tags: "          >> "$ZETTLE"
-  echo "date updated: "  >> "$ZETTLE"
-  echo "---"             >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "# $TITLE"        >> "$ZETTLE"
-  vi "$ZETTLE"
-}
-
-# New Daily Zettle card
-dz() {
-  ZETTEL_PATH="$HOME/Dropbox/Zettelkasten/"
-  JOURNAL_DIR="Journal/$(date +%Y/%B)/"
-  ZETTEL_DIR=$ZETTEL_PATH$JOURNAL_DIR
-  mkdir -p "$ZETTEL_DIR"
-  DATE="$(date +%d-%m-%y)"
-  ZETTLE=$ZETTEL_DIR/$DATE.daily.md
-  echo "---"              > "$ZETTLE"
-  echo "date: $(date)"   >> "$ZETTLE"
-  echo "aliases: "       >> "$ZETTLE"
-  echo "tags: #daily"    >> "$ZETTLE"
-  echo "---"             >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "# $DATE"         >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "![[🎯 Active Goals]]"  >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "![[$JOURNAL_DIR$DATE.mp]]" >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "## TODO:"        >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  echo "- [] A sample:"  >> "$ZETTLE"
-  echo "- [] A sample:"  >> "$ZETTLE"
-  echo ""                >> "$ZETTLE"
-  vi "$ZETTLE"
-}
-
 # New Blog post
 #
 jekserve() {
@@ -182,7 +116,6 @@ jekserve() {
   cd "$BLOG_DIR"../ || exit 1
   bundle exec jekyll serve --livereload
 }
-
 
 create_post() {
   cd "$BLOG_DIR"  || exit 1
@@ -203,27 +136,6 @@ nbp() {
   tmux send -t 0:0.0 "create_post $post_title" C-m
   tmux select-pane -U  
   tmux -2 attach-session -d 
-}
-
-# Coloured traffic light prompt for git directories
-COLOR_YELLOW="01;33m"
-COLOR_GREEN="01;32m"
-COLOR_RED="01;31m"
-COLOR_WHITE="01;39m"
-
-function git_color {
-  local git_status
-  git_status="$(git status 2> /dev/null)"
-  if [[ ${git_status} =~ "Changes to be committed" ]] || [[
- ${git_status} =~ "Changes not staged" ]]; then
-    printf "%s$COLOR_YELLOW ⬤ "
-  elif [[ ${git_status} =~ "working tree clean" ]]; then
-    printf "%s$COLOR_GREEN ⬤ "
-  elif [[ ${git_status} =~ "but untracked files present" ]]; then
-    printf "%s$COLOR_RED ⬤ "
-  else
-    printf "%s$COLOR_WHITE ❯ "
-  fi
 }
 
 function _colours {
