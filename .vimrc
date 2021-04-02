@@ -66,12 +66,14 @@ map <silent> <F8> :call ToggleVExplorer()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                               VIM-PANDOC
-let g:pandoc#completion#bib#mode 	      = 'citeproc'
-let g:pandoc#biblio#sources 		        = "ybcg"
-let g:pandoc#formatting#textwidth       = 80
-let g:pandoc#formatting#mode 		        = "hA"
-let g:pandoc#folding#level 		          = 2
-let g:pandoc#folding#fdc		            = 0
+let g:pandoc#completion#bib#mode    = 'citeproc'
+let g:pandoc#biblio#sources 		    = "ybcg"
+let g:pandoc#formatting#textwidth   = 80
+let g:pandoc#formatting#mode 		    = "hA"
+let g:pandoc#folding#level 		      = 2
+let g:pandoc#folding#fdc		        = 0
+let g:pandoc_auto_format            = 1
+let g:pandoc_use_bibtool            = 1
 
 " if a build script exists at this level call it using F8
 " see: https://github.com/JasmineElm/reports
@@ -90,7 +92,7 @@ noremap <silent> <F8> :! ./build -p<cr>
 "                                                LIMELIGHT
 let g:limelight_conceal_ctermfg     = 'gray'
 let g:limelight_conceal_guifg       = 'DarkGray'
-let g:limelight_default_coefficient = 0.8
+let g:limelight_default_coefficient = 0.3
 map <leader>w :Limelight<CR>
 
 " turn-on distraction free writing mode for markdown files
