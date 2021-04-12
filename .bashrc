@@ -97,3 +97,7 @@ PS1="\W ▶ "
 # PS1="\[\e[01;39m\W \]"
 #coloured chevron if we're in a git repo...
 # PS1+="\[\e[\$(git_color)\]\[\e[0m\]"
+
+export MANPAGER="vim -M +MANPAGER -"
+eval "$(pandoc --bash-completion)"
+
