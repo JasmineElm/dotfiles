@@ -159,3 +159,5 @@ nnoremap <leader>nz :NewZettel
 
 " colourscheme mow it's loaded...
 colo gruvbox
+" explicitly set it to dark 
+set bg=dark
