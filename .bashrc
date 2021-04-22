@@ -100,4 +100,3 @@ PS1="\W ▶ "
 
 export MANPAGER="vim -M +MANPAGER -"
 eval "$(pandoc --bash-completion)"
-

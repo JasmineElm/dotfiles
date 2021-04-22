@@ -158,4 +158,26 @@ nam() {
   opt=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
   $1 --help | grep -Ew -- "^  -(${opt})"
 }
+    
+zipit() {
+  # produce a passworded 7z from a given file
+  # sudo apt install p7zip-full if it grumbles about 7z
+  pass=$(_make_pass)
+  infile=$1
+  outfile="${infile%.*}.7z"
+  7z a -p"$pass" "$outfile" "$infile"
+  echo "Password = $pass"
+}
 
+function _make_pass {
+    function _random_word {
+        # `sudo apt install wbritish` if this file doesn't exist
+        shuf -n 1 /usr/share/dict/words
+    }
+    word=""
+    for i in {1..3}; do
+        word="$word$(_random_word)-"
+    done
+    echo "${word%?}"
+}
+    
