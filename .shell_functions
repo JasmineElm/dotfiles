@@ -1,20 +1,47 @@
-# work out current shell
+#! /bin/bash
+
 current_shell() {
     ps -hp $$ | grep -o '[^/ ]*$'
 }
 
-#reload the correct ~/.*rc for our shell
-# termux reload if exists needs to go here...
+## architecture specific stuff... 
+#
+
+function _droid_settings {
+  termux-reload-settings
+}
+
+function _wsl_settings { true; }
+
+function _osx_settings { true; }
+
+
+function _which_arch {
+    ## figure out what architecture we're running in
+    #  run any specific scripts
+    
+    if   [ "$(uname -a | grep -c Android)" -eq 1 ]
+      then _droid_settings
+    fi
+    if [ "$(uname -a | grep -c Microsoft)" -eq 1 ]
+      then _wsl_settings
+    fi
+    if [ "$(uname -a | grep -c Darwin)" -eq 1 ]
+      then _osx_settings
+    fi
+
+}
+
 reload() {
     cs=$(current_shell)
     rc=$HOME/.$cs'rc'
     echo "source $rc"
     source "$rc"
-    # if in termux, reload that too for good measure
-    if termux-reload-settings -v &>/dev/null; then
-        termux-reload-settings
-    fi
+    # "$(_which_arch)"
+
 }
+
+
 
 # lazy conf
 run() { 
@@ -38,14 +65,21 @@ orig() { cp -p "$*"{,.ORIG}; }
 bak() { cp -p "$*"{,.BAK}; }
 dbak() { cp -p "$*"{,."$(date +%Y%m%d)"};}
 
+function available_shells {
+  tail -n +2 /etc/shells | sed 's:.*/::' | sort -u
+}
+
+is_shell() {
+  echo "$(available_shells)" | grep -c "$1"
+}
+
 swsh() {
-  #  if new shell exists, swap to it
-  #  should really used a better command...
-  if [ -f "/bin/$1" ]; then
+  if [ "$(is_shell "$1")" -eq 1 ]; then
     cs=$(current_shell)
     if [ "$cs" != "$1" ]; then
       echo "changing shell: $cs -> $1"
       exec "$1"
+
       reload
   else
     echo "Nothing to do.  Perhaps you need to _reload_?"  
@@ -54,6 +88,19 @@ swsh() {
     echo "ummm, can't find that shell..."
   fi
 }
+
+function _make_pass {
+    function _random_word {
+        # `sudo apt install wbritish` if this file doesn't exist
+        shuf -n 1 /usr/share/dict/words
+    }
+    word=""
+    for i in {1..3}; do
+        word="$word$(_random_word)-"
+    done
+    echo "${word%?}"
+}
+
 #########################
 # Decompression Chamber #
 #########################
@@ -88,6 +135,16 @@ expall() {
         do expand "$i"
         rm -i "$i"
     done
+}
+
+zipit() {
+  # produce a passworded 7z from a given file
+  # sudo apt install p7zip-full if it grumbles about 7z
+  pass=$(_make_pass)
+  infile=$1
+  outfile="${infile%.*}.7z"
+  7z a -p"$pass" "$outfile" "$infile"
+  echo "Password = $pass"
 }
 
 home(){ 
@@ -140,7 +197,7 @@ nbp() {
 
 function _colours {
   printf "          "
-  for b in 0 1 2 3 4 5 6 7; do printf "  4${b}m "; done
+  for b in 0 1 2 3 4 5 6 7; do printf "%s  4${b}m "; done
   echo
   for f in "" 30 31 32 33 34 35 36 37; do
       for s in "" "1;"; do
@@ -159,25 +216,5 @@ nam() {
   $1 --help | grep -Ew -- "^  -(${opt})"
 }
     
-zipit() {
-  # produce a passworded 7z from a given file
-  # sudo apt install p7zip-full if it grumbles about 7z
-  pass=$(_make_pass)
-  infile=$1
-  outfile="${infile%.*}.7z"
-  7z a -p"$pass" "$outfile" "$infile"
-  echo "Password = $pass"
-}
 
-function _make_pass {
-    function _random_word {
-        # `sudo apt install wbritish` if this file doesn't exist
-        shuf -n 1 /usr/share/dict/words
-    }
-    word=""
-    for i in {1..3}; do
-        word="$word$(_random_word)-"
-    done
-    echo "${word%?}"
-}
     
