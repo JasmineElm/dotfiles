@@ -212,8 +212,14 @@ function _colours {
 }
 
 usage() {
-  opt=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
-  $1 --help | grep -Ew -- "^  -(${opt})"
+  ## avoid man pages to find simple switches
+  opt_filter=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
+  opts=$($1 --help | grep -Ew -- "^  -(${opt_filter})")
+  # not all help has switches, catch that here...
+  if [ "$(echo "$opts" | wc -l)" -lt 2 ]; then 
+    opts=$($1 --help)
+  fi
+  echo "$opts"
 }
     
 
