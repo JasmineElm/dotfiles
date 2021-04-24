@@ -211,7 +211,7 @@ function _colours {
   done
 }
 
-nam() {
+usage() {
   opt=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
   $1 --help | grep -Ew -- "^  -(${opt})"
 }

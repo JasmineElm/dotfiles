@@ -100,3 +100,6 @@ PS1="\W ▶ "
 
 export MANPAGER="vim -M +MANPAGER -"
 eval "$(pandoc --bash-completion)"
+# htop should use a dotfile here for the sake of portability...
+export HTOPRC="$HOME.htoprc"
+
