@@ -1,7 +1,7 @@
 #! /bin/bash
 
 current_shell() {
-    ps -hp $$ | grep -o '[^/ ]*$'
+  ps -p $$ | tail -1 | grep -o '[^ ]*$'
 }
 
 ## architecture specific stuff... 
