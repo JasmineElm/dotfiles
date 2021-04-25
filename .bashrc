@@ -99,7 +99,6 @@ PS1="\W ▶ "
 # PS1+="\[\e[\$(git_color)\]\[\e[0m\]"
 
 export MANPAGER="vim -M +MANPAGER -"
-eval "$(pandoc --bash-completion)"
 # htop should use a dotfile here for the sake of portability...
 export HTOPRC="$HOME.htoprc"
 

@@ -16,19 +16,23 @@ function _wsl_settings { true; }
 function _osx_settings { true; }
 
 
-function _which_arch {
+function _pandoc_completion {
+  if cmd=$(command -v pandoc); then 
+    eval "$(pandoc --bash-completion)"
+  fi
+}
+function _startup_scripts {
     ## figure out what architecture we're running in
-    #  run any specific scripts
-    
+    #  run any architecture specific scripts
+    $(_pandoc_completion)
+
     if   [ "$(uname -a | grep -c Android)" -eq 1 ]
-      then _droid_settings
-    fi
-    if [ "$(uname -a | grep -c Microsoft)" -eq 1 ]
-      then _wsl_settings
-    fi
-    if [ "$(uname -a | grep -c Darwin)" -eq 1 ]
-      then _osx_settings
-    fi
+        then _droid_settings
+      elif [ "$(uname -a | grep -c Microsoft)" -eq 1 ]
+        then _wsl_settings
+      elif [ "$(uname -a | grep -c Darwin)" -eq 1 ]
+        then _osx_settings
+    fi  
 
 }
 
@@ -37,7 +41,7 @@ reload() {
     rc=$HOME/.$cs'rc'
     echo "source $rc"
     source "$rc"
-    # "$(_which_arch)"
+    "$(_startup_scripts)"
 
 }
 
