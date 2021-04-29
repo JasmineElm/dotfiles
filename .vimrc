@@ -25,6 +25,10 @@ set autowrite
 " Search & display
 set incsearch smartcase hlsearch showmatch
 
+" page down like We're in `more`
+"
+nnoremap <Space> <C-f>
+
 " move as if everything is a hard wrap
 set wrap
 nnoremap j gj

@@ -1,9 +1,9 @@
-# dotfiles backup and restore
-alias bkdots='$HOME/Scripts/backupdots.sh'
+# read-only Vi is more pleasant to use than more
+alias more='vi -R'
+
 
 alias wttr='curl wttr.in/Preston?QFAnq0'
 alias rss='newsboat'
-
 
 alias auua='sudo apt update && yes |sudo  apt upgrade && yes |sudo apt --purge autoremove && sudo apt clean'
 
@@ -18,7 +18,6 @@ alias ..='cd ../ && pwd'
 alias ...='cd ../../ && pwd'
 alias ....='cd ../../../ && pwd'
 alias ....='cd ../../../../ && pwd'
-
 
 alias hist='history | grep '
 alias dfh='df -h | grep /dev/sd | sort'
