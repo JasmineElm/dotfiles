@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # If not running interactively, don't do anything
 case $- in
 *i*) ;;
@@ -10,13 +11,7 @@ HISTFILESIZE=2000
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d-%m-%y %H:%M  "
 shopt -s histappend
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -36,9 +31,8 @@ else
   color_prompt=''
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
+# shellcheck disable=SC1091
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -47,12 +41,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
-## case insensitive completion?  Echo this to /etc/inputrc
-#  set completion-ignore-case on
+## case insensitive completion?  
+# echo  "set completion-ignore-case" /etc/inputrc
 
 # local shell functions and aliases
+# shellcheck disable=SC1090
 [[ ! -f ~/.shell_functions ]] || . ~/.shell_functions
+# shellcheck disable=SC1090
 [[ ! -f ~/.aliases ]] || . ~/.aliases
+# shellcheck disable=SC1090
 [[ ! -f ~/.secret_aliases ]] || . ~/.secret_aliases
 
 ## Directories
@@ -64,41 +61,12 @@ bind '"\eOA": history-search-backward'
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
 
-
-
-
-
-
 ###################################################
-
-function git_color {
-  local git_status
-  git_status="$(git status 2> /dev/null)"
-  if [[ ${git_status} =~ "Changes to be committed" ]] || [[
- ${git_status} =~ "Changes not staged" ]]; then
-    c="01;33m"
-  elif [[ ${git_status} =~ "working tree clean" ]]; then
-    c="01;32m"  
-  elif [[ ${git_status} =~ "but untracked files present" ]];
-then
-    c="01;33m"  
-  else 
-    c="01;39m"
-    icon="❯"
-  fi
-  echo -e "$c"
-}
-
-color=$(git_color)
 # just display $BASEDIR..
 PS1="\W ▶ "
-# PS1="\e[\$(git_color)[\u@\h \W]\$ \e[m "
-# PS1="\[\e[\$(git_color) \W \]\e[m"
-# PS1="\[\e[01;39m\W \]"
-#coloured chevron if we're in a git repo...
-# PS1+="\[\e[\$(git_color)\]\[\e[0m\]"
 
 export MANPAGER="vim -M +MANPAGER -"
-# htop should use a dotfile here for the sake of portability...
+# htop should use a dotfile for the sake of portability...
+
 export HTOPRC="$HOME.htoprc"
 

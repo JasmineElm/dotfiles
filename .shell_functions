@@ -1,108 +1,121 @@
-#! /bin/bash
+# shellcheck shell=bash
 
 current_shell() {
   ps -p $$ | tail -1 | grep -o '[^ ]*$'
 }
 
-## architecture specific stuff... 
+## architecture specific stuff...
 #
 
-function _droid_settings {
+_droid_settings() {
   termux-reload-settings
+  # no  sudo in termux
+  export sudo=''
 }
 
-function _wsl_settings { true; }
+_wsl_settings() { true; }
 
-function _osx_settings { true; }
+_osx_settings() { true; }
 
-
-function _pandoc_completion {
-  if cmd=$(command -v pandoc); then 
+_pandoc_completion() {
+  if [ "$(command -v pandoc | wc -l)" -ne 0 ]; then
     eval "$(pandoc --bash-completion)"
   fi
 }
-function _startup_scripts {
-    ## figure out what architecture we're running in
-    #  run any architecture specific scripts
-    $(_pandoc_completion)
-
-    if   [ "$(uname -a | grep -c Android)" -eq 1 ]
-        then _droid_settings
-      elif [ "$(uname -a | grep -c Microsoft)" -eq 1 ]
-        then _wsl_settings
-      elif [ "$(uname -a | grep -c Darwin)" -eq 1 ]
-        then _osx_settings
-    fi  
-
+_startup_scripts() {
+  ## figure out what architecture we're running in
+  #  run any architecture specific scripts
+  _pandoc_completion
+  if [ "$(uname -a | grep -c Android)" -eq 1 ]; then
+    _droid_settings
+  elif [ "$(uname -a | grep -c Microsoft)" -eq 1 ]; then
+    _wsl_settings
+  elif [ "$(uname -a | grep -c Darwin)" -eq 1 ]; then
+    _osx_settings
+  fi
 }
 
 reload() {
-    cs=$(current_shell)
-    rc=$HOME/.$cs'rc'
-    echo "source $rc"
-    source "$rc"
-    "$(_startup_scripts)"
-
+  local cs
+  cs=$(current_shell)
+  local rc=$HOME/.$cs'rc'
+  echo "source $rc"
+  # -shellcheck correctly doesn't like sourcing vars-
+  # shellcheck disable=SC1090
+  . "$rc"
+  _startup_scripts
 }
-
-
 
 # lazy conf
-run() { 
-    if ! [[ -x "$1" ]]; then
+run() {
+  if ! [ -x "$1" ]; then
     chmod +x "$1"
-    fi
-    ./"$*"
+  fi
+  ./"$*"
 }
 mkcd() {
-    mkdir -p "$1"
-    cd "$1" || return 1
+  mkdir -p "$1"
+  cd "$1" || return 1
 }
 
 cdl() {
-    cd "$@" || return 1
-    ls -a
+  cd "$@" || return 1
+  ls -a
 }
-
 
 orig() { cp -p "$*"{,.ORIG}; }
 bak() { cp -p "$*"{,.BAK}; }
-dbak() { cp -p "$*"{,."$(date +%Y%m%d)"};}
+dbak() { cp -p "$*"{,."$(date +%Y%m%d)"}; }
 
-function available_shells {
+_available_shells() {
   tail -n +2 /etc/shells | sed 's:.*/::' | sort -u
 }
 
 is_shell() {
-  echo "$(available_shells)" | grep -c "$1"
+  _available_shells | grep -c "$1"
 }
 
 swsh() {
-  if [ "$(is_shell "$1")" -eq 1 ]; then
+  if [ "$(is_shell "$1")" -ne 0 ]; then
     cs=$(current_shell)
     if [ "$cs" != "$1" ]; then
       echo "changing shell: $cs -> $1"
-      exec "$1"
-
+      exec "$1" && reload
+    else
       reload
-  else
-    echo "Nothing to do.  Perhaps you need to _reload_?"  
-  fi
+    fi
   else
     echo "ummm, can't find that shell..."
   fi
 }
 
-function _make_pass {
-    function _random_word {
-        # `sudo apt install wbritish` if this file doesn't exist
-        shuf -n 1 /usr/share/dict/words
-    }
-    word=""
-    for i in {1..3}; do
-        word="$word$(_random_word)-"
-    done
-    echo "${word%?}"
+_complex_string() {
+  local DEFAULT_LENGTH=12
+  local LENGTH=${1:-$DEFAULT_LENGTH}
+  tr -dc "[:digit:][:alpha:]" </dev/urandom | head -c "$LENGTH"
+}
+
+_three_random_words() {
+  _random_word() {
+    # `sudo apt install wbritish` if this file doesn't exist
+    shuf -n 1 /usr/share/dict/words
+  }
+  word=""
+  for i in {1..3}; do
+    word="$word$(_random_word)-"
+  done
+  echo "${word%?}"
+}
+
+# shellcheck disable=SC2120
+_make_pass() {
+  local DEFAULT_MODE='complex'
+  local MODE=${1:-$DEFAULT_MODE}
+  case $MODE in
+  'complex' | 'c') _complex_string 12 ;;
+  'phrase' | 'p') _three_random_words ;;
+  esac
+
 }
 
 #########################
@@ -110,35 +123,38 @@ function _make_pass {
 #########################
 
 expand() {
-    if [[ -f "$1" ]]; then
-        case "$1" in
-        *.tar.bz2) tar xvjf "$1" ;;
-        *.tar.gz) tar xvzf "$1" ;;
-        *.tar.xz) tar xvJf "$1" ;;
-        *.tar.lzma) tar --lzma xvf "$1" ;;
-        *.bz2) bunzip "$1" ;;
-        *.rar) unrar x "$1" ;;
-        *.gz) gunzip "$1" ;;
-        *.tar) tar xvf "$1" ;;
-        *.tbz2) tar xvjf "$1" ;;
-        *.tgz) tar xvzf "$1" ;;
-        *.zip) unzip "$1" -d  "${1%.*}";;
-        *.Z) uncompress "$1" ;;
-        *.7z) 7z x "$1" ;;
-        *.dmg) hdiutul mount "$1" ;; # mount OS X disk images
-        *) echo "'$1' cannot be extracted via >ex<" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
+  if [ -f "$1" ]; then
+    case "$1" in
+    *.tar.bz2) tar xvjf "$1" ;;
+    *.tar.gz) tar xvzf "$1" ;;
+    *.tar.xz) tar xvJf "$1" ;;
+    *.tar.lzma) tar --lzma xvf "$1" ;;
+    *.bz2) bunzip "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xvf "$1" ;;
+    *.tbz2) tar xvjf "$1" ;;
+    *.tgz) tar xvzf "$1" ;;
+    *.zip) unzip "$1" -d "${1%.*}" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *.dmg) hdiutul mount "$1" ;; # mount OS X disk images
+    *) echo "'$1' cannot be extracted via >ex<" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
 ## expand _AND DELETE_ everything in dir...
 expall() {
-    for i in $(ls | grep -E 'tar|\.bz2|\.tar.gz|\.tar|\.xz|\.tar|\.lzma|\.bz2|\.rar|\.gz|\.tar|\.tbz2|\.tgz|\.zip|\.Z|\.7z$');
-        do expand "$i"
-        rm -i "$i"
-    done
+  # brittle for loop, but the only one that seems
+  # to work consistently...
+  # shellcheck disable=SC2010
+  for i in $(ls | grep -E 'tar|\.bz2|\.tar.gz|\.tar|\.xz|\.tar|\.lzma|\.bz2|\.rar|\.gz|\.tar|\.tbz2|\.tgz|\.zip|\.Z|\.7z$'); do
+    expand "$i"
+    rm -i "$i"
+  done
 }
 
 zipit() {
@@ -151,9 +167,9 @@ zipit() {
   echo "Password = $pass"
 }
 
-home(){ 
+home() {
   if [ -z "$TMUX" ]; then
-    if ! tmux has-session -t HOME 2> /dev/null; then
+    if ! tmux has-session -t HOME 2>/dev/null; then
       # build home window
       tmux new-session -d -s HOME -n home -x "$(tput cols)" -y "$(tput lines)"
       tmux set-window-option -t HOME:home automatic-rename off
@@ -168,7 +184,7 @@ home(){
   else
     tmux switch-client -t HOME
   fi
-};
+}
 
 # New Blog post
 #
@@ -179,39 +195,41 @@ jekserve() {
 }
 
 create_post() {
-  cd "$BLOG_DIR"  || exit 1
-  title="$*";  dte="$(date +%Y-%m-%d)";  tme="$(date +%T)"
-  safe_title=$(echo "$title" |sed 's/ /_/g'|  tr '[:upper:]' '[:lower:]')
-  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---">> "$dte-$safe_title.md"
+  cd "$BLOG_DIR" || exit 1
+  title="$*"
+  dte="$(date +%Y-%m-%d)"
+  tme="$(date +%T)"
+  safe_title=$(echo "$title" | sed 's/ /_/g' | tr '[:upper:]' '[:lower:]')
+  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---" >>"$dte-$safe_title.md"
   vi "$dte-$safe_title.md"
 }
 
 nbp() {
   post_title=$*
   echo "$post_title"
-  tmux new-session -d 
-  tmux split-window -v 
+  tmux new-session -d
+  tmux split-window -v
   tmux resize-pane -D 10
-#sends keys to first and second terminals
+  #sends keys to first and second terminals
   tmux send -t 0:0.1 "jekserve" C-m
   tmux send -t 0:0.0 "create_post $post_title" C-m
-  tmux select-pane -U  
-  tmux -2 attach-session -d 
+  tmux select-pane -U
+  tmux -2 attach-session -d
 }
 
-function _colours {
+_colours() {
   printf "          "
   for b in 0 1 2 3 4 5 6 7; do printf "%s  4${b}m "; done
   echo
   for f in "" 30 31 32 33 34 35 36 37; do
-      for s in "" "1;"; do
-          printf "%4sm" "${s}${f}"
-          printf " \033[%sm%s\033[0m" "$s$f" "gYw "
-          for b in 0 1 2 3 4 5 6 7; do
-              printf " \033[4%s;%sm%s\033[0m" "$b" "$s$f" " gYw "
-          done
-          echo
-       done
+    for s in "" "1;"; do
+      printf "%4sm" "${s}${f}"
+      printf " \033[%sm%s\033[0m" "$s$f" "gYw "
+      for b in 0 1 2 3 4 5 6 7; do
+        printf " \033[4%s;%sm%s\033[0m" "$b" "$s$f" " gYw "
+      done
+      echo
+    done
   done
 }
 
@@ -220,11 +238,8 @@ usage() {
   opt_filter=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
   opts=$($1 --help | grep -Ew -- "^  -(${opt_filter})")
   # not all help has switches, catch that here...
-  if [ "$(echo "$opts" | wc -l)" -lt 2 ]; then 
+  if [ "$(echo "$opts" | wc -l)" -lt 2 ]; then
     opts=$($1 --help)
   fi
   echo "$opts"
 }
-    
-
-    
