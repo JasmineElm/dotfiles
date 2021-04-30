@@ -42,7 +42,7 @@ if ! shopt -oq posix; then
 fi
 
 ## case insensitive completion?  
-# echo  "set completion-ignore-case" /etc/inputrc
+# echo  "set completion-ignore-case" >> /etc/inputrc
 
 # local shell functions and aliases
 # shellcheck disable=SC1090
@@ -63,7 +63,7 @@ export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
 
 ###################################################
 # just display $BASEDIR..
-PS1="\W ▶ "
+PS1="\n\W ▶ "
 
 export MANPAGER="vim -M +MANPAGER -"
 # htop should use a dotfile for the sake of portability...
