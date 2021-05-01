@@ -188,7 +188,7 @@ home() {
 }
 
 # New Blog post
-#
+# sudo apt install ruby-rubygems ruby-bundler
 jekserve() {
   xdg-open http://127.0.0.1:4000/ &
   cd "$BLOG_DIR"../ || exit 1
