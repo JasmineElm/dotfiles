@@ -63,7 +63,12 @@ export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
 
 ###################################################
 # just display $BASEDIR..
-PS1="\n\W ▶ "
+PS1="\W ▶ "
+# a continuation should look like one...
+PS2="⋯ "
+
+set -o vi
+
 
 export MANPAGER="vim -M +MANPAGER -"
 # htop should use a dotfile for the sake of portability...

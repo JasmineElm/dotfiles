@@ -93,7 +93,8 @@ swsh() {
 _complex_string() {
   local DEFAULT_LENGTH=12
   local LENGTH=${1:-$DEFAULT_LENGTH}
-  tr -dc "[:alnum:][:graph:]" </dev/urandom | head -c "$LENGTH"
+  tr -dc "[:graph:]" </dev/urandom | head -c "$LENGTH" \
+  && echo "$f"
 }
 
 _three_random_words() {
