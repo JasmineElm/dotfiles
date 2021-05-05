@@ -1,4 +1,4 @@
-# shellcheck shell=bash
+# shellcheck shell=sh
 
 current_shell() {
   ps -p $$ | tail -1 | grep -o '[^ ]*$'
@@ -36,9 +36,8 @@ _startup_scripts() {
 }
 
 reload() {
-  local cs
   cs=$(current_shell)
-  local rc=$HOME/.$cs'rc'
+  rc=$HOME/.$cs'rc'
   echo "source $rc"
   # -shellcheck correctly doesn't like sourcing vars-
   # shellcheck disable=SC1090
@@ -63,9 +62,15 @@ cdl() {
   ls -a
 }
 
-orig() { cp -p "$*"{,.ORIG}; }
-bak() { cp -p "$*"{,.BAK}; }
-dbak() { cp -p "$*"{,."$(date +%Y%m%d)"}; }
+orig() { 
+  cp -p "$*" "$*".ORIG 
+  }
+bak() { 
+  cp -p "$*" "$*".BAK 
+  }
+dbak() { 
+  cp -p "$*" "$*"."$(date +%Y%m%d)" 
+  }
 
 _available_shells() {
   tail -n +2 /etc/shells | sed 's:.*/::' | sort -u
@@ -77,7 +82,6 @@ is_shell() {
 
 swsh() {
   if [ "$(is_shell "$1")" -ne 0 ]; then
-    local cs
     cs=$(current_shell)
     if [ "$cs" != "$1" ]; then
       echo "changing shell: $cs -> $1"
@@ -91,9 +95,9 @@ swsh() {
 }
 
 _complex_string() {
-  local DEFAULT_LENGTH=12
-  local LENGTH=${1:-$DEFAULT_LENGTH}
-  tr -dc "[:graph:]" </dev/urandom | head -c "$LENGTH" \
+  __DEFAULT_LENGTH=12
+  __LENGTH=${1:-$__DEFAULT_LENGTH}
+  tr -dc "[:graph:]" </dev/urandom | head -c "$__LENGTH" \
   && echo "$f"
 }
 
@@ -102,8 +106,7 @@ _three_random_words() {
     # `sudo apt install wbritish` if this file doesn't exist
     shuf -n 1 /usr/share/dict/words
   }
-  local word
-  for i in {1..3}; do
+  for i in $(seq 1 3); do
     word="$word$(_random_word)-"
   done
   echo "${word%?}"
@@ -111,9 +114,9 @@ _three_random_words() {
 
 # shellcheck disable=SC2120
 _make_pass() {
-  local DEFAULT_MODE='complex'
-  local MODE=${1:-$DEFAULT_MODE}
-  case $MODE in
+  __DEFAULT_MODE='complex'
+  __MODE=${1:-$__DEFAULT_MODE}
+  case $__MODE in
   'complex' | 'c') _complex_string 12 ;;
   'phrase' | 'p') _three_random_words ;;
   esac
@@ -202,7 +205,7 @@ create_post() {
   dte="$(date +%Y-%m-%d)"
   tme="$(date +%T)"
   safe_title=$(echo "$title" | sed 's/ /_/g' | tr '[:upper:]' '[:lower:]')
-  echo -e "---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---" >>"$dte-$safe_title.md"
+  printf "%s---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---" >>"$dte-$safe_title.md"
   vi "$dte-$safe_title.md"
 }
 
@@ -237,7 +240,7 @@ _colours() {
 
 usage() {
   ## avoid man pages to find simple switches
-  opt_filter=$(echo {a..z}"|" | sed -e 's/ //g' -e 's/|$//')
+  opt_filter="a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z"
   opts=$($1 --help | grep -Ew -- "^  -(${opt_filter})")
   # not all help has switches, catch that here...
   if [ "$(echo "$opts" | wc -l)" -lt 2 ]; then
