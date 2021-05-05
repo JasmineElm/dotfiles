@@ -83,14 +83,6 @@ let g:pandoc_use_bibtool            = 1
 " see: https://github.com/JasmineElm/reports
 noremap <silent> <F8> :! ./build -p<cr>
 
-" BUILD PDF on write
-"
-" let g:pandoc#command#autoexec_on_writes = 1
-"if empty(glob('./build'))
-"  let g:pandoc#command#autoexec_command   = "Pandoc! pdf"
-"else
-"  let g:pandoc#command#autoexec_command   = ":silent !./build silent"
-"endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
@@ -153,13 +145,6 @@ Plug 'vim-pandoc/vim-markdownfootnotes' " proper footnotes using \f \r
 Plug 'morhetz/gruvbox'                  " a pretty theme... 
 Plug 'wakatime/vim-wakatime'            " quantify...
 call plug#end()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                             ZETTELKASTEN
-" courtesy of https://www.edwinwenink.xyz/
-
-command! -nargs=1 NewZettel :execute ":e" zettelkasten . strftime("%Y%m%d%H%M") . "-<args>.md"
-nnoremap <leader>nz :NewZettel
 
 " colourscheme mow it's loaded...
 colo gruvbox

@@ -4,27 +4,6 @@ if has("autocmd")
   augroup END
 endif
 
-" set header title for journal & enter writing mode
-function! JournalMode()
-    execute 'normal gg'
-    let filename = '##' . ' ' . expand('%:r')
-    call setline(1, filename)
-    execute ':4'
-    execute 'normal zR o'
-endfunction
-
-augroup journal
-    autocmd!
-
-" populate journal template
-" autocmd VimEnter */Journal/**   0r ~/.vim/templates/journal.skeleton
-
-" set header for the particular journal
-" autocmd VimEnter */Journal/**   :call JournalMode()
-
-" https://stackoverflow.com/questions/12094708/include-a-directory-recursively-for-vim-autocompletion
-" autocmd VimEnter */Journal/**   set complete=k~/Documents/Journal/**/*
- 
 
 "==========================================================
 "   TOGGLE EXPLORER WINDOW 
@@ -97,22 +76,6 @@ function! WordCount()
    call setpos('.', position)
    return s:word_count
 endfunction
-
-
-
-"==========================================================
-"    Zettelkasten
-"==========================================================
-"
-" see https://www.edwinwenink.xyz/posts/48-vim_fast_creating_and_linking_notes/
-"
-
-let g:zettelkasten = "~/Dropbox/Zettelkasten/"
-command! -nargs=1 NewZettel :execute ":e" zettelkasten . strftime("%Y%m%d%H%M") . "-<args>.md" | execute put <args>
-nnoremap <leader>nz :NewZettel 
-
-"autocmd VimEnter */Zettelkasten/**   0r ~/.vim/templates/zettelkasten.skeleton
-
 
 " CtrlP function for inserting a markdown link with Ctrl-X
 function! CtrlPOpenFunc(action, line)

@@ -1,22 +1,14 @@
 #!/usr/bin/env bash
 
-# template based on https://github.com/xwmx/bash-boilerplate
+set -u -e -o errtrace -o pipefail                            
+trap "echo ""errexit: line $LINENO. Exit code: $?"" >&2" ERR                                            
+IFS=$'\n\t' 
 
-
-######  STRICT MODE  ###########################################
-
-set -u
-set -e
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
-set -o errtrace
-set -o pipefail
-IFS=$'\n\t'
-
-######  VARIABLES    ###########################################
+###  VARIABLES    ###########################################
 
 _ME="$(basename "${0}")"
 
-######  FUNCTIONS    ###########################################
+###  FUNCTIONS    ###########################################
 
 
 _print_help() {
@@ -38,7 +30,7 @@ _simple() {
   printf "Perform a simple operation.\\n"
 }
 
-######  MAIN         ###########################################  
+###  MAIN         ###########################################  
 
 _main() {
     if [[ -z "$*" ]]
