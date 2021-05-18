@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 
 current_shell() {
-  ps -p $$ | tail -1 | grep -o '[^ ]*$'
+  ps -p $$ | tail -1 | grep -o '[^ ]*$' | tr -cd [:alpha:]
 }
 
 ## architecture specific stuff...
