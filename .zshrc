@@ -28,3 +28,4 @@ PATH=$HOME/gems/bin:$PATH:/snap/bin:$HOME/Scripts:$PATH:$HOME/.local/bin
 export HISTTIMEFORMAT="%m/%d - %H:%M:%S: "
 
 
+if [ -e /home/x220/.nix-profile/etc/profile.d/nix.sh ]; then . /home/x220/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

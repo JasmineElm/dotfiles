@@ -8,9 +8,8 @@ current_shell() {
 #
 
 _droid_settings() {
-  termux-reload-settings
   # no  sudo in termux
-  export sudo=''
+  export alias sudo=''
 }
 
 _wsl_settings() { true; }
