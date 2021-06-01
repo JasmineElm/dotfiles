@@ -61,15 +61,15 @@ cdl() {
   ls -a
 }
 
-orig() { 
-  cp -p "$*" "$*".ORIG 
-  }
-bak() { 
-  cp -p "$*" "$*".BAK 
-  }
-dbak() { 
-  cp -p "$*" "$*"."$(date +%Y%m%d)" 
-  }
+orig() {
+  cp -p "$*" "$*".ORIG
+}
+bak() {
+  cp -p "$*" "$*".BAK
+}
+dbak() {
+  cp -p "$*" "$*"."$(date +%Y%m%d)"
+}
 
 _available_shells() {
   tail -n +2 /etc/shells | sed 's:.*/::' | sort -u
@@ -93,11 +93,11 @@ swsh() {
   fi
 }
 
-_complex_string() {
+password() {
   __DEFAULT_LENGTH=12
   __LENGTH=${1:-$__DEFAULT_LENGTH}
-  tr -dc "[:graph:]" </dev/urandom | head -c "$__LENGTH" \
-  && echo "$f"
+  tr -dc "[:graph:]" </dev/urandom | head -c "$__LENGTH" &&
+    echo "$f"
 }
 
 _three_random_words() {
@@ -116,7 +116,7 @@ _make_pass() {
   __DEFAULT_MODE='complex'
   __MODE=${1:-$__DEFAULT_MODE}
   case $__MODE in
-  'complex' | 'c') _complex_string 12 ;;
+  'complex' | 'c') password 12 ;;
   'phrase' | 'p') _three_random_words ;;
   esac
 
@@ -249,5 +249,5 @@ usage() {
 }
 
 local_IP() {
-  ip a s|sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}'
+  ip a s | sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}'
 }
