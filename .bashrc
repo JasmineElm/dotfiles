@@ -75,3 +75,5 @@ export MANPAGER="vim -M +MANPAGER -"
 
 export HTOPRC="$HOME.htoprc"
 
+#
+PATH=$PATH:/home/x220/.local/bin

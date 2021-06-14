@@ -251,3 +251,7 @@ usage() {
 local_IP() {
   ip a s | sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}'
 }
+
+wtr() { 
+  curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
+}
