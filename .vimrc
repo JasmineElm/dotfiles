@@ -73,7 +73,7 @@ map <silent> <F8> :call ToggleVExplorer()<CR>
 let g:pandoc#completion#bib#mode    = 'citeproc'
 let g:pandoc#biblio#sources 		    = "ybcg"
 let g:pandoc#formatting#textwidth   = 80
-let g:pandoc#formatting#mode 		    = "hA"
+"let g:pandoc#formatting#mode 		    = "hA"
 let g:pandoc#folding#level 		      = 2
 let g:pandoc#folding#fdc		        = 0
 let g:pandoc_auto_format            = 1
