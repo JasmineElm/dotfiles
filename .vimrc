@@ -57,6 +57,13 @@ augroup END
 
 " accept first match in spell check (insert mode)
 inoremap <C-L> <esc>[s1z=`]<CR>
+                                                                  
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                             MD-IMG-PASTE
+autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+let g:mdip_imgdir = 'attachments'
+let g:mdip_imgname = 'image'
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                             FINDNG FILES
@@ -73,8 +80,9 @@ map <silent> <F8> :call ToggleVExplorer()<CR>
 let g:pandoc#completion#bib#mode    = 'citeproc'
 let g:pandoc#biblio#sources 		    = "ybcg"
 let g:pandoc#formatting#textwidth   = 80
-"let g:pandoc#formatting#mode 		    = "hA"
-let g:pandoc#folding#level 		      = 2
+"let g:pandoc#formatting#mode 		    = "A"
+let g:pandoc#folding#level 		      = 3
+let g:pandoc#folding#mode           = 'stacked'
 let g:pandoc#folding#fdc		        = 0
 let g:pandoc_auto_format            = 1
 let g:pandoc_use_bibtool            = 1
@@ -144,6 +152,7 @@ Plug 'tpope/vim-fireplace'              " For Wakatime...
 Plug 'vim-pandoc/vim-markdownfootnotes' " proper footnotes using \f \r
 Plug 'morhetz/gruvbox'                  " a pretty theme... 
 Plug 'wakatime/vim-wakatime'            " quantify...
+Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 call plug#end()
 
 " colourscheme mow it's loaded...

@@ -63,7 +63,7 @@ export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
 
 ###################################################
 # just display $BASEDIR..
-PS1="\W ▶ "
+PS1="\W > "
 # a continuation should look like one...
 PS2="⋯ "
 
