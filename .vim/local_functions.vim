@@ -34,8 +34,6 @@ endfunction
 "   TOGGLE SPELLCHECK HIGHLIGHTING 
 "==========================================================
 "
-" see ????
-"
 function! ToggleSpell()
   if !exists("g:showingSpell")
     let g:showingSpell=0
@@ -102,3 +100,11 @@ let g:ctrlp_open_func = {
          \ 'mru files': 'CtrlPOpenFunc' 
          \ }
 
+function! ZoteroCite()
+  " pick a format based on the filetype (customize at will)
+  " see https://retorque.re/zotero-better-bibtex/citing/cayw/, requires zotero to be on...
+  let format = &filetype =~ '.*md' ? 'citep' : 'pandoc'
+  let api_call = 'http://127.0.0.1:23119/better-bibtex/cayw?format='.format.'&brackets=1'
+  let ref = system('curl -s '.shellescape(api_call))
+  return ref
+endfunction
