@@ -5,6 +5,9 @@ case $- in
 *) return ;;
 esac
 
+#ignore  C^S C^Q (suspend, resume commands)
+stty -ixon
+
 # HISTORY
 HISTSIZE=1000
 HISTFILESIZE=2000
