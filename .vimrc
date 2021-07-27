@@ -31,7 +31,8 @@ set backspace=indent,eol,start    " backspace works across lines
 
 " DISPLAY
 set background=dark
-
+set textwidth=79
+set colorcolumn=80
 
 " Read and write
 set autowrite                     " save file on loss of focus
@@ -44,19 +45,14 @@ set ignorecase                    " searches ignore case
 set smartcase                     " don't ignore capitals in searches
 nnoremap <leader>/ :nohls <enter> "remove highlights 
 
-
-
-
 " page down like We're in `more`
-"
 nnoremap <Space> <C-f>
 
+"write changes with `sudo`
+command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 
-set textwidth=79
-set colorcolumn=80
 
 " move as if everything is a hard wrap
-
 nnoremap j gj
 nnoremap k gk
 
@@ -65,9 +61,7 @@ nnoremap k gk
 let g:markdown_folding = 1
 set nofoldenable
 
-
-set wildmenu                      " tab completion in command mode can override the ruler 
-
+set wildmenu  " tab completion in command mode can override the ruler 
 set showmatch "show matching bracket etc.
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -116,19 +110,7 @@ let g:netrw_banner = 0 " Turn off banner
 " Explore in vertical split
 nnoremap <Leader>e :Explore! <enter>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                               VIM-PANDOC
-let g:pandoc#completion#bib#mode    = 'citeproc'
-" let g:pandoc#biblio#sources 		    = "ybcg"
-" let g:pandoc#formatting#textwidth   = 80
-"let g:pandoc#formatting#mode 		    = "A"
-" let g:pandoc#folding#level 		      = 3
-" let g:pandoc#folding#mode           = 'stacked'
-" let g:pandoc#folding#fdc		        = 0
-" let g:pandoc_auto_format            = 1
-let g:pandoc_use_bibtool            = 1
-
-" if a build script exists at this level call it using F8
+" if a build script exists at this level call it using \b
 " see: https://github.com/JasmineElm/reports
 noremap <leader>b :! ./build -p<cr>
 
