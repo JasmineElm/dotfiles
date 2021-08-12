@@ -29,3 +29,7 @@ export HISTTIMEFORMAT="%m/%d - %H:%M:%S: "
 
 
 if [ -e /home/x220/.nix-profile/etc/profile.d/nix.sh ]; then . /home/x220/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+

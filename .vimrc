@@ -12,7 +12,6 @@ set scrolloff=15
 " sensible deaults for files
 set encoding=utf-8
 set ffs=unix " assume *nix line endings
-
 "  TABS AND INDENTS
 "
 set expandtab
@@ -56,6 +55,8 @@ command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 nnoremap j gj
 nnoremap k gk
 
+" escape to remove highlighted searches
+map <esc> :noh<cr>
 " markdown folding
 
 let g:markdown_folding = 1
@@ -112,7 +113,7 @@ nnoremap <Leader>e :Explore! <enter>
 
 " if a build script exists at this level call it using \b
 " see: https://github.com/JasmineElm/reports
-noremap <leader>b :! ./build -p<cr>
+noremap <leader>b :! ./build -w<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
@@ -130,6 +131,12 @@ function! DistractionFreeWriting()
     call litecorrect#init()
     set rulerformat=%#TabLineSel#\ %{WordCount()}%#Statement#\ %m\ %#VisualNOS#\ %l:%c
 endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                      ALE
+
+let g:ale_sign_error = '**'
+let g:ale_sign_warning = '!!'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
@@ -161,8 +168,6 @@ if has('unix')
   endif
 endif
 
-
-
 noremap <leader>z "=ZoteroCite()<CR>p
 inoremap <C-z> <C-r>=ZoteroCite()<CR>
 
@@ -177,6 +182,7 @@ Plug 'reedes/vim-wordy'                 " Weasel words and passive voice
 Plug 'morhetz/gruvbox'                  " a pretty theme... 
 Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
+Plug 'dense-analysis/ale'               " ALE
 call plug#end()
 
 " colourscheme mow it's loaded...
