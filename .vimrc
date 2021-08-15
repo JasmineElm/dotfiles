@@ -47,6 +47,10 @@ nnoremap <leader>/ :nohls <enter> "remove highlights
 " page down like We're in `more`
 nnoremap <Space> <C-f>
 
+" split windows using - and =
+nnoremap <leader>- <C-W>s
+nnoremap <leader>= <C-W>v
+
 "write changes with `sudo`
 command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 
@@ -55,8 +59,6 @@ command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 nnoremap j gj
 nnoremap k gk
 
-" escape to remove highlighted searches
-map <esc> :noh<cr>
 " markdown folding
 
 let g:markdown_folding = 1
