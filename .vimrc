@@ -12,8 +12,8 @@ set scrolloff=15
 " sensible deaults for files
 set encoding=utf-8
 set ffs=unix " assume *nix line endings
+
 "  TABS AND INDENTS
-"
 set expandtab
 set tabstop=2
 set softtabstop=2
@@ -32,17 +32,28 @@ set backspace=indent,eol,start    " backspace works across lines
 set background=dark
 set textwidth=79
 set colorcolumn=80
-
 " Read and write
 set autowrite                     " save file on loss of focus
 set autoread                      " if file is modified elsewhere, reload it
 
-" Search & display
+" Display
 set incsearch                     " update searches as type
 set hlsearch                      " show previous matches
 set ignorecase                    " searches ignore case
 set smartcase                     " don't ignore capitals in searches
-nnoremap <leader>/ :nohls <enter> "remove highlights 
+set cursorline                    " highlight current line
+set showmatch                     "show matching bracket etc.
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                            REMAPPED KEYS
+" (plugin-specific stuff in the relevant section)
+
+" remove highlights 
+nnoremap <leader>/ :nohls <enter>
+
+" better yank and put
+noremap <leader>y "+y
+noremap <leader>p "+p
 
 " page down like We're in `more`
 nnoremap <Space> <C-f>
@@ -51,9 +62,12 @@ nnoremap <Space> <C-f>
 nnoremap <leader>- <C-W>s
 nnoremap <leader>= <C-W>v
 
+" reflow paragraphs
+nnoremap <leader>f gwip
+vnoremap <leader>f gw
+
 "write changes with `sudo`
 command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
-
 
 " move as if everything is a hard wrap
 nnoremap j gj
@@ -63,9 +77,6 @@ nnoremap k gk
 
 let g:markdown_folding = 1
 set nofoldenable
-
-set wildmenu  " tab completion in command mode can override the ruler 
-set showmatch "show matching bracket etc.
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                 SPELLING
@@ -96,8 +107,6 @@ inoremap <C-L> <esc>[s1z=`]<CR>
 autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
 let g:mdip_imgdir = 'attachments'
 let g:mdip_imgname = 'image'
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                             FINDNG FILES
 filetype plugin on
@@ -106,7 +115,7 @@ set path+=**
 set wildmenu wildmode=list:full
 set autochdir
 
-""" NetRW
+" NetRW
 let g:netrw_liststyle = 1 " Detail View
 let g:netrw_sizestyle = "H" " Human-readable file sizes
 let g:netrw_banner = 0 " Turn off banner
@@ -116,6 +125,14 @@ nnoremap <Leader>e :Explore! <enter>
 " if a build script exists at this level call it using \b
 " see: https://github.com/JasmineElm/reports
 noremap <leader>b :! ./build -w<cr>
+
+" run shfmt on current file, force a redraw by jumping between marks
+noremap <leader>k :execute 'silent !shfmt -i 2 -ci -bn -w %'<cr> ````
+
+" SPLITS
+"
+noremap <leader>= <c-w>v
+noremap <leader>- <c-w>s
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
