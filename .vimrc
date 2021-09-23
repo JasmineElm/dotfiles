@@ -31,10 +31,13 @@ set backspace=indent,eol,start    " backspace works across lines
 " DISPLAY
 set background=dark
 set textwidth=79
-set colorcolumn=80
+set colorcolumn=80,110            " 80 for code, 110 for writing
 " Read and write
-set autowrite                     " save file on loss of focus
 set autoread                      " if file is modified elsewhere, reload it
+set autowrite                     " save file on loss of focus
+autocmd FocusLost * wa
+autocmd CursorHold * wa
+
 
 " Display
 set incsearch                     " update searches as type
@@ -43,6 +46,11 @@ set ignorecase                    " searches ignore case
 set smartcase                     " don't ignore capitals in searches
 set cursorline                    " highlight current line
 set showmatch                     "show matching bracket etc.
+
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
+  autocmd BufEnter * match OverLength /\%80v.*/
+augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                            REMAPPED KEYS
