@@ -55,10 +55,7 @@ fi
 # shellcheck disable=SC1090
 [[ ! -f ~/.secret_aliases ]] || . ~/.secret_aliases
 
-## Directories
-
-bind '"\e[A": history-search-backward'
-bind '"\eOA": history-search-backward'
+bind -x '"\C-l": clear;'
 
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
