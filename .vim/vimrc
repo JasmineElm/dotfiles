@@ -1,10 +1,5 @@
 " source any local functions up front
 
-if has('unix')
-  source $HOME/.vim/local_functions.vim
-else
-  source $HOME\.vim\local_functions.vim
-endif
 
 " keep cursor broadly in the center of the screen
 set scrolloff=15
@@ -32,6 +27,7 @@ set backspace=indent,eol,start    " backspace works across lines
 set background=dark
 set textwidth=79
 set colorcolumn=80,110            " 80 for code, 110 for writing
+
 " Read and write
 set autoread                      " if file is modified elsewhere, reload it
 set autowrite                     " save file on loss of focus
@@ -91,7 +87,7 @@ set nofoldenable
 set spell spelllang=en_gb
 
 " toggle spellcheck highlighting with F5
-nnoremap <leader>5 :call ToggleSpell()<CR>
+nnoremap <leader>5 :call local_functions#ToggleSpell()<CR>
 
 " next two blocks make sure spelling is initially _off_
 hi clear SpellBad
@@ -156,7 +152,7 @@ function! DistractionFreeWriting()
     :Limelight
     call lexical#init()
     call litecorrect#init()
-    set rulerformat=%#TabLineSel#\ %{WordCount()}%#Statement#\ %m\ %#VisualNOS#\ %l:%c
+    set rulerformat=%#TabLineSel#\ %{local_functions#WordCount()}%#Statement#\ %m\ %#VisualNOS#\ %l:%c
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -195,8 +191,8 @@ if has('unix')
   endif
 endif
 
-noremap <leader>z "=ZoteroCite()<CR>p
-inoremap <C-z> <C-r>=ZoteroCite()<CR>
+noremap <leader>z "=local_functions#ZoteroCite()<CR>p
+inoremap <C-z> <C-r>=local_functions#ZoteroCite()<CR>
 
 call plug#begin()
 "Plug 'https://github.com/vim-pandoc/vim-pandoc'
