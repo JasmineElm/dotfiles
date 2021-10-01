@@ -1,8 +1,3 @@
-if has("autocmd")
-  augroup templates
-    autocmd BufNewFile *.sh 0r ~/.vim/templates/sh.skeleton
-  augroup END
-endif
 
 
 "==========================================================

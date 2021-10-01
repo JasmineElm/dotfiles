@@ -1,12 +1,21 @@
-" source any local functions up front
-
+" get paths sorted
+" see: https://bit.ly/3l2t4aI
+let $VIMHOME=expand('<sfile>:p:h')
+let $VIMTEMPLATES='$VIMHOME/templates'
+let $VIMPLUG='$VIMHOME/autoload/plug.vim'
+" new files with an extension of sh should use template
+if has("autocmd")
+  augroup templates
+    autocmd BufNewFile *.sh 0r $VIMTEMPLATES/sh.skeleton
+  augroup END
+endif
 
 " keep cursor broadly in the center of the screen
 set scrolloff=15
 
 " sensible deaults for files
 set encoding=utf-8
-set ffs=unix " assume *nix line endings
+set fileformats=unix " assume *nix line endings
 
 "  TABS AND INDENTS
 set expandtab
@@ -24,7 +33,6 @@ set virtualedit=onemore           " cursor can go beyond end of text
 set backspace=indent,eol,start    " backspace works across lines
 
 " DISPLAY
-set background=dark
 set textwidth=79
 set colorcolumn=80,110            " 80 for code, 110 for writing
 
@@ -182,21 +190,17 @@ inoremap <leader>g :<C-o>:NextWordy<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                 VIM-PLUG
-if has('unix')
-  " set up vimplug automatically on linux
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
+if empty(glob($VIMPLUG))
+  silent !curl -fLo $VIMPLUG --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" leader z to call zotero cite function
 noremap <leader>z "=local_functions#ZoteroCite()<CR>p
 inoremap <C-z> <C-r>=local_functions#ZoteroCite()<CR>
 
 call plug#begin()
-"Plug 'https://github.com/vim-pandoc/vim-pandoc'
-" Plug 'https://github.com/vim-pandoc/vim-pandoc-syntax'
 Plug 'junegunn/limelight.vim'           " Distraction free writing
 Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
 Plug 'reedes/vim-lexical'               " Better spellcheck mappings
@@ -209,6 +213,6 @@ Plug 'dense-analysis/ale'               " ALE
 call plug#end()
 
 " colourscheme mow it's loaded...
-colo gruvbox
-" explicitly set it to dark 
-set bg=dark
+colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_dark='hard'
