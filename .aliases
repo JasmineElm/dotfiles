@@ -50,8 +50,8 @@ alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +
 # sys Info
 alias who='w -f'
 alias free='free -g'
-alias nwk='lsof -P -i -n' # what processes are using network
-
+alias nwk='lsof -P -i -n'          # what processes are using network
+alias net='watch -n 3 -d "ss -tb"' # and from teh other side
 
 
 # opening and closing stuff...

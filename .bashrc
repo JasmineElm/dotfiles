@@ -67,12 +67,14 @@ PS1="\W > "
 # a continuation should look like one...
 PS2="⋯ "
 
+
+# vi mode please
 set -o vi
 
 
 export MANPAGER="vim -M +MANPAGER -"
-# htop should use a dotfile for the sake of portability...
 
+# htop should use a dotfile for the sake of portability...
 export HTOPRC="$HOME.htoprc"
 
 #
