@@ -5,8 +5,8 @@ alias more='vi -R'
 alias wttr='curl wttr.in/Preston?QFAnq0'
 alias rss='newsboat'
 
-alias auua='sudo apt update && yes |sudo  apt upgrade && yes |sudo apt --purge autoremove && sudo apt clean'
-
+alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremove -y && sudo apt clean'
+alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
 # ls
 #
 alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
@@ -69,11 +69,6 @@ alias tks='tmux kill-server'
 if [ -d /data/data/com.termux/files/usr/bin ]; then 
   alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
 fi
-
-### PYTHON
-# Something has gone badly wrong if I'm trying to use Python 2...
-alias python='$(which python3)'
-alias pip='$(which python3) -m pip'
 
 ### OSX
 #
