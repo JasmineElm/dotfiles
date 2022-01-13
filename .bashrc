@@ -68,18 +68,14 @@ PS1="\W > "
 PS2="⋯ "
 
 
-# vi mode please
+# vi wherever possible please
 set -o vi
-
-
+VIMPATH; VIMPATH=$(command -v vi)
+export EDITOR=$VIMPATH
 export MANPAGER="vim -M +MANPAGER -"
 
 # htop should use a dotfile for the sake of portability...
 export HTOPRC="$HOME.htoprc"
 
-#
 PATH=$PATH:$HOME/.local/bin
-
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
