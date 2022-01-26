@@ -63,14 +63,14 @@ export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
 
 ###################################################
 # just display $BASEDIR..
-PS1="\W > "
+PS1="\\W > "
 # a continuation should look like one...
 PS2="⋯ "
 
 
 # vi wherever possible please
 set -o vi
-VIMPATH; VIMPATH=$(command -v vi)
+VIMPATH=$(command -v vi)
 export EDITOR=$VIMPATH
 export MANPAGER="vim -M +MANPAGER -"
 
