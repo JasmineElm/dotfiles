@@ -141,6 +141,9 @@ noremap <leader>b :! ./build -w<cr>
 " run shfmt on current file, force a redraw by jumping between marks
 noremap <leader>k :execute 'silent !shfmt -i 2 -ci -bn -w %'<cr> ````
 
+" paste a date
+noremap <leader>d :put =strftime('%a %d-%b-%y %OH:%M')<CR>A<CR>
+
 " SPLITS
 "
 noremap <leader>= <c-w>v
