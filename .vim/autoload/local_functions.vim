@@ -99,7 +99,7 @@ function! local_functions#ZoteroCite() abort
   " pick a format based on the filetype (customize at will)
   " see https://retorque.re/zotero-better-bibtex/citing/cayw/, requires zotero to be on...
   let format = &filetype =~ '.*md' ? 'citep' : 'pandoc'
-  let api_call = 'http://127.0.0.1:23119/better-bibtex/cayw?format='.format.'&brackets=1'
+  let api_call = 'http://127.0.0.1:23119/better-bibtex/cayw?format='.format
   let ref = system('curl -s '.shellescape(api_call))
   return ref
 endfunction

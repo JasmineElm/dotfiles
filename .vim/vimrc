@@ -3,6 +3,7 @@
 let $VIMHOME=expand('<sfile>:p:h')
 let $VIMTEMPLATES='$VIMHOME/templates'
 let $VIMPLUG='$VIMHOME/autoload/plug.vim'
+
 " new files with an extension of sh should use template
 if has("autocmd")
   augroup templates
@@ -42,14 +43,13 @@ set autowrite                     " save file on loss of focus
 autocmd FocusLost * wa
 autocmd CursorHold * wa
 
-
 " Display
 set incsearch                     " update searches as type
 set hlsearch                      " show previous matches
 set ignorecase                    " searches ignore case
 set smartcase                     " don't ignore capitals in searches
 set cursorline                    " highlight current line
-set showmatch                     "show matching bracket etc.
+set showmatch                     " show matching bracket etc.
 
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
@@ -60,15 +60,15 @@ augroup END
 "                                            REMAPPED KEYS
 " (plugin-specific stuff in the relevant section)
 
+" leader z to call zotero cite function
+noremap <leader>z "=local_functions#ZoteroCite()<CR>p
+
 " remove highlights 
 nnoremap <leader>/ :nohls <enter>
 
 " better yank and put
 noremap <leader>y "+y
 noremap <leader>p "+p
-
-" page down like We're in `more`
-nnoremap <Space> <C-f>
 
 " split windows using - and =
 nnoremap <leader>- <C-W>s
@@ -168,9 +168,18 @@ endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                      ALE
+highlight ALEErrorSign ctermbg        =NONE ctermfg=red
+highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
+let g:ale_linters_explicit            = 1
+let g:ale_lint_on_text_changed        = 'never'
+let g:ale_lint_on_enter               = 0
+let g:ale_lint_on_save                = 1
+let g:ale_fix_on_save                 = 1
 
-let g:ale_sign_error = '**'
-let g:ale_sign_warning = '!!'
+let g:ale_fixers = {
+\   '*':          ['remove_trailing_lines', 'trim_whitespace'],
+\   'markdown':   ['pandoc'],
+\}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
@@ -199,9 +208,6 @@ if empty(glob($VIMPLUG))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" leader z to call zotero cite function
-noremap <leader>z "=local_functions#ZoteroCite()<CR>p
-inoremap <C-z> <C-r>=local_functions#ZoteroCite()<CR>
 
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing

@@ -55,8 +55,6 @@ fi
 # shellcheck disable=SC1090
 [[ ! -f ~/.secret_aliases ]] || . ~/.secret_aliases
 
-bind -x '"\C-l": clear;'
-
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
@@ -73,6 +71,9 @@ set -o vi
 VIMPATH=$(command -v vi)
 export EDITOR=$VIMPATH
 export MANPAGER="vim -M +MANPAGER -"
+# but CTRL-L is useful too...
+bind -m vi-command 'Control-l: clear-screen'
+bind -m vi-insert 'Control-l: clear-screen'
 
 # htop should use a dotfile for the sake of portability...
 export HTOPRC="$HOME.htoprc"
