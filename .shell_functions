@@ -190,6 +190,37 @@ home() {
   fi
 }
 
+# New Blog post
+# sudo apt install ruby-rubygems ruby-bundler
+jekserve() {
+  xdg-open http://127.0.0.1:4000/ &
+  cd "$BLOG_DIR"../ || exit 1
+  bundle exec jekyll serve --livereload
+}
+
+create_post() {
+  cd "$BLOG_DIR" || exit 1
+  title="$*"
+  dte="$(date +%Y-%m-%d)"
+  tme="$(date +%T)"
+  safe_title=$(echo "$title" | sed 's/ /_/g' | tr '[:upper:]' '[:lower:]')
+  printf "%s---\nlayout: post\ntitle:  ""$title""\ndate:   " "$dte $tme" "\ncategories: writing\nsynopsis: "change me"\n---" >>"$dte-$safe_title.md"
+  vi "$dte-$safe_title.md"
+}
+
+nbp() {
+  post_title=$*
+  echo "$post_title"
+  tmux new-session -d
+  tmux split-window -v
+  tmux resize-pane -D 10
+  #sends keys to first and second terminals
+  tmux send -t 0:0.1 "jekserve" C-m
+  tmux send -t 0:0.0 "create_post $post_title" C-m
+  tmux select-pane -U
+  tmux -2 attach-session -d
+}
+
 _colours() {
   printf "          "
   for b in 0 1 2 3 4 5 6 7; do printf "%s  4${b}m "; done
