@@ -1,5 +1,3 @@
-
-
 "==========================================================
 "   TOGGLE EXPLORER WINDOW 
 "==========================================================
@@ -55,19 +53,23 @@ endfunction
 "==========================================================
 "
 " see https://stackoverflow.com/a/4588161
-"
-function! local_functions#WordCount() abort
-   let s:old_status = v:statusmsg
-   let position = getpos(".")
-   exe ":silent normal g\<c-g>"
-   let stat = v:statusmsg
-   let s:word_count = 0
-   if stat != '--No lines in buffer--'
-     let s:word_count = str2nr(split(v:statusmsg)[11])
-     let v:statusmsg = s:old_status
-   end
-   call setpos('.', position)
-   return s:word_count
+
+function! local_functions#WordCount()
+  let s:old_status = v:statusmsg
+  let position = getpos(".")
+  exe ":silent normal g\<c-g>"
+  let stat = v:statusmsg
+  let s:word_count = 0
+  if stat != '--No lines in buffer--'
+    if stat =~ "^Selected"
+      let s:word_count = str2nr(split(v:statusmsg)[5])
+    else
+      let s:word_count = str2nr(split(v:statusmsg)[11])
+    end
+    let v:statusmsg = s:old_status
+  end
+  call setpos('.', position)
+  return s:word_count 
 endfunction
 
 " CtrlP function for inserting a markdown link with Ctrl-X

@@ -63,7 +63,11 @@ augroup END
 " leader z to call zotero cite function
 noremap <leader>z "=local_functions#ZoteroCite()<CR>p
 
+<<<<<<< HEAD
 " remove highlights 
+=======
+" remove highlights
+>>>>>>> 68aa2a8 (sync: 2023-05-20 20:15)
 nnoremap <leader>/ :nohls <enter>
 
 " better yank and put
@@ -85,6 +89,16 @@ command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 nnoremap j gj
 nnoremap k gk
 
+" toggle numbers with F2
+map <F2> :set number!<Bar>set number?<CR>
+
+" source $MYVIMRC reloads the saved $MYVIMRC
+:nmap <Leader>s :source $MYVIMRC <CR>
+
+" opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
+:nmap <Leader>v :e $MYVIMRC <CR>
+
+:nmap <Leader>t :WakaTimeToday<CR>
 " markdown folding
 
 let g:markdown_folding = 1
@@ -112,8 +126,8 @@ augroup SpellUnderline
 augroup END
 
 " accept first match in spell check (insert mode)
-inoremap <C-L> <esc>[s1z=`]<CR>
-                                                                  
+imap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+nmap <C-l> [s1z=<c-o>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                             MD-IMG-PASTE
 autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
@@ -149,6 +163,19 @@ noremap <leader>d :put =strftime('%a %d-%b-%y %OH:%M')<CR>A<CR>
 noremap <leader>= <c-w>v
 noremap <leader>- <c-w>s
 
+
+" show number of errors
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? '' : printf(
+        \   '%d⨉ %d⚠ ',
+        \   all_non_errors,
+        \   all_errors
+        \)
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
 let g:limelight_conceal_ctermfg     = 'gray'
@@ -161,15 +188,17 @@ au BufNewFile,BufRead *.{md,mdown,mkd,mkdn,markdown,mdwn} call DistractionFreeWr
 
 function! DistractionFreeWriting()
     :Limelight
-    call lexical#init()
+    "call lexical#init()
     call litecorrect#init()
-    set rulerformat=%#TabLineSel#\ %{local_functions#WordCount()}%#Statement#\ %m\ %#VisualNOS#\ %l:%c
+    set rulerformat+=%{local_functions#WordCount()}
+    "set rulerformat+=%l:%c
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                      ALE
 highlight ALEErrorSign ctermbg        =NONE ctermfg=red
 highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
+<<<<<<< HEAD
 let g:ale_linters_explicit            = 1
 let g:ale_lint_on_text_changed        = 'never'
 let g:ale_lint_on_enter               = 0
@@ -180,6 +209,18 @@ let g:ale_fixers = {
 \   '*':          ['remove_trailing_lines', 'trim_whitespace'],
 \   'markdown':   ['pandoc'],
 \}
+=======
+"let g:ale_linters_explicit            = 1
+let g:ale_lint_on_text_changed        = 'never'
+let g:ale_lint_on_save                = 1
+let g:ale_fix_on_save                 = 1
+let g:ale_fixers = {
+\   '*':          ['remove_trailing_lines', 'trim_whitespace'],
+\   'markdown':   ['pandoc'],
+\   'shell':      ['shfmt'],
+\}
+let g:ale_linters = {'markdown':['vale']}
+>>>>>>> 68aa2a8 (sync: 2023-05-20 20:15)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
@@ -212,14 +253,14 @@ endif
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing
 Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
-Plug 'reedes/vim-lexical'               " Better spellcheck mappings
+"Plug 'reedes/vim-lexical'               " Better spellcheck mappings
 Plug 'reedes/vim-litecorrect'           " Better autocorrections
 Plug 'reedes/vim-wordy'                 " Weasel words and passive voice
-Plug 'morhetz/gruvbox'                  " a pretty theme... 
+Plug 'morhetz/gruvbox'                  " a pretty theme...
 Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
-
+Plug 'github/copilot.vim'               " AI codes better than me
 call plug#end()
 
 " colourscheme mow it's loaded...

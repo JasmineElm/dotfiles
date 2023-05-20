@@ -66,9 +66,13 @@ alias tks='tmux kill-server'
 
 ## TERMUX
 #
-if [ -d /data/data/com.termux/files/usr/bin ]; then 
+if [ -d /data/data/com.termux/files/usr/bin ]; then
   alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
 fi
+
+## NeoVim
+#
+alias nvi='nvim'
 
 ### OSX
 #
