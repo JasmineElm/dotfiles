@@ -63,7 +63,15 @@ augroup END
 " leader z to call zotero cite function
 noremap <leader>z "=local_functions#ZoteroCite()<CR>p
 
+<<<<<<< HEAD
 " remove highlights
+=======
+<<<<<<< HEAD
+" remove highlights
+=======
+" remove highlights
+>>>>>>> 68aa2a8 (sync: 2023-05-20 20:15)
+>>>>>>> 3e499f22ecdc7a0a093ee1dfb06adc8b9b62e6d4
 nnoremap <leader>/ :nohls <enter>
 
 " better yank and put
@@ -194,6 +202,24 @@ endfunction
 "                                                      ALE
 highlight ALEErrorSign ctermbg        =NONE ctermfg=red
 highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
+<<<<<<< HEAD
+"let g:ale_linters_explicit            = 1
+=======
+<<<<<<< HEAD
+let g:ale_linters_explicit            = 1
+>>>>>>> 3e499f22ecdc7a0a093ee1dfb06adc8b9b62e6d4
+let g:ale_lint_on_text_changed        = 'never'
+let g:ale_lint_on_save                = 1
+let g:ale_fix_on_save                 = 1
+let g:ale_fixers = {
+\   '*':          ['remove_trailing_lines', 'trim_whitespace'],
+\   'markdown':   ['pandoc'],
+\   'shell':      ['shfmt'],
+\}
+<<<<<<< HEAD
+let g:ale_linters = {'markdown':['vale']}
+=======
+=======
 "let g:ale_linters_explicit            = 1
 let g:ale_lint_on_text_changed        = 'never'
 let g:ale_lint_on_save                = 1
@@ -204,6 +230,8 @@ let g:ale_fixers = {
 \   'shell':      ['shfmt'],
 \}
 let g:ale_linters = {'markdown':['vale']}
+>>>>>>> 68aa2a8 (sync: 2023-05-20 20:15)
+>>>>>>> 3e499f22ecdc7a0a093ee1dfb06adc8b9b62e6d4
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
