@@ -5,11 +5,20 @@ case $- in
 *) return ;;
 esac
 
+## SHORTCUTS
 #ignore  C^S C^Q (suspend, resume commands)
 stty -ixon
+# but CTRL-L is useful too...
+bind -m vi-command 'Control-l: clear-screen'
+bind -m vi-insert 'Control-l: clear-screen'
 
+## SHOPTS
 shopt -s checkwinsize
+shopt -s cdspell
 shopt -s globstar
+shopt -s nocaseglob
+shopt -s autocd
+
 # HISTORY
 
 _HIST_DIR="$HOME/.bash_history/"
@@ -26,10 +35,9 @@ h() {
   grep -v "^#.*$" "$_HIST_DIR"* | cut -d: -f2- | grep -i "$*"
 }
 
-#hist() {
-#  grep -vh "^#.*$" "$_HIST_DIR"*
-#}
+############################################
 
+## PROMPT
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -44,7 +52,16 @@ else
   color_prompt=''
 fi
 
-# sources /etc/bash.bashrc).
+# just display $BASEDIR..
+PS1="\\W > "
+# a continuation should look like one...
+PS2="⋯ "
+
+## COMPLETION
+
+## case insensitive completion?
+# echo  "set completion-ignore-case" >> /etc/inputrc
+
 # shellcheck disable=SC1091
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -54,8 +71,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-## case insensitive completion?
-# echo  "set completion-ignore-case" >> /etc/inputrc
 
 # local shell functions and aliases
 # shellcheck disable=SC1090
@@ -65,27 +80,11 @@ fi
 # shellcheck disable=SC1090
 [[ ! -f ~/.secret_aliases ]] || . ~/.secret_aliases
 
-# Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
-
-###################################################
-# just display $BASEDIR..
-PS1="\\W > "
-# a continuation should look like one...
-PS2="⋯ "
-
-
 # vi wherever possible please
 set -o vi
-VIMPATH=$(command -v vi)
+VIMPATH=$(command -v vim)
 export EDITOR=$VIMPATH
 export MANPAGER="vim -M +MANPAGER -"
-# but CTRL-L is useful too...
-bind -m vi-command 'Control-l: clear-screen'
-bind -m vi-insert 'Control-l: clear-screen'
 
 # htop should use a dotfile for the sake of portability...
 export HTOPRC="$HOME.htoprc"
-
-PATH=$PATH:$HOME/.local/bin
