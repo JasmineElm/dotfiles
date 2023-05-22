@@ -146,7 +146,7 @@ update_remote() {
   # update, and push any changes
   branch=$(select_branch)
   switch_branch "$branch"
-  update
+  update_local
   out_of_sync=$(git status --porcelain | wc -l)
   [ "$out_of_sync" -eq 0 ] || pushit
 }
