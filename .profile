@@ -46,4 +46,3 @@ fi
 if [ -d "$HOME/gems" ] ; then
     PATH="$HOME/gems:$PATH"
 fi
-
