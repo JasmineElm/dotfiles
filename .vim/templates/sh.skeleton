@@ -1,15 +1,28 @@
 #!/usr/bin/env bash
 
-set -u -e -o errtrace -o pipefail                            
-trap "echo ""errexit: line $LINENO. Exit code: $?"" >&2" ERR                                            
-IFS=$'\n\t' 
+###  DEBUG          ###########################################################
+set -u -e -o errtrace -o pipefail
+trap "echo ""errexit: line $LINENO. Exit code: $?"" >&2" ERR
+IFS=$'\n\t'
 
-###  VARIABLES    ###########################################
+###  DESCRIPTION    ###########################################################
+# A script to
 
-_ME="$(basename "${0}")"
+###  VARIABLES      ###########################################################
 
-###  FUNCTIONS    ###########################################
+_FULL_PATH="$(realpath "${0}")"
+_PATH=${_FULL_PATH%/*}
+_FULL_FN=${_FULL_PATH##*/}
+_EXT=${_FULL_FN##*.}
+_FN=${_FULL_FN%.*}
+_logfile=$_PATH/$_FN.log
 
+###  FUNCTIONS      ###########################################################
+
+_write_log() {
+  # run a command $@, write it to a log matching the name of thsi script.
+  $@ >> $_logfile
+}
 
 _print_help() {
   cat <<HEREDOC
@@ -17,8 +30,8 @@ _print_help() {
 Help text goes here
 
 Usage:
-  ${_ME} [<arguments>]
-  ${_ME} -h | --help
+  ${_FULL_FN} [<arguments>]
+  ${_FULL_FN} -h | --help
 
 Options:
   -h    Show this screen.
@@ -30,16 +43,20 @@ _simple() {
   printf "Perform a simple operation.\\n"
 }
 
-###  MAIN         ###########################################  
+
+###  MAIN           ###########################################################
+
 
 _main() {
     if [[ -z "$*" ]]
-        then _print_help; 
+        then _print_help;
     fi
     while getopts ":ha" opt; do
         case $opt in
             a)
-            _simple
+              _write_log echo -e "Script Started >>>> $(date +%y%m%d)\n\n"
+              _simple
+              _write_log echo -e "Script complete >>>> $(date +%y%m%d)\n\n"
             ;;
             h)
             _print_help
