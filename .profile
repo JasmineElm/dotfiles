@@ -34,6 +34,16 @@ if [ -n "$ZSH_VERSION" ]; then
 	. "$HOME/.zshrc"
     fi
 fi
-if [ -e /home/x220/.nix-profile/etc/profile.d/nix.sh ]; then . /home/x220/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
-PATH=$PATH:/usr/local/bin/go/bin
+# if has go
+
+if [ -d "/usr/local/bin/go/bin" ] ; then
+    PATH="/usr/local/bin/go/bin:$PATH"
+fi
+
+# if has ruby gems
+
+if [ -d "$HOME/gems" ] ; then
+    PATH="$HOME/gems:$PATH"
+fi
+
