@@ -66,7 +66,8 @@ list_files() {
   find . -type f \
     -not -path "./.git*" \
     -not -path "$THIS_SCRIPT" \
-    -not -path ".swp"
+    -not -path ".swp" \
+    -not -path "README.md"
 }
 
 clean() {
