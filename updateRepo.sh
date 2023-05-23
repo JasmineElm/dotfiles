@@ -156,7 +156,7 @@ install(){
   # install the dotfiles
   git pull
   git checkout "$(select_branch)"
-  find . -not -path "./.git*" -not -path "$THIS_SCRIPT" -not -path ".swp" -type f -exec cp {} "$HOME"/{} \;
+  find . -not -path "./.git*" -not -path "$THIS_SCRIPT" -not -path ".swp" -type f -exec cp -rf {} "$HOME"/{} \;
 
 }
 
