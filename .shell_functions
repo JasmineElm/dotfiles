@@ -1,17 +1,46 @@
-# shellcheck shell=bash
+# shellcheck shell=sh
+
+current_shell() {
+  ps -p $$ | tail -1 | grep -o '[^ ]*$' | tr -cd [:alpha:]
+}
+
+## architecture specific stuff...
+#
+
+_droid_settings() {
+  # no  sudo in termux
+  export alias sudo=''
+}
+
+_wsl_settings() { true; }
+
+_osx_settings() {
+  export alias getopt='/opt/homebrew/Cellar/gnu-getopt/2.38/bin/getopt'
+}
+
 _pandoc_completion() {
   if [ "$(command -v pandoc | wc -l)" -ne 0 ]; then
     eval "$(pandoc --bash-completion)"
   fi
 }
 _startup_scripts() {
+  ## figure out what architecture we're running in
+  #  run any architecture specific scripts
   _pandoc_completion
+  if [ "$(uname -a | grep -c Android)" -eq 1 ]; then
+    _droid_settings
+  elif [ "$(uname -a | grep -c Microsoft)" -eq 1 ]; then
+    _wsl_settings
+  elif [ "$(uname -a | grep -c Darwin)" -eq 1 ]; then
+    _osx_settings
+  fi
 }
 
 reload() {
   cs=$(current_shell)
   rc=$HOME/.$cs'rc'
   echo "source $rc"
+  # -shellcheck correctly doesn't like sourcing vars-
   # shellcheck disable=SC1090
   . "$rc"
   _startup_scripts
@@ -24,7 +53,6 @@ run() {
   fi
   ./"$*"
 }
-
 mkcd() {
   mkdir -p "$1"
   cd "$1" || return 1
@@ -36,15 +64,13 @@ cdl() {
 }
 
 orig() {
-  cp -p "$*"{,.ORIG} || return 1
+  cp -p "$*" "$*".ORIG
 }
-
 bak() {
-  cp -p "$*"{,.BAK} || return 1
+  cp -p "$*" "$*".BAK
 }
-
 dbak() {
-  cp -p "$*"{,."$(date +%Y%m%d)"} || return 1
+  cp -p "$*" "$*"."$(date +%Y%m%d)"
 }
 
 _available_shells() {
@@ -76,28 +102,24 @@ password() {
     echo "$f"
 }
 
-three_random_words() {
-  random_word() {
+_three_random_words() {
+  _random_word() {
     # `sudo apt install wbritish` if this file doesn't exist
     shuf -n 1 /usr/share/dict/words
   }
   for i in $(seq 1 3); do
-    word="$word$(random_word)-"
+    word="$word$(_random_word)-"
   done
   echo "${word%?}"
 }
 
 # shellcheck disable=SC2120
-make_pass() {
+_make_pass() {
   __DEFAULT_MODE='complex'
   __MODE=${1:-$__DEFAULT_MODE}
   case $__MODE in
-  'complex' | 'c') 
-      password 12 | tee /dev/tty | xclip -selection clipboard
-  ;;
-  'phrase' | 'p') 
-      three_random_words | tee /dev/tty | xclip -selection clipboard
-  ;;
+  'complex' | 'c') password 12 ;;
+  'phrase' | 'p') _three_random_words ;;
   esac
 
 }
@@ -235,4 +257,3 @@ local_IP() {
 wtr() {
   curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
 }
-

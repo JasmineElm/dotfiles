@@ -39,7 +39,9 @@ alias ytab='youtube-dl -ic -o "%(title)s.%(ext)s" -x --audio-format mp3 --audio-
 #
 # Movie, embed metadata & subs, use external downloaded
 alias ytdl='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
-#
+
+
+alias ytdlp='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
 # same as above but use youtube-dlc instead
 alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
 #
@@ -69,10 +71,6 @@ alias tks='tmux kill-server'
 if [ -d /data/data/com.termux/files/usr/bin ]; then
   alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
 fi
-
-## NeoVim
-#
-alias nvi='nvim'
 
 ### OSX
 #
