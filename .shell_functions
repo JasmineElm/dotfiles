@@ -92,10 +92,10 @@ make_pass() {
   __DEFAULT_MODE='complex'
   __MODE=${1:-$__DEFAULT_MODE}
   case $__MODE in
-  'complex' | 'c') 
+  'complex' | 'c')
       password 12 | tee /dev/tty | xclip -selection clipboard
   ;;
-  'phrase' | 'p') 
+  'phrase' | 'p')
       three_random_words | tee /dev/tty | xclip -selection clipboard
   ;;
   esac
@@ -235,4 +235,3 @@ local_IP() {
 wtr() {
   curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
 }
-

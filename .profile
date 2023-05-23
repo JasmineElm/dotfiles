@@ -36,13 +36,11 @@ if [ -n "$ZSH_VERSION" ]; then
 fi
 
 # if has go
-
 if [ -d "/usr/local/bin/go/bin" ] ; then
     PATH="/usr/local/bin/go/bin:$PATH"
 fi
 
 # if has ruby gems
-
 if [ -d "$HOME/gems" ] ; then
     PATH="$HOME/gems:$PATH"
 fi
