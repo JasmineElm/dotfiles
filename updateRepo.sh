@@ -198,7 +198,6 @@ _main() {
       ;;
     r)
       update_remote
-      sync_branches
       ;;
     i)
       install
