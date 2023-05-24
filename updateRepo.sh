@@ -128,15 +128,15 @@ sync_branches() {
   # copy a file to all branches
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   for branch in $(git branch | cut -c 3-); do
+    git checkout "$branch"
     for file in "${_COMMON_FILES[@]}"; do
       echo "Copying $file to $branch"
-      git checkout "$branch"
       git checkout "$current_branch" -- "$file"
       git add "$file"
     done
     git commit -q -m "sync: $(datestamp)" && git push -u origin "$branch"
-    # return to the original branch
   done
+  git checkout "$current_branch"
 }
 
 switch_branch() {
