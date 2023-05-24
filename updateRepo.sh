@@ -132,6 +132,8 @@ copy_file_to_all_branches() {
     # add and commit the file if it's changed
     out_of_sync=$(git status --porcelain | wc -l)
     [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
+    # return to the original branch
+    git checkout - >/dev/null 2>&1
   done
 }
 
@@ -195,6 +197,7 @@ _main() {
       ;;
     r)
       update_remote
+      sync_branches
       ;;
     i)
       install
