@@ -124,7 +124,7 @@ branch_exists() {
   git rev-parse --verify "$branch" >/dev/null 2>&1 | wc -l
 }
 
-copy_file_to_all_branches() {
+sync_branches() {
   # copy a file to all branches
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   for branch in $(git branch | cut -c 3-); do
