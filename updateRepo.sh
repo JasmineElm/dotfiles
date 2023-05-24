@@ -7,7 +7,6 @@ IFS=$'\n\t'
 
 ###  VARIABLES      ###########################################################
 _MAIN_ONLY=0        ## set to 1 if you dont want a branch for each OS
-_COMMON_FILES=("updateRepo.sh" "README.md") ## files to sync to all branches
 
 readonly THIS_SCRIPT=$0
 _FULL_PATH="$(realpath "${0}")"
@@ -54,7 +53,6 @@ Options:
 
 HEREDOC
 }
-
 ### FUNCTIONS      ############################################################
 
 datestamp() {
@@ -73,11 +71,10 @@ list_files() {
 }
 
 clean() {
-  # remove empty, tmp, swap and backup files
-  find . -type f \( -iname "*.swp" \
-                  -o -iname "*~" \
-                  -o -iname "*.tmp" \) -delete
+  # remove empty, swap and backup files
+  find . -type f -iname "*.swp" -delete
   find . -empty -delete
+  find . -type f -iname "*~" -delete
 }
 
 delete_if_not_exists() {
@@ -89,8 +86,7 @@ delete_if_not_exists() {
 
 update_local() {
   # use rsync to copy files from $HOME to this repo
-  # Add new files to the repo and this'll sync them
-  # remove files from  $HOME and this'll delete them
+  #
   for f in $(list_files); do
     # strip the leading ./
     f=${f#./}
@@ -122,26 +118,6 @@ branch_exists() {
   # check if branch exists
   local branch="$1"
   git rev-parse --verify "$branch" >/dev/null 2>&1 | wc -l
-}
-
-copy_file_to_all_branches() {
-  # copy a file to all branches
-  local file="$1"
-  for branch in $(git branch | cut -c 3-); do
-    git checkout "$branch" "$file"
-    # add and commit the file if it's changed
-    out_of_sync=$(git status --porcelain | wc -l)
-    git add "$file"
-    [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
-    # return to the original branch
-    git checkout - >/dev/null 2>&1
-  done
-}
-
-sync_branches() {
-  # sync the updateRepo and README to all branches
-  copy_file_to_all_branches "$THIS_SCRIPT"
-  copy_file_to_all_branches "README.md"
 }
 
 switch_branch() {
@@ -176,14 +152,12 @@ update_remote() {
   [ "$out_of_sync" -eq 0 ] || pushit
 }
 
-
 install(){
   # install the dotfiles
   git pull
   git checkout "$(select_branch)"
-  rsync -a --exclude=".git*" \
-    --exclude="$THIS_SCRIPT" \
-    --exclude=".swp" . "$HOME"
+  find . -not -path "./.git*" -not -path "$THIS_SCRIPT" -not -path ".swp" -type f -exec cp -rf {} "$HOME"/{} \;
+
 }
 
 _main() {
@@ -198,7 +172,6 @@ _main() {
       ;;
     r)
       update_remote
-      sync_branches
       ;;
     i)
       install
