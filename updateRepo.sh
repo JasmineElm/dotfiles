@@ -127,14 +127,15 @@ branch_exists() {
 copy_file_to_all_branches() {
   # copy a file to all branches
   local file="$1"
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
   for branch in $(git branch | cut -c 3-); do
     echo "Copying $file to $branch"
-    git checkout "$branch" "$file"
+    git checkout "$branch"
+    git checkout "$current_branch" "$file"
     # add and commit the file if it's changed
     out_of_sync=$(git status --porcelain | wc -l)
     [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
     # return to the original branch
-    git checkout -
   done
 }
 
@@ -198,6 +199,7 @@ _main() {
       ;;
     r)
       update_remote
+      sync_branches
       ;;
     i)
       install
