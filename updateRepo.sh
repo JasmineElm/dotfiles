@@ -134,7 +134,7 @@ sync_branches() {
       git checkout "$current_branch" "$file"
       git add "$file"
     done
-    git commit -q -m "sync: $(datestamp)"
+    git commit -q -m "sync: $(datestamp)" && git push -u origin "$branch"
     # return to the original branch
   done
 }
