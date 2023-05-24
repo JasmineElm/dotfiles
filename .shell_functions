@@ -54,6 +54,9 @@ _available_shells() {
 is_shell() {
   _available_shells | grep -c "$1"
 }
+current_shell() {
+  basename "$SHELL"
+}
 
 swsh() {
   if [ "$(is_shell "$1")" -ne 0 ]; then
