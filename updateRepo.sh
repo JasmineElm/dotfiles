@@ -66,17 +66,23 @@ datestamp() {
 
 list_files() {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1bd8141 (sync: 2023-05-24 22:30)
   # list all files in the local repo that we'd want to update
   find . -type f \
     -not -path "./.git*" \
     -not -path "$THIS_SCRIPT" \
     -not -path ".swp"
+<<<<<<< HEAD
 =======
   # list all files in the repo
   find . -type f -not -path '*/\.*' \
       -not -path './README.md' \
       -not -path './updateRepo.sh'
 >>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
+=======
+>>>>>>> 1bd8141 (sync: 2023-05-24 22:30)
 }
 
 clean() {
@@ -131,19 +137,24 @@ branch_exists() {
   git rev-parse --verify "$branch" >/dev/null 2>&1 | wc -l
 }
 
-sync_branches() {
+copy_file_to_all_branches() {
   # copy a file to all branches
-  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local file="$1"
   for branch in $(git branch | cut -c 3-); do
-    git checkout "$branch"
-    for file in "${_COMMON_FILES[@]}"; do
-      echo "Copying $file to $branch"
-      git checkout "$current_branch" -- "$file"
-      git add "$file"
-    done
-    git commit -q -m "sync: $(datestamp)" && git push -u origin "$branch"
+    git checkout "$branch" "$file"
+    # add and commit the file if it's changed
+    out_of_sync=$(git status --porcelain | wc -l)
+    git add "$file"
+    [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
+    # return to the original branch
+    git checkout - >/dev/null 2>&1
   done
-  git checkout "$current_branch"
+}
+
+sync_branches() {
+  # sync the updateRepo and README to all branches
+  copy_file_to_all_branches "$THIS_SCRIPT"
+  copy_file_to_all_branches "README.md"
 }
 
 switch_branch() {
