@@ -49,7 +49,6 @@ Options:
   $_bld-h$_nrm    Show this screen.
   $_bld-l$_nrm    update local repo from $HOME
   $_bld-r$_nrm    update remote repo after updating local repo
-  $_bld-i$_nrm    install dotfiles from repo to $HOME
 
 HEREDOC
 }
@@ -67,7 +66,8 @@ list_files() {
   find . -type f \
     -not -path "./.git*" \
     -not -path "$THIS_SCRIPT" \
-    -not -path ".swp"
+    -not -path ".swp" \
+    -not -path "README.md"
 }
 
 clean() {
@@ -152,29 +152,18 @@ update_remote() {
   [ "$out_of_sync" -eq 0 ] || pushit
 }
 
-install(){
-  # install the dotfiles
-  git pull
-  git checkout "$(select_branch)"
-  find . -not -path "./.git*" -not -path "$THIS_SCRIPT" -not -path ".swp" -type f -exec cp -rf {} "$HOME"/{} \;
-
-}
-
 _main() {
   if [[ -z "$*" ]]; then
     print_help
     exit 1
   fi
-  while getopts ":lrhi" opt; do
+  while getopts ":lrh" opt; do
     case $opt in
     l)
       update_local
       ;;
     r)
       update_remote
-      ;;
-    i)
-      install
       ;;
     h)
       print_help
