@@ -137,24 +137,19 @@ branch_exists() {
   git rev-parse --verify "$branch" >/dev/null 2>&1 | wc -l
 }
 
-copy_file_to_all_branches() {
-  # copy a file to all branches
-  local file="$1"
-  for branch in $(git branch | cut -c 3-); do
-    git checkout "$branch" "$file"
-    # add and commit the file if it's changed
-    out_of_sync=$(git status --porcelain | wc -l)
-    git add "$file"
-    [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
-    # return to the original branch
-    git checkout - >/dev/null 2>&1
-  done
-}
-
 sync_branches() {
-  # sync the updateRepo and README to all branches
-  copy_file_to_all_branches "$THIS_SCRIPT"
-  copy_file_to_all_branches "README.md"
+  # copy a file to all branches
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  for branch in $(git branch | cut -c 3-); do
+    git checkout "$branch"
+    for file in "${_COMMON_FILES[@]}"; do
+      echo "Copying $file to $branch"
+      git checkout "$current_branch" -- "$file"
+      git add "$file"
+    done
+    git commit -q -m "sync: $(datestamp)" && git push -u origin "$branch"
+  done
+  git checkout "$current_branch"
 }
 
 switch_branch() {
