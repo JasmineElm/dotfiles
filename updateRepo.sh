@@ -65,11 +65,18 @@ datestamp() {
 ## List and update local files
 
 list_files() {
+<<<<<<< HEAD
   # list all files in the local repo that we'd want to update
   find . -type f \
     -not -path "./.git*" \
     -not -path "$THIS_SCRIPT" \
     -not -path ".swp"
+=======
+  # list all files in the repo
+  find . -type f -not -path '*/\.*' \
+      -not -path './README.md' \
+      -not -path './updateRepo.sh'
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
 }
 
 clean() {

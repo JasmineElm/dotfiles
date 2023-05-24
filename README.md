@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # My Dotfiles                                                                                                                  
+=======
+# My Dotfiles
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
 
 I use \*nix in a varietyof environments. I have traditionally written
 config that covers all of these, using conditions to add local
@@ -17,11 +21,20 @@ maintainable moving forward.
 There are two approaches. Its up to you which one suits.
 
 1.  checkout the "closest" branch. If you're using Linux, you could
+<<<<<<< HEAD
     checkout the `linux` branch and `./updateRepo -i` (install) . You'll get my
     config as a base to work from.  
 2.  checkout `main` and work from a clean slate. If you want to avoid my
     config (and you should!) checkout main, add your dotfiles, change the
     `_MAIN_ONLY` flag in the script, and `./updateRepo -r` to sync your changes
+=======
+    checkout the `linux` branch and `./updateRepo -i` (install) . You'll
+    get my config as a base to work from.
+2.  checkout `main` and work from a clean slate. If you want to avoid my
+    config (and you should!) checkout main, add your dotfiles, change
+    the `_MAIN_ONLY` flag in the script, and `./updateRepo -r` to sync
+    your changes
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
 
 In either case, you'll want to `rm .git* && git init` to get your config
 tracking a repo of your own, but you already knew that didn't you ;)

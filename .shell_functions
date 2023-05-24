@@ -54,6 +54,9 @@ _available_shells() {
 is_shell() {
   _available_shells | grep -c "$1"
 }
+current_shell() {
+  basename "$SHELL"
+}
 
 swsh() {
   if [ "$(is_shell "$1")" -ne 0 ]; then
@@ -92,10 +95,17 @@ make_pass() {
   __DEFAULT_MODE='complex'
   __MODE=${1:-$__DEFAULT_MODE}
   case $__MODE in
+<<<<<<< HEAD
   'complex' | 'c') 
       password 12 | tee /dev/tty | xclip -selection clipboard
   ;;
   'phrase' | 'p') 
+=======
+  'complex' | 'c')
+      password 12 | tee /dev/tty | xclip -selection clipboard
+  ;;
+  'phrase' | 'p')
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
       three_random_words | tee /dev/tty | xclip -selection clipboard
   ;;
   esac

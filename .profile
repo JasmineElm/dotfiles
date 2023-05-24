@@ -36,13 +36,19 @@ if [ -n "$ZSH_VERSION" ]; then
 fi
 
 # if has go
+<<<<<<< HEAD
 
+=======
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
 if [ -d "/usr/local/bin/go/bin" ] ; then
     PATH="/usr/local/bin/go/bin:$PATH"
 fi
 
 # if has ruby gems
+<<<<<<< HEAD
 
+=======
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
 if [ -d "$HOME/gems" ] ; then
     PATH="$HOME/gems:$PATH"
 fi

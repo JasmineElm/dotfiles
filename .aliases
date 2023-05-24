@@ -1,9 +1,7 @@
 # read-only Vi is more pleasant to use than more
 alias more='vi -R'
 
-
 alias wttr='curl wttr.in/Preston?QFAnq0'
-alias rss='newsboat'
 
 alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremove -y && sudo apt clean'
 alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
@@ -19,7 +17,6 @@ alias ...='cd ../../ && pwd'
 alias ....='cd ../../../ && pwd'
 alias ....='cd ../../../../ && pwd'
 
-alias hist='history | grep '
 alias dfh='df -h | grep /dev/sd | sort'
 alias tailf='tail -f'
 
@@ -46,13 +43,11 @@ alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +
 # External downloader can be less performant: this ignores it
 alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i '
 
-
 # sys Info
 alias who='w -f'
 alias free='free -g'
 alias nwk='lsof -P -i -n'          # what processes are using network
 alias net='watch -n 3 -d "ss -tb"' # and from teh other side
-
 
 # opening and closing stuff...
 alias open='xdg-open'
@@ -63,6 +58,7 @@ alias ifconfig='ip -br -c a'
 
 # tmux - see also home() function in ~/.shell_functions
 alias tks='tmux kill-server'
+<<<<<<< HEAD
 
 ## TERMUX
 #
@@ -77,3 +73,5 @@ alias nvi='nvim'
 ### OSX
 #
 alias ._="find . -name '._*' -exec rm -v {} \; && find . -name '.DS_Store' -exec rm -v {} \;"
+=======
+>>>>>>> a7cbf5c (sync: 2023-05-24 22:29)
