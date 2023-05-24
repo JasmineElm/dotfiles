@@ -132,6 +132,7 @@ copy_file_to_all_branches() {
     echo "Copying $file to $branch"
     git checkout "$branch"
     git checkout "$current_branch" "$file"
+    git add "$file"
     # add and commit the file if it's changed
     out_of_sync=$(git status --porcelain | wc -l)
     [ "$out_of_sync" -eq 0 ] || git commit -q -m "sync: $(datestamp)"
