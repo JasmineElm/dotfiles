@@ -7,17 +7,9 @@ IFS=$'\n\t'
 
 ###  VARIABLES      ###########################################################
 _MAIN_ONLY=0        ## set to 1 if you dont want a branch for each OS
-_COMMON_FILES=("updateRepo.sh" "README.md") ## files to sync to all branches
-
-readonly THIS_SCRIPT=$0
-_FULL_PATH="$(realpath "${0}")"
-_PATH=${_FULL_PATH%/*}
-_FULL_FN=${_FULL_PATH##*/}
-_EXT=${_FULL_FN##*.}
-_FN=${_FULL_FN%.*}
+_COMMON_FILES=(updateRepo.sh README.md) ## files to sync to all branches
 
 ## Colours
-
 _bld=$(tput bold)
 _nrm=$(tput sgr0)
 
@@ -62,14 +54,15 @@ datestamp() {
   date +"%Y-%m-%d %H:%M"
 }
 
-## List and update local files
-
 list_files() {
+
   # list all files in the local repo that we'd want to update
-  find . -type f \
-    -not -path "./.git*" \
-    -not -path "$THIS_SCRIPT" \
-    -not -path ".swp"
+  filelist=$(find . -type f -not -path "./.git*" | sed 's/^\.\///')
+  # filter out the $_COMMON_FILES
+  for f in "${_COMMON_FILES[@]}"; do
+    filelist=$(echo "$filelist" | grep -v "$f")
+  done
+  echo "$filelist"
 }
 
 clean() {
@@ -92,8 +85,7 @@ update_local() {
   # Add new files to the repo and this'll sync them
   # remove files from  $HOME and this'll delete them
   for f in $(list_files); do
-    # strip the leading ./
-    f=${f#./}
+    echo "$f"
     rsync -a "$HOME/$f" "$f" 2>/dev/null || true
     delete_if_not_exists "$f" "$HOME/"
   done
