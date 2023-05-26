@@ -7,7 +7,8 @@ IFS=$'\n\t'
 
 ###  VARIABLES      ###########################################################
 _MAIN_ONLY=0        ## set to 1 if you dont want a branch for each OS
-_COMMON_FILES=(updateRepo.sh README.md) ## files to sync to all branches
+_THIS_SCRIPT=$(basename "$0")
+_COMMON_FILES=($_THIS_SCRIPT README.md) ## files to sync to all branches
 
 ## Colours
 _bld=$(tput bold)
@@ -24,10 +25,10 @@ is_main_only() {
 print_help() {
   cat <<HEREDOC
 
-Update dotfiles repo by copying relevant files from '$HOME'.
+Update dotfiles repo by copying relevant files from \$HOME.
 To manually add files, manually copy them to the repo
-ensuring that their repo path matches the relative path  from '$HOME'
-  e.g., '$HOME/.vim/vimrc' should be copied to '.vim/vimrc' in the repo.
+ensuring that their repo path matches the relative path  from \$HOME
+  e.g., '\$HOME/.vim/vimrc' should be copied to '.vim/vimrc' in the repo.
 
 By default, this script will create a branch for each OS
 and push changes to that branch.
@@ -36,13 +37,13 @@ use the $_bld"_IS_MAIN_ONLY"$_nrm variable.
 
 
 Usage:
-  ${_FULL_FN} [<arguments>]
+  $_THIS_SCRIPT [<arguments>]
 
 Options:
   $_bld-h$_nrm    Show this screen.
-  $_bld-l$_nrm    update local repo from $HOME
+  $_bld-l$_nrm    update local repo from \$HOME
   $_bld-r$_nrm    update remote repo after updating local repo
-  $_bld-i$_nrm    install dotfiles from repo to $HOME
+  $_bld-i$_nrm    install dotfiles from repo to \$HOME
 
 HEREDOC
 }
@@ -55,10 +56,8 @@ datestamp() {
 }
 
 list_files() {
-
-  # list all files in the local repo that we'd want to update
+  # list all files that aren't .git* or in $_COMMON_FILES
   filelist=$(find . -type f -not -path "./.git*" | sed 's/^\.\///')
-  # filter out the $_COMMON_FILES
   for f in "${_COMMON_FILES[@]}"; do
     filelist=$(echo "$filelist" | grep -v "$f")
   done
@@ -66,7 +65,7 @@ list_files() {
 }
 
 clean() {
-  # remove empty, tmp, swap and backup files
+  # Remove empty, swap and temp files
   find . -type f \( -iname "*.swp" \
                   -o -iname "*~" \
                   -o -iname "*.tmp" \) -delete
@@ -74,7 +73,7 @@ clean() {
 }
 
 delete_if_not_exists() {
-  # delete a file if it doesn't exist in the path
+  # delete a file if it doesn't also exist in the path
   local f="$1"
   local path="$2"
   [[ ! -f $path$f ]] && rm "$f"
@@ -82,19 +81,16 @@ delete_if_not_exists() {
 
 update_local() {
   # use rsync to copy files from $HOME to this repo
-  # Add new files to the repo and this'll sync them
+  # Add new files to the _repo_ and this'll sync them
   # remove files from  $HOME and this'll delete them
   for f in $(list_files); do
-    echo "$f"
     rsync -a "$HOME/$f" "$f" 2>/dev/null || true
     delete_if_not_exists "$f" "$HOME/"
   done
   clean
 }
 
-## Branch management
-select_branch() {
-  local branch
+determine_branch() {
   unm=$(uname -a)
   if [[ $unm == *"Microsoft"* ]]; then
     branch="wsl"
@@ -110,6 +106,22 @@ select_branch() {
   echo "$branch"
 }
 
+## Branch management
+select_branch() {
+  local branch
+  if [[ $(is_main_only) -eq 1 ]]; then
+    branch="main"
+  else
+    branch=$(determine_branch)
+  fi
+  echo "$branch"
+}
+
+list_remote_branches() {
+  # list all remote branches
+  git ls-remote --heads origin | cut -c 53-
+}
+
 branch_exists() {
   # check if branch exists
   local branch="$1"
@@ -119,7 +131,7 @@ branch_exists() {
 sync_branches() {
   # copy a file to all branches
   current_branch=$(git rev-parse --abbrev-ref HEAD)
-  for branch in $(git branch | cut -c 3-); do
+  for branch in $(list_remote_branches); do
     git checkout "$branch"
     for file in "${_COMMON_FILES[@]}"; do
       echo "Copying $file to $branch"
@@ -148,8 +160,7 @@ switch_branch() {
 }
 
 pushit() {
-  git pull
-  git add .
+  git pull && git add .
   git commit -q -m "sync: $(datestamp)"
   git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
 }
@@ -169,7 +180,7 @@ install(){
   git pull
   git checkout "$(select_branch)"
   rsync -a --exclude=".git*" \
-    --exclude="$THIS_SCRIPT" \
+    --exclude-from=<(printf '%s\n' "${_COMMON_FILES[@]}") \
     --exclude=".swp" . "$HOME"
 }
 
@@ -197,7 +208,7 @@ _main() {
       echo "$_bld"ERROR: Invalid option: -"$OPTARG $_nrm"
       print_help
       exit 1
-      ;;  # unknown option
+      ;;
     esac
   done
 }
