@@ -122,8 +122,8 @@ augroup SpellUnderline
 augroup END
 
 " accept first match in spell check (insert mode)
-inoremap <C-L> <esc>[s1z=`]<CR>
-
+imap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+nmap <C-l> [s1z=<c-o>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                             MD-IMG-PASTE
 autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
@@ -186,8 +186,8 @@ function! DistractionFreeWriting()
     :Limelight
     "call lexical#init()
     call litecorrect#init()
-    set rulerformat+=%-14{local_functions#WordCount()}
-    set rulerformat+=%l:%c
+    set rulerformat+=%{local_functions#WordCount()}
+    "set rulerformat+=%l:%c
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -196,16 +196,14 @@ highlight ALEErrorSign ctermbg        =NONE ctermfg=red
 highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
 "let g:ale_linters_explicit            = 1
 let g:ale_lint_on_text_changed        = 'never'
-let g:ale_lint_on_enter               = 0
 let g:ale_lint_on_save                = 1
 let g:ale_fix_on_save                 = 1
-let g:ale_linters = {'markdown':['vale', 'languagetool']}
 let g:ale_fixers = {
 \   '*':          ['remove_trailing_lines', 'trim_whitespace'],
 \   'markdown':   ['pandoc'],
 \   'shell':      ['shfmt'],
 \}
-
+let g:ale_linters = {'markdown':['vale']}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
@@ -245,14 +243,10 @@ Plug 'morhetz/gruvbox'                  " a pretty theme...
 Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
-Plug 'github/copilot.vim'               " bots code better than me
+Plug 'github/copilot.vim'               " AI codes better than me
 call plug#end()
 
 " colourscheme mow it's loaded...
 colorscheme gruvbox
 set background=dark
 let g:gruvbox_contrast_dark='hard'
-
-" fzf
-"
-set rtp+=/opt/homebrew/opt/fzf

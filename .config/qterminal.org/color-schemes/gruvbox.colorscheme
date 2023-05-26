@@ -1,0 +1,104 @@
+# dark0
+[Background]
+Bold=false
+Color=40,40,40
+
+# dark4
+[BackgroundIntense]
+Bold=false
+Color=124,111,100
+
+# dark0_soft
+[Color0]
+Bold=false
+Color=50,48,47
+
+# light0_soft
+[Color0Intense]
+Bold=false
+Color=242,229,188
+
+# faded_red
+[Color1]
+Bold=false
+Color=157,0,6
+
+# bright_red
+[Color1Intense]
+Bold=false
+Color=251,73,52
+
+
+# faded_green
+[Color2]
+Bold=false
+Color=121,116,14
+
+# bright_green
+[Color2Intense]
+Bold=false
+Color=184,187,38
+
+# faded_yellow
+[Color3]
+Bold=false
+Color=181,118,20
+
+# bright_yellow
+[Color3Intense]
+Bold=false
+Color=250,189,47
+
+# faded_blue
+[Color4]
+Bold=false
+Color=7,102,120
+
+# bright_blue
+[Color4Intense]
+Bold=false
+Color=131,165,152
+
+# faded_purple
+[Color5]
+Bold=false
+Color=143,63,113
+
+# bright_purple
+[Color5Intense]
+Bold=false
+Color=211,134,155
+
+# faded_aqua
+[Color6]
+Bold=false
+Color=66,123,88
+
+# bright_aqua
+[Color6Intense]
+Bold=false
+Color=142,192,124
+
+# light0
+[Color7]
+Bold=false
+Color=253,244,193
+
+# light0_hard
+[Color7Intense]
+Bold=false
+Color=249,245,215
+
+
+[Foreground]
+Bold=false
+Color=239,223,179
+
+
+[ForegroundIntense]
+Bold=false
+Color=249,245,215
+
+
+[General]
+Description=Linux Colors

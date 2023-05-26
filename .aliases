@@ -1,14 +1,13 @@
 # read-only Vi is more pleasant to use than more
 alias more='vi -R'
 
-
 alias wttr='curl wttr.in/Preston?QFAnq0'
-alias rss='newsboat'
 
 alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremove -y && sudo apt clean'
 alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
 # ls
 #
+alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
 alias ll='ls -1AqF'
 
 # Lazy movement
@@ -18,7 +17,6 @@ alias ...='cd ../../ && pwd'
 alias ....='cd ../../../ && pwd'
 alias ....='cd ../../../../ && pwd'
 
-alias hist='history | grep '
 alias dfh='df -h | grep /dev/sd | sort'
 alias tailf='tail -f'
 
@@ -38,22 +36,18 @@ alias ytab='youtube-dl -ic -o "%(title)s.%(ext)s" -x --audio-format mp3 --audio-
 #
 # Movie, embed metadata & subs, use external downloaded
 alias ytdl='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
-
-
-alias ytdlp='yt-dlp --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
+#
 # same as above but use youtube-dlc instead
 alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i --external-downloader aria2c --external-downloader-args "-c -j 3 -x 3 -s 3 -k 1M" '
 #
 # External downloader can be less performant: this ignores it
 alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i '
 
-
 # sys Info
 alias who='w -f'
 alias free='free -g'
 alias nwk='lsof -P -i -n'          # what processes are using network
 alias net='watch -n 3 -d "ss -tb"' # and from teh other side
-
 
 # opening and closing stuff...
 alias open='xdg-open'
@@ -64,13 +58,3 @@ alias ifconfig='ip -br -c a'
 
 # tmux - see also home() function in ~/.shell_functions
 alias tks='tmux kill-server'
-
-## TERMUX
-#
-if [ -d /data/data/com.termux/files/usr/bin ]; then
-  alias rsdots='cd && rclone copy -Lq dropbox:termux_dotfiles .'
-fi
-
-### OSX
-#
-alias ._="find . -name '._*' -exec rm -v {} \; && find . -name '.DS_Store' -exec rm -v {} \;"
