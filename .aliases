@@ -9,7 +9,6 @@ alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremo
 alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
 # ls
 #
-alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
 alias ll='ls -1AqF'
 
 # Lazy movement

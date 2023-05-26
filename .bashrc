@@ -1,22 +1,32 @@
 # shellcheck shell=bash
-# If not running interactively, don't do anything
-case $- in
-*i*) ;;
-*) return ;;
-esac
 
-#ignore  C^S C^Q (suspend, resume commands)
+[[ -f ~/.shell_functions ]] && source  ~/.shell_functions
+[[ -f ~/.aliases ]] && source  ~/.aliases
+[[ -f ~/.secret_aliases ]] && source  ~/.secret_aliases
+
 stty -ixon
 
-# HISTORY
-HISTSIZE=1000
-HISTFILESIZE=2000
-HISTCONTROL=ignoreboth
-HISTTIMEFORMAT="%d-%m-%y %H:%M  "
-shopt -s histappend
-shopt -s checkwinsize
-shopt -s globstar
+#### HISTORY #################################################################
 
+_HIST_DIR="$HOME/.bash_history/"
+_create_hist_dir
+HISTFILE="$_HIST_DIR"history-$(date +%Y%m%d-%H%M%S)
+HISTSIZE=-1
+HISTFILESIZE=-1
+HISTTIMEFORMAT="%d-%m-%y %H:%M  "
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+
+#### SHOPTS ##################################################################
+
+shopt -s checkwinsize
+shopt -s cdspell
+shopt -s globstar
+shopt -s nocaseglob
+shopt -s autocd
+
+#### PROMPT ##################################################################
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 xterm-color | *-256color) color_prompt=yes ;;
@@ -29,30 +39,34 @@ else
   color_prompt=''
 fi
 
-# sources /etc/bash.bashrc).
-# shellcheck disable=SC1091
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
+#### COMPLETION ##############################################################
 ## case insensitive completion?
 # echo  "set completion-ignore-case" >> /etc/inputrc
+# shellcheck disable=SC1091
+# brew|apt  install bash-completion
+[[ -f /usr/share/bash-completion/bash_completion ]] && \
+  . /usr/share/bash-completion/bash_completion
+[[ -f /etc/bash_completion ]] && \
+  . /etc/bash_completion
 
-# local shell functions and aliases
-# shellcheck disable=SC1090
-[[ ! -f ~/.shell_functions ]] || . ~/.shell_functions
-# shellcheck disable=SC1090
-[[ ! -f ~/.aliases ]] || . ~/.aliases
-# shellcheck disable=SC1090
-[[ ! -f ~/.secret_aliases ]] || . ~/.secret_aliases
-
+#### PATH ####################################################################
 # Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH:~/.local/bin"
+[[ -d ~/.local/bin ]] && PATH="$PATH:~/.local/bin"
+[[ -d /opt/homebrew/bin ]] && PATH="$PATH:/opt/homebrew/bin"
+[[ -d /opt/homebrew/opt/gnu-getopt/bin ]] && \
+  PATH="$PATH:/opt/homebrew/opt/gnu-getopt/bin"
+[[ -d /opt/homebrew/opt/coreutils/libexec/gnubin  ]] && \
+  PATH="$PATH:/opt/homebrew/opt/coreutils/libexec/gnubin"
+## GEMS
+[[ -d ~/gems ]] &&  export GEM_HOME="~/gems"
+[[ -d $GEM_HOME/bin ]] &&  PATH="$GEM_HOME/bin"
+
+MANPATH="/usr/local/opt/findutils/share/man:$MANPATH"
+VIMPATH=$(command -v vi)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ###################################################
 # just display $BASEDIR..
@@ -60,10 +74,8 @@ PS1="\\W > "
 # a continuation should look like one...
 PS2="⋯ "
 
-
 # vi wherever possible please
 set -o vi
-VIMPATH=$(command -v vi)
 export EDITOR=$VIMPATH
 export MANPAGER="vim -M +MANPAGER -"
 # but CTRL-L is useful too...
@@ -74,10 +86,6 @@ bind -m vi-insert 'Control-l: clear-screen'
 export HTOPRC="$HOME.htoprc"
 # source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh
 # source $(brew --prefix)/opt/chruby/share/chruby/auto.sh
-
-PATH=$PATH:$HOME/.local/bin
-PATH="/opt/homebrew/bin:/opt/homebrew/opt/gnu-getopt/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-MANPATH="/usr/local/opt/findutils/share/man:$MANPATH"
 
 
 
@@ -95,7 +103,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
