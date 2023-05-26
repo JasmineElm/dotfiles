@@ -65,7 +65,7 @@ list_files() {
 }
 
 clean() {
-  # Remove empty, swap and temp files
+  # remove empty, tmp, swap and backup files
   find . -type f \( -iname "*.swp" \
                   -o -iname "*~" \
                   -o -iname "*.tmp" \) -delete
@@ -81,7 +81,7 @@ delete_if_not_exists() {
 
 update_local() {
   # use rsync to copy files from $HOME to this repo
-  # Add new files to the _repo_ and this'll sync them
+  # Add new files to the repo and this'll sync them
   # remove files from  $HOME and this'll delete them
   for f in $(list_files); do
     rsync -a "$HOME/$f" "$f" 2>/dev/null || true
