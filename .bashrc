@@ -23,7 +23,7 @@ shopt -s autocd
 
 _HIST_DIR="$HOME/.bash_history/"
 [[ ! -d "$_HIST_DIR" ]] && mkdir -p "$_HIST_DIR"
-HISTFILE="$_HIST_DIR"history-$(date +%Y%m%d-%H%M%S)
+HISTFILE="$_HIST_DIR"history-$(date +%Y%m)
 HISTSIZE=-1
 HISTFILESIZE=-1
 HISTTIMEFORMAT="%d-%m-%y %H:%M  "
@@ -71,7 +71,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 # local shell functions and aliases
 # shellcheck disable=SC1090
 [[ ! -f ~/.shell_functions ]] || . ~/.shell_functions
@@ -88,3 +87,18 @@ export MANPAGER="vim -M +MANPAGER -"
 
 # htop should use a dotfile for the sake of portability...
 export HTOPRC="$HOME.htoprc"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/james/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/james/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/james/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/james/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
