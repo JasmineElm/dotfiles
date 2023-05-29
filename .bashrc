@@ -64,15 +64,20 @@ fi
 MANPATH="/usr/local/opt/findutils/share/man:$MANPATH"
 VIMPATH=$(command -v vi)
 
-export NVM_DIR="$HOME/.nvm"
+[[ -d $HOME/.nvm ]] && export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ###################################################
 # just display $BASEDIR..
-PS1="\\W > "
+PS1="\\W \$ "
 # a continuation should look like one...
 PS2="⋯ "
+if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
+  GIT_PROMPT_ONLY_IN_REPO=1
+  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+fi
 
 # vi wherever possible please
 set -o vi
