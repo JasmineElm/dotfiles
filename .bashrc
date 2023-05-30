@@ -11,6 +11,7 @@ stty -ixon
 # but CTRL-L is useful too...
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
+#bind -v
 
 ## SHOPTS
 shopt -s checkwinsize
@@ -57,6 +58,11 @@ PS1="\\W > "
 # a continuation should look like one...
 PS2="⋯ "
 
+[[ -f /etc/bash_completion.d/git-prompt ]] && . /etc/bash_completion.d/git-prompt
+[[ -f /etc/bash_completion.d/git-completion ]] && . /etc/bash_completion.d/git-completion
+export GIT_PS1_SHOWDIRTYSTATE=1
+PS1='\[\033[01;34m\]\W \[\033[00m\]$(__git_ps1 "[%s]") '
+
 ## COMPLETION
 
 ## case insensitive completion?
@@ -101,4 +107,5 @@ else
     fi
 fi
 unset __conda_setup
+conda deactivate
 # <<< conda initialize <<<
