@@ -59,14 +59,14 @@ PS1="\\W > "
 PS2="⋯ "
 
 [[ -f /etc/bash_completion.d/git-prompt ]] && . /etc/bash_completion.d/git-prompt
-[[ -f /etc/bash_completion.d/git-completion ]] && . /etc/bash_completion.d/git-completion
 export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWCOLORHINTS=1
 PS1='\[\033[01;34m\]\W \[\033[00m\]$(__git_ps1 "[%s]") '
 
 ## COMPLETION
 
 ## case insensitive completion?
-# echo  "set completion-ignore-case" >> /etc/inputrc
+[[ -f /etc/bash_completion.d/git-completion ]] && . /etc/bash_completion.d/git-completion
 
 # shellcheck disable=SC1091
 if ! shopt -oq posix; then
