@@ -132,7 +132,7 @@ sync_branches() {
   # copy a file to all branches
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   for branch in $(list_remote_branches); do
-    git checkout "$branch"
+    git checkout "$branch" && git pull
     for file in "${_COMMON_FILES[@]}"; do
       echo "Copying $file to $branch"
       git checkout "$current_branch" -- "$file"
