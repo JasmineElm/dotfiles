@@ -34,8 +34,11 @@ set virtualedit=onemore           " cursor can go beyond end of text
 set backspace=indent,eol,start    " backspace works across lines
 
 " DISPLAY
+" assume non-markdown, see leader w
 set textwidth=79
-set colorcolumn=80,110            " 80 for code, 110 for writing
+set colorcolumn=80
+set number
+" margin should be same colour as background
 
 " Read and write
 set autoread                      " if file is modified elsewhere, reload it
@@ -122,8 +125,8 @@ augroup SpellUnderline
 augroup END
 
 " accept first match in spell check (insert mode)
-inoremap <C-L> <esc>[s1z=`]<CR>
-
+imap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+nmap <C-l> [s1z=<c-o>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                             MD-IMG-PASTE
 autocmd FileType markdown nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
@@ -177,17 +180,65 @@ endfunction
 let g:limelight_conceal_ctermfg     = 'gray'
 let g:limelight_conceal_guifg       = 'DarkGray'
 let g:limelight_default_coefficient = 0.3
-map <leader>w :Limelight!!<CR>
+" map <leader>w :Limelight!!<CR>
+" w toggles  DistractionFreeWriting
+map <leader>w :call DistractionFreeWriting()<CR>
 
 " turn-on distraction free writing mode for markdown files
 au BufNewFile,BufRead *.{md,mdown,mkd,mkdn,markdown,mdwn} call DistractionFreeWriting()
 
+function ToggleSyntax()
+  " turn syntax highlighting on/off
+    if exists("g:syntax_on")
+        syntax off
+    else
+        syntax enable
+    endif
+endfunction
+
+function ToggleRuler()
+  " toggle ruler
+    set ruler!
+endfunction
+
+function ToggleColorColumn()
+  " if colorcolumn is set to 80 then set it to 110 and vice versa
+  "
+    if exists("+colorcolumn") && &colorcolumn == 80
+        set colorcolumn=110
+    else
+        set colorcolumn=80
+    endif
+endfunction
+
+function ToggleGutter()
+  " toggle gutter
+    " add a 4 char margin to the left if number is set
+    if &number
+        set foldcolumn=4
+        " turn numbers off
+        set nonumber
+    else
+        set foldcolumn=0
+        " turn numbers on
+        set number
+    endif
+endfunction
+
 function! DistractionFreeWriting()
-    :Limelight
+  " toggle limelight
+    :Limelight!!
     "call lexical#init()
     call litecorrect#init()
-    set rulerformat+=%-14{local_functions#WordCount()}
-    set rulerformat+=%l:%c
+    " set rulerformat+=%{local_functions#WordCount()}
+    " toggle line numbers
+    call ToggleGutter()
+    " toggle syntax highlighting
+    call ToggleSyntax()
+    " toggle ruler
+    call ToggleRuler()
+    " toggle colorcolumn
+    call ToggleColorColumn()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -196,16 +247,14 @@ highlight ALEErrorSign ctermbg        =NONE ctermfg=red
 highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
 "let g:ale_linters_explicit            = 1
 let g:ale_lint_on_text_changed        = 'never'
-let g:ale_lint_on_enter               = 0
 let g:ale_lint_on_save                = 1
 let g:ale_fix_on_save                 = 1
-let g:ale_linters = {'markdown':['vale', 'languagetool']}
 let g:ale_fixers = {
 \   '*':          ['remove_trailing_lines', 'trim_whitespace'],
 \   'markdown':   ['pandoc'],
 \   'shell':      ['shfmt'],
 \}
-
+let g:ale_linters = {'markdown':['vale']}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
@@ -245,7 +294,8 @@ Plug 'morhetz/gruvbox'                  " a pretty theme...
 Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
-Plug 'github/copilot.vim'               " bots code better than me
+Plug 'github/copilot.vim'               " AI codes better than me
+Plug 'APZelos/blamer.nvim'              " git blame
 call plug#end()
 
 " colourscheme mow it's loaded...
@@ -253,6 +303,6 @@ colorscheme gruvbox
 set background=dark
 let g:gruvbox_contrast_dark='hard'
 
-" fzf
-"
-set rtp+=/opt/homebrew/opt/fzf
+highlight FoldColumn ctermbg=NONE guibg=NONE
+" ruler to be colourless
+highlight ruler ctermbg=NONE guibg=NONE

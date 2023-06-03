@@ -8,7 +8,7 @@ IFS=$'\n\t'
 ###  VARIABLES      ###########################################################
 _MAIN_ONLY=0        ## set to 1 if you dont want a branch for each OS
 _THIS_SCRIPT=$(basename "$0")
-_COMMON_FILES=($_THIS_SCRIPT README.md) ## files to sync to all branches
+_COMMON_FILES=("$_THIS_SCRIPT" README.md) ## files to sync to all branches
 
 ## Colours
 _bld=$(tput bold)
@@ -132,7 +132,7 @@ sync_branches() {
   # copy a file to all branches
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   for branch in $(list_remote_branches); do
-    git checkout "$branch"
+    git checkout "$branch" && git pull
     for file in "${_COMMON_FILES[@]}"; do
       echo "Copying $file to $branch"
       git checkout "$current_branch" -- "$file"
@@ -177,11 +177,14 @@ update_remote() {
 
 install(){
   # install the dotfiles
-  git pull
-  git checkout "$(select_branch)"
-  rsync -a --exclude=".git*" \
-    --exclude-from=<(printf '%s\n' "${_COMMON_FILES[@]}") \
-    --exclude=".swp" . "$HOME"
+  git pull && git checkout "$(select_branch)"
+  files=$(list_files)
+  backup_dir="$HOME/.dotfiles_backup"
+  echo "backing up existing files"
+  for file in $files; do
+    rsync -a "$HOME/$file" "$backup_dir/$file" 2>/dev/null || true
+    rsync -a "$file" "$HOME/$file"
+  done
 }
 
 _main() {
