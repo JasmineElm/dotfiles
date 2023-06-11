@@ -27,7 +27,20 @@ set shiftround
 set autoindent
 set complete-=i
 
+
 set list listchars=tab:»·,trail:·,nbsp:·
+set listchars+=extends:»,precedes:«,eol:¬,space:·
+
+" toggle listchars function
+function ToggleListChars()
+  "unsets listchars if set, sets listchars if unset
+  if &listchars == ""
+    set listchars=tab:»·,trail:·,nbsp:·
+    set listchars+=extends:»,precedes:«,eol:¬,space:·
+  else
+    set listchars=
+  endif
+endfunction
 
 " sensible backspace, questionable cursor
 set virtualedit=onemore           " cursor can go beyond end of text
@@ -38,7 +51,6 @@ set backspace=indent,eol,start    " backspace works across lines
 set textwidth=79
 set colorcolumn=80
 set number
-" margin should be same colour as background
 
 " Read and write
 set autoread                      " if file is modified elsewhere, reload it
@@ -63,11 +75,17 @@ augroup END
 "                                            REMAPPED KEYS
 " (plugin-specific stuff in the relevant section)
 
+" leader is now space
+let mapleader=" "
+" capslock  is now escape
+inoremap <C-c> <Esc>
+
 " leader z to call zotero cite function
 noremap <leader>z "=local_functions#ZoteroCite()<CR>p
 
-" remove highlights
-nnoremap <leader>/ :nohls <enter>
+
+" remove highlights using leader space
+nnoremap <leader><space> :nohls<CR>
 
 " better yank and put
 noremap <leader>y "+y
@@ -88,13 +106,10 @@ command W :execute ':silent w !sudo tee % > /dev/null' <bar> :edit!
 nnoremap j gj
 nnoremap k gk
 
-" toggle numbers with F2
-map <F2> :set number!<Bar>set number?<CR>
-
-" source $MYVIMRC reloads the saved $MYVIMRC
+" source $MYvimrc reloads the saved $MYvimrc
 :nmap <Leader>s :source $MYVIMRC <CR>
 
-" opens $MYVIMRC for editing, or use :tabedit $MYVIMRC
+" opens $MYvimrc for editing, or use :tabedit $MYvimrc
 :nmap <Leader>v :e $MYVIMRC <CR>
 
 :nmap <Leader>t :WakaTimeToday<CR>
@@ -107,7 +122,7 @@ set nofoldenable
 "                                                 SPELLING
 set spell spelllang=en_gb
 
-" toggle spellcheck highlighting with F5
+" toggle spellcheck highlighting with 5
 nnoremap <leader>5 :call local_functions#ToggleSpell()<CR>
 
 " next two blocks make sure spelling is initially _off_
@@ -239,6 +254,8 @@ function! DistractionFreeWriting()
     call ToggleRuler()
     " toggle colorcolumn
     call ToggleColorColumn()
+    " toggle listchars
+    call ToggleListChars()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -276,11 +293,65 @@ xnoremap <leader>g :<C-u>NextWordy<cr>
 inoremap <leader>g :<C-o>:NextWordy<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                 VIM-WIKI
+" new files should have names like <yyyy><mm><dd><hh><mm><name>.md
+let g:vimwiki_auto_header = 0       "we'll use our own template
+let g:vimwiki_auto_tags = 1
+let g:vimwiki_auto_toc = 1
+let g:vimwiki_global_ext = 1
+"  template for new files
+"
+let g:vimwiki_template = {
+\   'default': 'template',
+\   'markdown': 'template',
+\}
+"  template for new files
+let g:vimwiki_template_path = '$VIMTEMPLATES/vimwiki'
+
+"  template for new files
+let g:vimwiki_template_default_ext = '.md'
+
+let g:vimwiki_date_format = '%d/%m/%Y'
+
+function VimwikiHeader()
+  " get date  and time from shell
+  " declare variables
+  let l:datenow = strftime("%d/%m/%Y")
+  let l:filename = expand("%:t")
+  " remove extension, replace underscores with spaces
+  " and capitalize first letter of each word
+  let l:filename = substitute(l:filename, '\.md$', '', '')
+  let l:filename = substitute(l:filename, '_', ' ', 'g')
+  let l:filename = substitute(l:filename, '\(\<\w\)\(\w*\)\>', '\u\1\2', 'g')
+  " replace <DATE> with date
+  execute "%s#<DATE>#" . l:datenow . "#g"
+   execute "%s#<FILENAME>#" . l:filename . "#g"
+endfunction
+
+" new files with an extension of md should use template
+if has("autocmd")
+  augroup templates
+    autocmd BufNewFile *.md 0r $VIMTEMPLATES/md.skeleton
+    " call Vimwikiheader on the new file
+    autocmd BufNewFile *.md :call VimwikiHeader()
+  augroup END
+endif
+
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+" nested syntaxes: python, shellscript
+let g:vimwiki_markdown_syntax_conceal = 0
+let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_markdown_link_target_type = 'md'
+let g:vimwiki_markdown_link_target = 1
+let nested_syntaxes = {'python': 'python', 'shellscript': 'sh'}
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                 VIM-PLUG
 if empty(glob($VIMPLUG))
   silent !curl -fLo $VIMPLUG --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd VimEnter * PlugInstall --sync | source $MYvimrc
 endif
 
 
@@ -296,12 +367,36 @@ Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
 Plug 'github/copilot.vim'               " AI codes better than me
 Plug 'APZelos/blamer.nvim'              " git blame
+Plug 'vimwiki/vimwiki'              " vimwiki
 call plug#end()
 
-" colourscheme mow it's loaded...
+" colourscheme now it's loaded...
 colorscheme gruvbox
 set background=dark
 let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_contrast_light='hard'
+let g:gruvbox_improved_strings=1
+let g:gruvbox_improved_warnings=1
+let g:gruvbox_improved_visibility=1
+let g:gruvbox_bold=1
+let g:gruvbox_italic=1
+let g:gruvbox_italicize_comments=1
+let g:gruvbox_italicize_strings=1
+let g:gruvbox_italicize_variables=1
+let g:gruvbox_underline=1
+
+" function - change background colour
+function! ToggleTheme()
+" if background is dark then set it to light and vice versa
+    if &background == 'dark'
+        set background=light
+    else
+        set background=dark
+    endif
+endfunction
+
+
+map <leader>t :call ToggleTheme()<CR>
 
 highlight FoldColumn ctermbg=NONE guibg=NONE
 " ruler to be colourless
