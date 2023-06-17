@@ -3,10 +3,10 @@ date: <DATE>
 tags:
   -
 aliases:
-  -
+  - "<FILENAME>"
 ---
 
-#  <FILENAME>
+# <FILENAME>
 
 ### precis
 

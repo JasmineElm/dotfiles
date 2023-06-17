@@ -8,6 +8,14 @@ _startup_scripts() {
   _pandoc_completion
 }
 
+zn() {
+  title="$@"
+  # replace any spaces  with underscores
+  _datestring=$(date +%Y%m%d%H%M)
+  filename="${_datestring}-${title// /_}.md"
+  $EDITOR "$filename"
+}
+
 reload() {
   cs=$(current_shell)
   rc=$HOME/.$cs'rc'
