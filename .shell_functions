@@ -8,6 +8,7 @@ _startup_scripts() {
   _pandoc_completion
 }
 
+# new zk note
 zn() {
   title="$@"
   # replace any spaces  with underscores

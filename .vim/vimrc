@@ -179,7 +179,6 @@ map <leader>2 :call DistractionFreeWriting()<CR>
 
 " turn-on distraction free writing mode for markdown files
 au BufNewFile,BufRead *.{md,mdown,mkd,mkdn,markdown,mdwn} call DistractionFreeWriting()
-
 " toggle listchars
 function ToggleListChars()
   "unsets listchars if set, sets listchars if unset
@@ -275,7 +274,13 @@ let g:ale_fixers = {
 \   'shell':      ['shfmt'],
 \}
 let g:ale_linters = {'markdown':['vale']}
-
+let g:ale_sign_error                  = '✘'
+let g:ale_sign_warning                = '⚠'
+let g:ale_sign_info                   = 'ℹ'
+" ale text should appear at bottom not inline
+let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
+" use statusbar for messages
+let g:ale_highlights                  = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
 let g:wordy#ring = [
@@ -326,7 +331,7 @@ function VimwikiHeader()
   let l:filename = substitute(l:filename, '\.md$', '', '')
   let l:filename = substitute(l:filename, '_', ' ', 'g')
   let l:filename = substitute(l:filename, '\(\<\w\)\(\w*\)\>', '\u\1\2', 'g')
-  let·l:filename·=·substitute(l:filename,·'^\d\{12}-',·'', '')
+  let l:filename = substitute(l:filename, '^\d\{12}-', '', '')
   " replace <DATE> with date
   execute "%s#<DATE>#" . l:datenow . "#g"
    execute "%s#<FILENAME>#" . l:filename . "#g"
@@ -358,7 +363,6 @@ if empty(glob($VIMPLUG))
   autocmd VimEnter * PlugInstall --sync | source $MYvimrc
 endif
 
-
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing
 Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
@@ -370,7 +374,8 @@ Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
 Plug 'github/copilot.vim'               " AI codes better than me
-Plug 'vimwiki/vimwiki'              " vimwiki
+"Plug 'vimwiki/vimwiki'              " vimwiki
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 call plug#end()
 
 " colourscheme now it's loaded...

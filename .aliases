@@ -1,5 +1,5 @@
 # read-only Vi is more pleasant to use than more
-alias more='vi -R'
+alias more='vi -R -'
 
 alias wttr='curl wttr.in/Preston?QFAnq0'
 
