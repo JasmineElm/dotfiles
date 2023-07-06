@@ -31,6 +31,16 @@ set complete-=i
 set list listchars=tab:»·,trail:·,nbsp:·
 set listchars+=extends:»,precedes:«,eol:¬,space:·
 
+" toggle listchars function
+function ToggleListChars()
+  "unsets listchars if set, sets listchars if unset
+  if &listchars == ""
+    set listchars=tab:»·,trail:·,nbsp:·
+    set listchars+=extends:»,precedes:«,eol:¬,space:·
+  else
+    set listchars=
+  endif
+endfunction
 
 " sensible backspace, questionable cursor
 set virtualedit=onemore           " cursor can go beyond end of text
@@ -99,7 +109,7 @@ nnoremap k gk
 " source $MYvimrc reloads the saved $MYvimrc
 :nmap <Leader>s :source $MYVIMRC <CR>
 
-" opens $MYvimrc for editing
+" opens $MYvimrc for editing, or use :tabedit $MYvimrc
 :nmap <Leader>v :e $MYVIMRC <CR>
 
 :nmap <Leader>t :WakaTimeToday<CR>
@@ -167,28 +177,30 @@ noremap <leader>d :put =strftime('%a %d-%b-%y %OH:%M')<CR>A<CR>
 noremap <leader>= <c-w>v
 noremap <leader>- <c-w>s
 
-" move between splits
-noremap <leader>h <c-w>h
-noremap <leader>j <c-w>j
+
+" show number of errors
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? '' : printf(
+        \   '%d⨉ %d⚠ ',
+        \   all_non_errors,
+        \   all_errors
+        \)
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
 let g:limelight_conceal_ctermfg     = 'gray'
+let g:limelight_conceal_guifg       = 'DarkGray'
 let g:limelight_default_coefficient = 0.3
-
-map <leader>2 :call DistractionFreeWriting()<CR>
+" map <leader>w :Limelight!!<CR>
+" w toggles  DistractionFreeWriting
+map <leader>w :call DistractionFreeWriting()<CR>
 
 " turn-on distraction free writing mode for markdown files
 au BufNewFile,BufRead *.{md,mdown,mkd,mkdn,markdown,mdwn} call DistractionFreeWriting()
-" toggle listchars
-function ToggleListChars()
-  "unsets listchars if set, sets listchars if unset
-  if &listchars == ""
-    set listchars=tab:»·,trail:·,nbsp:·
-    set listchars+=extends:»,precedes:«,eol:¬,space:·
-  else
-    set listchars=
-  endif
-endfunction
 
 function ToggleSyntax()
   " turn syntax highlighting on/off
@@ -196,15 +208,6 @@ function ToggleSyntax()
         syntax off
     else
         syntax enable
-    endif
-endfunction
-
-function  ToggleCursorline()
-  " toggle cursorline
-    if exists("+cursorline")
-        set nocursorline
-    else
-        set cursorline
     endif
 endfunction
 
@@ -230,15 +233,12 @@ function ToggleGutter()
         set foldcolumn=4
         " turn numbers off
         set nonumber
-        " turn off margin color
-        hi clear FoldColumn
     else
         set foldcolumn=0
         " turn numbers on
         set number
     endif
 endfunction
-
 
 function! DistractionFreeWriting()
   " toggle limelight
@@ -256,8 +256,6 @@ function! DistractionFreeWriting()
     call ToggleColorColumn()
     " toggle listchars
     call ToggleListChars()
-    " toggle cursorline
-    call ToggleCursorline()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -274,13 +272,7 @@ let g:ale_fixers = {
 \   'shell':      ['shfmt'],
 \}
 let g:ale_linters = {'markdown':['vale']}
-let g:ale_sign_error                  = '✘'
-let g:ale_sign_warning                = '⚠'
-let g:ale_sign_info                   = 'ℹ'
-" ale text should appear at bottom not inline
-let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
-" use statusbar for messages
-let g:ale_highlights                  = 1
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
 let g:wordy#ring = [
@@ -331,8 +323,9 @@ function VimwikiHeader()
   let l:filename = substitute(l:filename, '\.md$', '', '')
   let l:filename = substitute(l:filename, '_', ' ', 'g')
   let l:filename = substitute(l:filename, '\(\<\w\)\(\w*\)\>', '\u\1\2', 'g')
+  " if the filename starts with a string of 12 digits,  remove it
   let l:filename = substitute(l:filename, '^\d\{12}-', '', '')
-  " replace <DATE> with date
+  " replace <DATE> and <FILENAME> with the date and filename
   execute "%s#<DATE>#" . l:datenow . "#g"
    execute "%s#<FILENAME>#" . l:filename . "#g"
 endfunction
@@ -363,6 +356,7 @@ if empty(glob($VIMPLUG))
   autocmd VimEnter * PlugInstall --sync | source $MYvimrc
 endif
 
+
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing
 Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
@@ -374,12 +368,11 @@ Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
 Plug 'github/copilot.vim'               " AI codes better than me
-"Plug 'vimwiki/vimwiki'              " vimwiki
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'APZelos/blamer.nvim'              " git blame
+Plug 'vimwiki/vimwiki'              " vimwiki
 call plug#end()
 
 " colourscheme now it's loaded...
-
 colorscheme gruvbox
 set background=dark
 let g:gruvbox_contrast_dark='hard'
@@ -393,7 +386,6 @@ let g:gruvbox_italicize_comments=1
 let g:gruvbox_italicize_strings=1
 let g:gruvbox_italicize_variables=1
 let g:gruvbox_underline=1
-let g:gruvbox_undercurl_term=1
 
 " function - change background colour
 function! ToggleTheme()
@@ -406,7 +398,7 @@ function! ToggleTheme()
 endfunction
 
 
-map <leader>1 :call ToggleTheme()<CR>
+map <leader>t :call ToggleTheme()<CR>
 
 highlight FoldColumn ctermbg=NONE guibg=NONE
 " ruler to be colourless

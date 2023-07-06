@@ -1,5 +1,5 @@
 # read-only Vi is more pleasant to use than more
-alias more='vi -R -'
+alias more='vi -R'
 
 alias wttr='curl wttr.in/Preston?QFAnq0'
 
@@ -58,3 +58,20 @@ alias ifconfig='ip -br -c a'
 
 # tmux - see also home() function in ~/.shell_functions
 alias tks='tmux kill-server'
+
+export GITHUB_USERNAME=JasmineElm
+export DRPBX_DIR=$HOME'/Dropbox/'
+export SCRPT_DIR=$HOME'/Scripts/'
+export REPO_DIR=$DRPBX_DIR'/git/'
+export BLOG_DIR=$REPO_DIR'/$GITHUB_USERNAME.github.io/_posts/'
+export _ZETL_DIR=$REPO_DIR'/obsidian-Zettelkasten/Zettelkasten/'
+# code collects telemetry; disable it here:
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# what programs do I use?
+EDITOR="vi"
+
+alias zk="cd $_ZELT_DIR"
+alias zd="vi $_ZETL_DIR/journals/$(date +%Y-%m-%d).daily.md"
+alias zj="vi $_ZETL_DIR/journals/$(date +%Y-%m-%d).md"
+alias zs="cd $_ZETL_DIR/00_Study/T803"
