@@ -8,6 +8,7 @@ _startup_scripts() {
   _pandoc_completion
 }
 
+# new zk note
 zn() {
   title="$@"
   # replace any spaces  with underscores
@@ -245,4 +246,8 @@ local_IP() {
 
 wtr() {
   curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
+}
+
+md() {
+  pandoc "$1" | w3m -T text/html
 }

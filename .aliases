@@ -60,11 +60,11 @@ alias ifconfig='ip -br -c a'
 alias tks='tmux kill-server'
 
 export GITHUB_USERNAME=JasmineElm
-export DRPBX_DIR=$HOME'/Dropbox/'
-export SCRPT_DIR=$HOME'/Scripts/'
-export REPO_DIR=$DRPBX_DIR'/git/'
+export DRPBX_DIR=$HOME'/Dropbox'
+export SCRPT_DIR=$HOME'/Scripts'
+export REPO_DIR=$DRPBX_DIR'/git'
 export BLOG_DIR=$REPO_DIR'/$GITHUB_USERNAME.github.io/_posts/'
-export _ZETL_DIR=$REPO_DIR'/obsidian-Zettelkasten/Zettelkasten/'
+export _ZETL_DIR=$REPO_DIR'/obsidian-Zettelkasten/Zettelkasten'
 # code collects telemetry; disable it here:
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
@@ -72,6 +72,6 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 EDITOR="vi"
 
 alias zk="cd $_ZELT_DIR"
-alias zd="vi $_ZETL_DIR/journals/$(date +%Y-%m-%d).daily.md"
-alias zj="vi $_ZETL_DIR/journals/$(date +%Y-%m-%d).md"
+alias zd="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).daily.md"
+alias zj="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).md"
 alias zs="cd $_ZETL_DIR/00_Study/T803"
