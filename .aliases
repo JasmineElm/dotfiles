@@ -1,10 +1,6 @@
 # read-only Vi is more pleasant to use than more
-alias more='vim -R -'
+alias more='vi -R'
 
-# ls
-alias ll='ls -1AqF'
-
-alias dfh='df -h | grep /dev/disk | sort'
 alias wttr='curl wttr.in/Preston?QFAnq0'
 
 alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremove -y && sudo apt clean'
@@ -13,6 +9,7 @@ alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/
 #
 alias ls="ls --block-size=\"'1\" --color=auto --group-directories-first"
 alias ll='ls -1AqF'
+alias lt='ls -I .git -hltRa'
 
 # Lazy movement
 #
@@ -25,27 +22,13 @@ alias dfh='df -h | grep /dev/sd | sort'
 alias tailf='tail -f'
 
 # diff
+#
 alias vdiff='git diff'
-alias diff='diff --color=auto'
 
 # Colours please...
-alias grep='grep --color=auto'
-
-# sys Info
-alias free='top -l 1 -s 0 | grep PhysMem'
-alias nwk='lsof -P -i -n'          # what processes are using network
-
-# opening and closing stuff...
-alias :q='exit'
-
-alias dud='du -ch -d 1 | sort -hr'
-
-# tmux - see also home() function in ~/.shell_functions
-alias tks='tmux kill-server'
-
-### OSX
 #
-alias ._="find . -name '._*' -exec rm -v {} \; && find . -name '.DS_Store' -exec rm -v {} \;"
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 
 ## YOUTUBE-DL Specific
 #
@@ -64,8 +47,8 @@ alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +
 # sys Info
 alias who='w -f'
 alias free='free -g'
-alias nwk='lsof -P -i -n'          # what processes are using network
 alias net='watch -n 3 -d "ss -tb"' # and from teh other side
+alias nwk='lsof -P -i -n'          # what processes are using network
 
 # opening and closing stuff...
 alias open='xdg-open'
@@ -76,3 +59,20 @@ alias ifconfig='ip -br -c a'
 
 # tmux - see also home() function in ~/.shell_functions
 alias tks='tmux kill-server'
+
+export GITHUB_USERNAME=JasmineElm
+export DRPBX_DIR=$HOME'/Dropbox'
+export SCRPT_DIR=$HOME'/Scripts'
+export REPO_DIR=$DRPBX_DIR'/git'
+export BLOG_DIR=$REPO_DIR'/$GITHUB_USERNAME.github.io/_posts/'
+export _ZETL_DIR=$REPO_DIR'/obsidian-Zettelkasten/Zettelkasten'
+# code collects telemetry; disable it here:
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# what programs do I use?
+EDITOR="vi"
+# Zettelkasten
+alias zk="cd $_ZELT_DIR"
+alias zd="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).daily.md"
+alias zj="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).md"
+alias zs="cd $_ZETL_DIR/00_Study/T803"

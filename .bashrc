@@ -28,7 +28,7 @@ HISTFILE="$_HIST_DIR"history-$(date +%Y%m)
 HISTSIZE=-1
 HISTFILESIZE=-1
 HISTTIMEFORMAT="%d-%m-%y %H:%M  "
-HISTCONTROL=ignoredups:erasedups
+HISTCONTROL=ignoredups
 shopt -s histappend
 PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 
@@ -59,8 +59,8 @@ PS1="\\W > "
 PS2="⋯ "
 
 [[ -f /etc/bash_completion.d/git-prompt ]] && . /etc/bash_completion.d/git-prompt
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWCOLORHINTS=true
 PS1='\[\033[01;34m\]\W \[\033[00m\]$(__git_ps1 "[%s]") '
 
 ## COMPLETION

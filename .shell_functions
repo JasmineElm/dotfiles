@@ -8,6 +8,15 @@ _startup_scripts() {
   _pandoc_completion
 }
 
+# new zk note
+zn() {
+  title="$@"
+  # replace any spaces  with underscores
+  _datestring=$(date +%Y%m%d%H%M)
+  filename="${_datestring}-${title// /_}.md"
+  $EDITOR "$filename"
+}
+
 reload() {
   cs=$(current_shell)
   rc=$HOME/.$cs'rc'
@@ -232,9 +241,13 @@ usage() {
 }
 
 local_IP() {
-  ip a s | gsed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}'
+  ip a s | sed -ne '/127.0.0.1/!{s/^[ \t]*inet[ \t]*\([0-9.]\+\)\/.*$/\1/p}'
 }
 
 wtr() {
   curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
+}
+
+md() {
+  pandoc "$1" | w3m -T text/html
 }
