@@ -1,0 +1,38 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = James Lemin
+  email = jameslemin@duck.com
+	signingkey = /Users/james/.ssh/github.pub
+[core]
+	autocrlf = input
+	fileMode = false
+  eol = lf
+  editor = vim
+[init]
+  defaultBranch = main
+[fetch]
+  prune = true
+[alias]
+  # pull, add, commit, push
+  fipi = !git pull && git add . && git commit -m \"$(date +%Y-%m-%d)\" && git push
+  st = status
+  logg = log --graph --decorate --oneline --all
+  cm = commit
+  df = diff
+  dfs = diff --staged
+  co = checkout
+  cob = checkout -b
+  del = branch -D
+  br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+  save = !git add -A && git commit -m 'chore: savepoint'
+  undo = reset HEAD~1 --mixed
+  res = !git reset --hard
+  done = !git push origin HEAD
+  lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
+[status]
+  short = true
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
