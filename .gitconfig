@@ -2,7 +2,8 @@
 [user]
 # Please adapt and uncomment the following lines:
 	name = James Lemin
-	email = jameslemin@riseup.net
+  email = jameslemin@duck.com
+	signingkey = /home/james/.ssh/github.pub
 [core]
 	autocrlf = input
 	fileMode = false
@@ -31,3 +32,7 @@
   lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
 [status]
   short = true
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
