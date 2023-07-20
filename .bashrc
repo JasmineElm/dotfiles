@@ -53,20 +53,23 @@ else
   color_prompt=''
 fi
 
-# just display $BASEDIR..
-PS1="\\W > "
-# a continuation should look like one...
-PS2="⋯ "
 
-[[ -f /etc/bash_completion.d/git-prompt ]] && . /etc/bash_completion.d/git-prompt
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWCOLORHINTS=true
-PS1='\[\033[01;34m\]\W \[\033[00m\]$(__git_ps1 "[%s]") '
+PS1='\[\033[01;34m\][\h] \W \[\033[00m\]'
+if [[ -f /etc/bash_completion.d/git-prompt ]]; then
+  source /etc/bash_completion.d/git-prompt
+  export GIT_PS1_SHOWDIRTYSTATE=true
+  export GIT_PS1_SHOWCOLORHINTS=true
+  export GIT_PS1_SHOWUNTRACKEDFILES=true
+  export GIT_PS1_SHOWUPSTREAM="auto"
+  export GIT_PS1_DESCRIBE_STYLE="branch"
+PS1="$PS1$(__git_ps1 "[%s]")"
+fi
 
 ## COMPLETION
 
 ## case insensitive completion?
-[[ -f /etc/bash_completion.d/git-completion ]] && . /etc/bash_completion.d/git-completion
+[[ -f /usr/share/bash-completion/completions/git ]] \
+  && source /usr/share/bash-completion/completions/git
 
 # shellcheck disable=SC1091
 if ! shopt -oq posix; then
@@ -109,3 +112,18 @@ fi
 unset __conda_setup
 conda deactivate
 # <<< conda initialize <<<
+## WAKATIME
+# shellcheck disable=SC1090
+pre_prompt_command() {
+    version="1.0.0"
+    entity=$(echo $(fc -ln -0) | cut -d ' ' -f1)
+    [ -z "$entity" ] && return # $entity is empty or only whitespace
+    $(git rev-parse --is-inside-work-tree 2> /dev/null) \
+      && local project="$(basename $(git rev-parse --show-toplevel))" \
+      || local project="Terminal"
+    (~/.wakatime/wakatime-cli --write --plugin "bash-wakatime/$version" \
+      --entity-type app --project "$project" \
+      --entity "$entity" 2>&1 > /dev/null &)
+}
+[[ -f ~/.wakatime.cfg ]] && \
+  PROMPT_COMMAND="pre_prompt_command; $PROMPT_COMMAND"
