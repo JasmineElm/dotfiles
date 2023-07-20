@@ -90,7 +90,7 @@ update_local() {
   clean
 }
 
-determine_os() {
+determine_branch() {
   unm=$(uname -a)
   if [[ $unm == *"Microsoft"* ]]; then
     branch="wsl"
@@ -112,7 +112,7 @@ select_branch() {
   if [[ $(is_main_only) -eq 1 ]]; then
     branch="main"
   else
-    branch=$(determine_os)
+    branch=$(determine_branch)
   fi
   echo "$branch"
 }
@@ -174,47 +174,12 @@ update_remote() {
   [ "$out_of_sync" -eq 0 ] || pushit
 }
 
-create_dirs() {
-  # create all the paths in the repo at $HOME
-  for f in $(list_files); do
-    mkdir -p "$(dirname "$HOME/$f")"
-  done
-}
-
-binary_exists() {
-  # check if a binary exists
-  local bin="$1"
-  command -v "$bin" >/dev/null 2>&1
-}
-
-install_binary() {
-  # android = pkg install
-  # linux   = apt install
-  # macos   = brew install
-  os=$(determine_os)
-  case $os in
-  android)
-    pkg install "$1"
-    ;;
-  linux| wsl)
-    sudo apt install "$1"
-    ;;
-  macos)
-    brew install "$1"
-    ;;
-  *)
-    echo "Unknown OS: $os"
-    exit 1
-    ;;
-  esac
-}
 
 install(){
   # install the dotfiles
   git pull && git checkout "$(select_branch)"
   files=$(list_files)
   backup_dir="$HOME/.dotfiles_backup"
-  create_dirs
   echo "backing up existing files"
   for file in $files; do
     rsync -a "$HOME/$file" "$backup_dir/$file" 2>/dev/null || true
@@ -223,8 +188,6 @@ install(){
 }
 
 _main() {
-  binary_exists git || install_binary git
-  binary_exists rsync || install_binary rsync
   if [[ -z "$*" ]]; then
     print_help
     exit 1
