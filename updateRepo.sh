@@ -55,6 +55,12 @@ datestamp() {
   date +"%Y-%m-%d %H:%M"
 }
 
+test_rsync() {
+  # we need rsync for this to work...
+  [[ -x $(which rsync) ]] || \
+    sudo apt install rsync -y
+}
+
 list_files() {
   # list all files that aren't .git* or in $_COMMON_FILES
   filelist=$(find . -type f -not -path "./.git*" | sed 's/^\.\///')
@@ -180,8 +186,10 @@ install(){
   git pull && git checkout "$(select_branch)"
   files=$(list_files)
   backup_dir="$HOME/.dotfiles_backup"
+  test_rsync ## ensure rsync is installed
   echo "backing up existing files"
   for file in $files; do
+    mkdir -p "$(dirname "$HOME/$file")"
     rsync -a "$HOME/$file" "$backup_dir/$file" 2>/dev/null || true
     rsync -a "$file" "$HOME/$file"
   done
