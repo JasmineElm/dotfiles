@@ -102,13 +102,16 @@ nnoremap k gk
 " opens $MYvimrc for editing
 :nmap <Leader>v :e $MYVIMRC <CR>
 
-:nmap <Leader>t :WakaTimeToday<CR>
+
 " markdown folding
-
 let g:markdown_folding = 1
-set nofoldenable
+" unfold by default
+set foldlevelstart=1
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                 WAKATIME
+:nmap <Leader>t :WakaTimeToday<CR>
+
 "                                                 SPELLING
 set spell spelllang=en_gb
 
@@ -227,7 +230,7 @@ function ToggleGutter()
   " toggle gutter
     " add a 4 char margin to the left if number is set
     if &number
-        set foldcolumn=4
+        set foldcolumn=0
         " turn numbers off
         set nonumber
         " turn off margin color
@@ -365,7 +368,6 @@ endif
 
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing
-Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
 "Plug 'reedes/vim-lexical'               " Better spellcheck mappings
 Plug 'reedes/vim-litecorrect'           " Better autocorrections
 Plug 'reedes/vim-wordy'                 " Weasel words and passive voice
@@ -374,8 +376,8 @@ Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
 Plug 'github/copilot.vim'               " AI codes better than me
-"Plug 'vimwiki/vimwiki'              " vimwiki
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 call plug#end()
 
 " colourscheme now it's loaded...
