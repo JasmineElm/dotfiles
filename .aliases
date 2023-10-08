@@ -4,6 +4,7 @@ alias more='vi -R'
 alias wttr='curl wttr.in/Preston?QFAnq0'
 
 alias auua='sudo apt update && sudo  apt upgrade -y && sudo apt --purge autoremove -y && sudo apt clean'
+alias auuaf='auua && sudo service fwupd start && sudo fwupdmgr refresh && sudo fwupdmgr update'
 alias list_installed='comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n "s/^Package: //p" | sort -u)'
 # ls
 #
@@ -61,7 +62,7 @@ alias ifconfig='ip -br -c a'
 alias tks='tmux kill-server'
 
 export GITHUB_USERNAME=JasmineElm
-export DRPBX_DIR=$HOME''
+export DRPBX_DIR=$HOME'/Dropbox'
 export SCRPT_DIR=$HOME'/Scripts'
 export REPO_DIR=$DRPBX_DIR'/git'
 export BLOG_DIR=$REPO_DIR'/$GITHUB_USERNAME.github.io/_posts/'
@@ -72,7 +73,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 # what programs do I use?
 EDITOR="vi"
 # Zettelkasten
-alias zk="cd $_ZETL_DIR"
+alias zk="cd $_ZELT_DIR"
 alias zd="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).daily.md"
 alias zj="$EDITOR $_ZETL_DIR/journals/$(date +%Y-%m-%d).md"
 alias zs="cd $_ZETL_DIR/00_Study/T803"

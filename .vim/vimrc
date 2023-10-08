@@ -102,16 +102,13 @@ nnoremap k gk
 " opens $MYvimrc for editing
 :nmap <Leader>v :e $MYVIMRC <CR>
 
-
-" markdown folding
-let g:markdown_folding = 1
-" unfold by default
-set foldlevelstart=1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                                 WAKATIME
 :nmap <Leader>t :WakaTimeToday<CR>
+" markdown folding
 
+let g:markdown_folding = 1
+set nofoldenable
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                 SPELLING
 set spell spelllang=en_gb
 
@@ -230,7 +227,7 @@ function ToggleGutter()
   " toggle gutter
     " add a 4 char margin to the left if number is set
     if &number
-        set foldcolumn=0
+        set foldcolumn=4
         " turn numbers off
         set nonumber
         " turn off margin color
@@ -248,7 +245,7 @@ function! DistractionFreeWriting()
     :Limelight!!
     "call lexical#init()
     call litecorrect#init()
-    " set rulerformat+=%{local_functions#WordCount()}
+    set rulerformat+=%{local_functions#WordCount()}
     " toggle line numbers
     call ToggleGutter()
     " toggle syntax highlighting
@@ -280,10 +277,16 @@ let g:ale_linters = {'markdown':['vale']}
 let g:ale_sign_error                  = '✘'
 let g:ale_sign_warning                = '⚠'
 let g:ale_sign_info                   = 'ℹ'
+" use <C-e> and <C-y> to move between errors
+nmap <silent> <C-e> <Plug>(ale_next_wrap)
+nmap <silent> <C-y> <Plug>(ale_previous_wrap)
 " ale text should appear at bottom not inline
 let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
 " use statusbar for messages
 let g:ale_highlights                  = 1
+let g:ale_virtualtext_cursor          = 1
+" clear blank lines and trailing space
+let g:ale_fix_on_save                 = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                    WORDY
 let g:wordy#ring = [
@@ -368,6 +371,7 @@ endif
 
 call plug#begin()
 Plug 'junegunn/limelight.vim'           " Distraction free writing
+Plug 'ctrlpvim/ctrlp.vim'               " For sensible link insertion
 "Plug 'reedes/vim-lexical'               " Better spellcheck mappings
 Plug 'reedes/vim-litecorrect'           " Better autocorrections
 Plug 'reedes/vim-wordy'                 " Weasel words and passive voice
@@ -376,8 +380,8 @@ Plug 'wakatime/vim-wakatime'            " quantify...
 Plug 'ferrine/md-img-paste.vim'         " obsidian-style img paste
 Plug 'dense-analysis/ale'               " ALE
 Plug 'github/copilot.vim'               " AI codes better than me
+"Plug 'vimwiki/vimwiki'              " vimwiki
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-
 call plug#end()
 
 " colourscheme now it's loaded...
