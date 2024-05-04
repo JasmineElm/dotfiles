@@ -7,7 +7,7 @@
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
-
+PATH="/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin"
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -35,15 +35,4 @@ if [ -n "$ZSH_VERSION" ]; then
     fi
 fi
 
-# if has go
-
-if [ -d "/usr/local/bin/go/bin" ] ; then
-    PATH="/usr/local/bin/go/bin:$PATH"
-fi
-
-# if has ruby gems
-
-if [ -d "$HOME/gems" ] ; then
-    PATH="$HOME/gems:$PATH"
-    PATH="$HOME/gems/bin:$PATH"
-fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
