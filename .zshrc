@@ -5,7 +5,7 @@
 fi
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
-[[ ! -f  ~/powerlevel10k/powerlevel10k.zsh-theme ]] || source ~/powerlevel10k/powerlevel10k.zsh-theme 
+[[ ! -f  ~/powerlevel10k/powerlevel10k.zsh-theme ]] || source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 #
 ### POWERLEVEL 10K ENDS
@@ -27,25 +27,13 @@ PATH=$HOME/gems/bin:$PATH:/snap/bin:$HOME/Scripts:$PATH:$HOME/.local/bin
 # add date to `history`
 export HISTTIMEFORMAT="%m/%d - %H:%M:%S: "
 
-
-if [ -e /home/x220/.nix-profile/etc/profile.d/nix.sh ]; then . /home/x220/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/james/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/james/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/james/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/james/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+source ~/powerlevel10k/powerlevel10k.zsh-theme

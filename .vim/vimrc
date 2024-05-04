@@ -4,6 +4,9 @@ let $VIMHOME=expand('<sfile>:p:h')
 let $VIMTEMPLATES='$VIMHOME/templates'
 let $VIMPLUG='$VIMHOME/autoload/plug.vim'
 
+" clipboard shared with OS
+set clipboard^=unnamed,unnamedplus
+
 " new files with an extension of sh should use template
 if has("autocmd")
   augroup templates
@@ -173,6 +176,10 @@ function! LinterStatus() abort
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                  COPILOT
+
+let g:copilot_filetypes = {'markdown': v:true}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                LIMELIGHT
 let g:limelight_conceal_ctermfg     = 'gray'
 let g:limelight_conceal_guifg       = 'DarkGray'
@@ -191,7 +198,7 @@ function! DistractionFreeWriting()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                                      ALE
+"
 highlight ALEErrorSign ctermbg        =NONE ctermfg=red
 highlight ALEWarningSign ctermbg      =NONE ctermfg=yellow
 "let g:ale_linters_explicit            = 1

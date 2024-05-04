@@ -212,6 +212,12 @@ zipit() {
   echo "Password = $pass"
 }
 
+#### Python ###################################################################
+
+pif() {
+  pip install "$1" && pip freeze > requirements.txt
+}
+
 #### TMUX ##### ###############################################################
 
 home() {
@@ -273,4 +279,18 @@ local_IP() {
 #### FUN STUFF ################################################################
 wtr() {
   curl wttr.in/$1?format="%l\n%C+%t\nSunrise+%S\nSunset+%s\n+%m\n"
+}
+
+#### Zettelkasten #############################################################
+
+nc() {
+  title="$*"
+  # replace non-alphanumeric characters with hyphens
+  # and convert to lowercase
+  safe_title=$(echo "$title" | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')
+  datestring=$(date +%Y%m%d%H%M)
+  filename="$datestring-$safe_title.md"
+  # place $title on system clipboard
+  echo "# $title" | xclip -selection clipboard
+  $EDITOR "$filename"
 }

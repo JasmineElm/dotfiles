@@ -45,3 +45,6 @@ alias ytdlc='youtube-dlc --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +
 #
 # External downloader can be less performant: this ignores it
 alias ytdlna='youtube-dl --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" --all-subs --embed-subs --write-thumbnail --add-metadata -i '
+
+alias venvit="python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip"
+alias pf="pip freeze > requirements.txt"

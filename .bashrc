@@ -1,8 +1,8 @@
 # shellcheck shell=bash
 
-[[ -f ~/.shell_functions ]] && source  ~/.shell_functions
-[[ -f ~/.aliases ]] && source  ~/.aliases
-[[ -f ~/.secret_aliases ]] && source  ~/.secret_aliases
+[[ -f $HOME/.shell_functions ]] && source  "$HOME/.shell_functions"
+[[ -f $HOME/.aliases ]] && source  "$HOME/.aliases"
+[[ -f $HOME/.secret_aliases ]] && source  "$HOME/.secret_aliases"
 
 stty -ixon
 
@@ -51,15 +51,15 @@ fi
 
 #### PATH ####################################################################
 # Install Ruby Gems to ~/gems
-[[ -d ~/.local/bin ]] && PATH="$PATH:~/.local/bin"
+[[ -d ~/.local/bin ]] && PATH="$PATH:$HOME/.local/bin"
 [[ -d /opt/homebrew/bin ]] && PATH="$PATH:/opt/homebrew/bin"
 [[ -d /opt/homebrew/opt/gnu-getopt/bin ]] && \
   PATH="$PATH:/opt/homebrew/opt/gnu-getopt/bin"
 [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin  ]] && \
   PATH="$PATH:/opt/homebrew/opt/coreutils/libexec/gnubin"
 ## GEMS
-[[ -d ~/gems ]] &&  export GEM_HOME="~/gems"
-[[ -d $GEM_HOME/bin ]] &&  PATH="$GEM_HOME/bin"
+[[ -d $HOME/gems ]] &&  export GEM_HOME="$HOME/gems"
+[[ -d $GEM_HOME/bin ]] &&  PATH="$PATH:$GEM_HOME/bin"
 
 MANPATH="/usr/local/opt/findutils/share/man:$MANPATH"
 VIMPATH=$(command -v vi)
@@ -73,11 +73,11 @@ VIMPATH=$(command -v vi)
 PS1="\\W \$ "
 # a continuation should look like one...
 PS2="⋯ "
-if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
-  GIT_PROMPT_ONLY_IN_REPO=1
-  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-fi
+#if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+#  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
+#  GIT_PROMPT_ONLY_IN_REPO=1
+#  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+#fi
 
 # vi wherever possible please
 set -o vi
@@ -92,19 +92,13 @@ export HTOPRC="$HOME.htoprc"
 # source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh
 # source $(brew --prefix)/opt/chruby/share/chruby/auto.sh
 
+##### WAKATIME, if installed  ###############################################
+pre_prompt_command() {
+    version="1.0.0"
+    entity=$(echo $(fc -ln -0) | cut -d ' ' -f1)
+    [ -z "$entity" ] && return # $entity is empty or only whitespace
+    $(git rev-parse --is-inside-work-tree 2> /dev/null) && local project="$(basename $(git rev-parse --show-toplevel))" || local project="Terminal"
+    (~/.wakatime/wakatime-cli --write --plugin "bash-wakatime/$version" --entity-type app --project "$project" --entity "$entity" 2>&1 > /dev/null &)
+}
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/james/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/james/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/james/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/james/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+[[ -f ~/.wakatime/wakatime-cli ]] && PROMPT_COMMAND="pre_prompt_command; $PROMPT_COMMAND"
