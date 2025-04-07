@@ -198,7 +198,7 @@ expall() {
   # shellcheck disable=SC2010
   for i in $(ls | grep -E 'tar|\.bz2|\.tar.gz|\.tar|\.xz|\.tar|\.lzma|\.bz2|\.rar|\.gz|\.tar|\.tbz2|\.tgz|\.zip|\.Z|\.7z$'); do
     expand "$i"
-    rm -i "$i"
+    rm  "$i"
   done
 }
 
